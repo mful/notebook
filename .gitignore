@@ -1,0 +1,9 @@
+.idea
+/.bundle
+/log/*.log
+/tmp
+/config/database.yml
+/config/mandrill.yml
+/config/omniauth.yml
+/config/secret_token.yml
+*\/\.
