@@ -1,4 +1,6 @@
 class Entity < ActiveRecord::Base
+  has_many :pages
+
   before_validation :sanitize_url
 
   validates_presence_of :base_domain
