@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
   # TODO: render 404 page here
   def rescue_not_found
-    render nothing: true, status: 404
+    render "#{Rails.root}/public/404.html", status: 404
   end
 
   # TODO: rethink this

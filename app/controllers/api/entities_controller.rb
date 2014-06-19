@@ -2,7 +2,7 @@ class Api::EntitiesController < ApiController
 
   def create
     @entity = Entity.new(entity_params)
-    show_or_400(@entity, :api_entity_path) { @entity.save }
+    redirect_or_err(@entity, :api_entity_path, 400) { @entity.save }
   end
 
   def show

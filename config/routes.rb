@@ -18,6 +18,4 @@ AgileLife::Application.routes.draw do
   
   get '/auth/:provider/callback' => 'api/sessions#create_with_omniauth'
   get '/auth/failure' => 'api/sessions#auth_failure'
-
-  get '/test_github' => 'pages#test_github'
 end

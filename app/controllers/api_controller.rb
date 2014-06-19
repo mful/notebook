@@ -11,11 +11,11 @@ class ApiController < ApplicationController
 
   private
  
-  def show_or_400(model, path, &block)
+  def redirect_or_err(model, path, error_code, path_params = nil, &block)
     if block.call
-      redirect_to send(path.to_sym, model.id)
+      redirect_to send(path.to_sym, path_params || model.id)
     else
-      render json: { errors: model.errors.full_messages }, status: 400
+      render json: { errors: model.errors.full_messages }, status: error_code
     end
   end
 end

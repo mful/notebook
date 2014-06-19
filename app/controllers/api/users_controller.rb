@@ -10,13 +10,15 @@ class Api::UsersController < ApiController
   def create
     @user = User.new(user_params)
 
-    show_or_400 @user, :api_user_path do
+    redirect_or_err @user, :api_user_path, 400 do
       CreateUser.create(@user).persisted? && sign_in(@user)
     end
   end
 
   def update
-    show_or_400(@user, :api_user_path) { @user.update_attributes user_params }
+    redirect_or_err(@user, :api_user_path, 400) do
+      @user.update_attributes user_params 
+    end
   end
 
   def show
