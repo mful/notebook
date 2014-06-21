@@ -11,16 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621022628) do
+ActiveRecord::Schema.define(version: 20140621215846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "annotations", force: true do |t|
+    t.text    "text"
+    t.integer "page_id"
+  end
+
+  add_index "annotations", ["page_id"], name: "index_annotations_on_page_id", using: :btree
+
   create_table "comments", force: true do |t|
     t.text    "content"
     t.integer "user_id"
-    t.boolean "deleted", default: false
+    t.boolean "deleted",       default: false
+    t.integer "annotation_id"
   end
+
+  add_index "comments", ["annotation_id"], name: "index_comments_on_annotation_id", using: :btree
 
   create_table "connections", force: true do |t|
     t.integer  "user_id"
