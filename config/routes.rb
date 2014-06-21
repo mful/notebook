@@ -11,7 +11,8 @@ AgileLife::Application.routes.draw do
     get 'signin' => 'sessions#new', as: 'signin'
     get 'signout' => 'sessions#destroy', as: 'signout'
 
-    resources :entities, only: [:create, :show]
+    resources :entities, only: [:create, :show, :update]
+    resources :pages, only: [:create, :update, :show]
   end
 
   get '/signin' => 'sessions#new'

@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # TODO: render 404 page here
+  # TODO: add custom 404 page here
   def rescue_not_found
     render "#{Rails.root}/public/404.html", status: 404
   end

@@ -22,8 +22,28 @@ describe Entity do
       end
 
       it 'should return errors' do
-        expect(@entity.errors.full_messages.length).to eq(1)
+        expect(@entity.errors.full_messages.present?).to be_true
       end
     end
   end
+
+  describe '.find_or_create_by_url' do
+    let(:url) { 'http://faculty.hogwarts.com/transfiguration?search=mcgonagol' }
+    let!(:entity) { FactoryGirl.create :entity }
+
+    context 'when the entity already exists' do
+      it 'should find the entity' do
+        expect(Entity.find_or_create_by_url(url)).to eq(entity)
+      end
+    end
+
+    context 'when the entity does not exist' do
+      let(:url) { 'http://durmstrang.com' }
+
+      it 'should create the entity' do
+        expect(Entity.find_or_create_by_url(url).persisted?).to be_true
+      end
+    end
+  end
+
 end

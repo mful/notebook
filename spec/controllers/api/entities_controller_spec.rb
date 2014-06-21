@@ -44,4 +44,34 @@ describe Api::EntitiesController do
       end
     end
   end
+
+  describe '#update' do
+    let!(:entity) { FactoryGirl.create :entity }
+
+    context 'with valid data' do
+      let(:url) { 'http://durmstrang.com/potions/recipes?polyjuice' }
+      before { put :update, id: entity.id, entity: entity.attributes.merge(base_domain: url) }
+
+      it 'should update the entity' do
+        entity.reload
+        expect(entity.base_domain).to eq('durmstrang.com')
+      end
+    end
+
+    context 'with invalid data' do
+      let(:url) { 'asdfasdf' }
+      before do
+        put :update, id: entity.id, entity: entity.attributes.merge(base_domain: url)
+      end
+
+      it 'should return errors' do
+        expect(JSON.parse(response.body)['errors'].present?).to be_true
+      end
+
+      it 'should return 400' do
+        entity.reload
+        expect(response.status).to eq(400)
+      end
+    end
+  end
 end
