@@ -24,6 +24,7 @@ gem 'peek-pg'
 
 group :development, :test do
   gem 'pry'
+  gem 'pry-stack_explorer'
   gem 'factory_girl_rails', require: false
   gem 'rspec-rails'
 end

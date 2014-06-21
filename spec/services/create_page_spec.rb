@@ -37,5 +37,14 @@ describe CreatePage do
         expect(Entity.count).to eq(1)
       end
     end
+
+    context 'with invalid data' do
+      let(:page) { FactoryGirl.build :page, url: 'adfasdf' }
+      before { @res = CreatePage.create(page) }
+
+      it 'should return false' do
+        expect(@res).to be_false
+      end
+    end
   end
 end

@@ -34,4 +34,29 @@ describe Page do
       end
     end
   end
+
+  describe '.find_or_create_by_url' do
+    let!(:page) { FactoryGirl.create :page }
+    let(:url) { FactoryGirl.attributes_for(:page)[:url] }
+
+    context 'when the page already exists' do
+      it 'should find the page' do
+        expect(Page.find_or_create_by_url(url)).to eq(page)
+      end
+
+      it 'should not create a new page' do
+        Page.find_or_create_by_url(url)
+        expect(Page.count).to eq(1)
+      end
+    end
+
+    context 'when the page does not exist' do
+      let(:url) { 'http://durmstrang.com/transfiguration' }
+      before { Page.find_or_create_by_url(url) }
+
+      it 'should create the page' do
+        expect(Page.count).to eq(2)
+      end
+    end
+  end
 end

@@ -35,6 +35,10 @@ describe Entity do
       it 'should find the entity' do
         expect(Entity.find_or_create_by_url(url)).to eq(entity)
       end
+
+      it 'should not create a new entity' do
+        expect(Entity.count).to eq(1)
+      end
     end
 
     context 'when the entity does not exist' do

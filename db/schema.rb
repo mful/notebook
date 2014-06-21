@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 20140621215846) do
     t.integer  "comment_id"
   end
 
+  add_index "pages", ["url"], name: "index_pages_on_url", unique: true, using: :btree
+
   create_table "users", force: true do |t|
     t.string   "password_digest"
     t.string   "email"
