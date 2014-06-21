@@ -190,6 +190,7 @@ DEPENDENCIES
   factory_girl_rails
   gibbon
   mandrill_mailer
+  nokogiri
   omniauth-github
   omniauth-google-oauth2
   peek
