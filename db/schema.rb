@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(version: 20140621215846) do
     t.datetime "updated_at"
   end
 
+  add_index "entities", ["base_domain"], name: "index_entities_on_base_domain", unique: true, using: :btree
+
   create_table "pages", force: true do |t|
     t.string   "url"
     t.integer  "entity_id"

@@ -5,5 +5,7 @@ class CreateEntities < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :entities, :base_domain, unique: true
   end
 end

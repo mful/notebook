@@ -7,9 +7,7 @@ class Api::PagesController < ApiController
 
   def create
     @page = Page.new(page_params)
-    entity = Entity.find_or_create_by_url(request.url)
-    @page.entity = entity
-    redirect_or_err(@page, :api_page_path, 400) { @page.save }
+    redirect_or_err(@page, :api_page_path, 400) { CreatePage.create @page }
   end
 
   def update

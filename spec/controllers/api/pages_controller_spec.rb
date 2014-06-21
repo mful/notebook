@@ -7,8 +7,7 @@ describe Api::PagesController  do
       request.stub(:url).and_return(FactoryGirl.attributes_for(:page)[:url])
     end
 
-    context 'when the entity exists' do
-      let!(:entity) { FactoryGirl.create :entity }
+    context 'with valid data' do
       let(:page) { FactoryGirl.attributes_for :page }
       before { post :create, page: page }
 
@@ -16,29 +15,17 @@ describe Api::PagesController  do
         expect(Page.count).to eq(1)
       end
 
-      it 'should associate the page with the entity' do
-        expect(Page.first.entity).to eq(entity)
-      end
-
-      it 'should not create a new entity' do
-        expect(Entity.count).to eq(1)
+      it 'should redirect/return the entity' do
+        expect(response).to redirect_to(api_page_path(Page.first.id))
       end
     end
 
-    context 'when the entity does not yet exist' do
-      let(:page) { FactoryGirl.attributes_for :page }
+    context 'with invalid data' do
+      let(:page) { FactoryGirl.attributes_for :page, url: 'asdfadf' }
       before { post :create, page: page }
 
-      it 'should create the page' do
-        expect(Page.count).to eq(1)
-      end
-
-      it 'should associate the page with the new entity' do
-        expect(Page.first.entity).to eq(Entity.first)
-      end
-
-      it 'should create a new entity' do
-        expect(Entity.count).to eq(1)
+      it 'should return 400' do
+        expect(response.status).to be(400)
       end
     end
   end

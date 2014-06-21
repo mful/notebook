@@ -1,7 +1,7 @@
 class CreateUser
 
   def self.create(user, options = {})
-    self.new(user, options).create
+    new(user, options).create
   end
 
   def initialize(user, options = {})

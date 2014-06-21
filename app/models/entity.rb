@@ -5,6 +5,7 @@ class Entity < ActiveRecord::Base
 
   validates_presence_of :base_domain
   validates_format_of :base_domain, with: /\A[a-z0-9-]*\.[a-z]{2,3}\z/
+  validates_uniqueness_of :base_domain
 
   def self.find_or_create_by_url(url)
     uri = URI.parse(url)
