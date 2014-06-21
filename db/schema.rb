@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20140621022628) do
   create_table "comments", force: true do |t|
     t.text    "content"
     t.integer "user_id"
+    t.boolean "deleted", default: false
   end
 
   create_table "connections", force: true do |t|

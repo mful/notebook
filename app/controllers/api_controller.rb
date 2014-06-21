@@ -9,6 +9,10 @@ class ApiController < ApplicationController
     render nothing: true, status: 404
   end
 
+  def resuce_unauthorized
+    render nothing: true, status: 403
+  end
+
   private
  
   def redirect_or_err(model, path, error_code, path_params = nil, &block)

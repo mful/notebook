@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-AgileLife::Application.load_tasks
+Annotate::Application.load_tasks

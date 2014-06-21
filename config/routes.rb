@@ -1,4 +1,4 @@
-AgileLife::Application.routes.draw do
+Annotate::Application.routes.draw do
   mount Peek::Railtie => '/peek'
   root to: 'pages#index'
 
@@ -13,6 +13,7 @@ AgileLife::Application.routes.draw do
 
     resources :entities, only: [:create, :show, :update]
     resources :pages, only: [:create, :update, :show]
+    resources :comments, only: [:create, :update, :show, :destroy]
   end
 
   get '/signin' => 'sessions#new'

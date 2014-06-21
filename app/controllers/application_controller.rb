@@ -7,8 +7,11 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActiveRecord::RecordNotFound, with: :rescue_not_found
 
-  class AgileLife::NotFoundError < StandardError; end
-  rescue_from AgileLife::NotFoundError, with: :rescue_not_found
+  class Annotate::NotFoundError < StandardError; end
+  rescue_from Annotate::NotFoundError, with: :rescue_not_found
+
+  class Annotate::Unauthorized < StandardError; end
+  rescue_from Annotate::Unauthorized, with: :rescue_unauthorized
 
   protected
 
@@ -17,10 +20,15 @@ class ApplicationController < ActionController::Base
     render "#{Rails.root}/public/404.html", status: 404
   end
 
+  # TODO: redirect to login page
+  def rescue_unauthorized
+    render nothing: true, status: 403
+  end
+
   # TODO: rethink this
   def authenticate!
     unless signed_in? && current_user.id == params[:id].to_i
-      raise AgileLife::NotFoundError
+      raise Annotate::NotFoundError
     end
   end
 

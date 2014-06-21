@@ -29,7 +29,7 @@ class Api::UsersController < ApiController
     begin 
       ResetPassword.reset! params[:email]
       render nothing: true, status: 200
-    rescue AgileLife::NotFoundError => e
+    rescue Annotate::NotFoundError => e
       render json:  { errors: ['User with that email does not exist']  }, status: 404
     end
   end
@@ -42,6 +42,6 @@ class Api::UsersController < ApiController
 
   def find_user
     @user = User.find params[:id]
-    raise ::AgileLife::NotFoundError unless @user
+    raise ::Annotate::NotFoundError unless @user
   end
 end
