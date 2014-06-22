@@ -66,7 +66,7 @@ describe Api::SessionsController do
     let!(:user) { FactoryGirl.create :user }
     before do
       sign_in user
-      get :destroy
+      delete :destroy
     end
 
     it 'should delete the remember_token cookie' do

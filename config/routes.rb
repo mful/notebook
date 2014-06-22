@@ -7,9 +7,8 @@ Annotate::Application.routes.draw do
     get 'signup' => 'users#new'
     get 'reset_password' => 'users#reset_password'
 
-    resources :sessions, only: [:new, :create, :destroy]
-    get 'signin' => 'sessions#new', as: 'signin'
-    get 'signout' => 'sessions#destroy', as: 'signout'
+    resources :sessions, only: [:create]
+    delete 'signout' => 'sessions#destroy', as: 'signout'
 
     resources :entities, only: [:create, :show, :update]
     resources :pages, only: [:create, :update, :show]
