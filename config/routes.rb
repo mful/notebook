@@ -14,6 +14,7 @@ Annotate::Application.routes.draw do
     resources :entities, only: [:create, :show, :update]
     resources :pages, only: [:create, :update, :show]
     resources :comments, only: [:create, :update, :show, :destroy]
+    resources :annotations, only: [:create, :show]
   end
 
   get '/signin' => 'sessions#new'
