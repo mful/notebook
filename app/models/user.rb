@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   before_save { self.email = email.downcase }
 
   has_many :connections
+  has_many :votes
 
   # TODO: move this remember token logic
   def User.new_remember_token

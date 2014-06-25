@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621215846) do
+ActiveRecord::Schema.define(version: 20140622173428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20140621215846) do
     t.integer "user_id"
     t.boolean "deleted",       default: false
     t.integer "annotation_id"
+    t.float   "rating",        default: 0.0
   end
 
   add_index "comments", ["annotation_id"], name: "index_comments_on_annotation_id", using: :btree
@@ -71,5 +72,15 @@ ActiveRecord::Schema.define(version: 20140621215846) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
+
+  create_table "votes", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "comment_id"
+    t.boolean  "positive"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "votes", ["comment_id"], name: "index_votes_on_comment_id", using: :btree
 
 end
