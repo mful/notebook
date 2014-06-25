@@ -22,6 +22,8 @@ gem 'peek'
 gem 'peek-performance_bar'
 gem 'peek-pg'
 
+gem 'cancancan', '~> 1.8'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-stack_explorer'

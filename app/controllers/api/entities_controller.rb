@@ -1,5 +1,6 @@
 class Api::EntitiesController < ApiController
   before_filter :find_entity, only: [:show, :update]
+  before_filter :authenticate!, only: [:update, :create]
 
   def create
     @entity = Entity.new(entity_params)
@@ -17,6 +18,10 @@ class Api::EntitiesController < ApiController
   end
 
   private
+
+  def authenticate!
+    raise Annotate::NotFoundError unless can? :manage, Entity
+  end
 
   def find_entity
     @entity = Entity.find(params[:id])

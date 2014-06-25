@@ -49,6 +49,7 @@ describe Api::UsersController do
 
   describe '#show' do
     let(:user) { FactoryGirl.create :user }
+    let(:user_res) { { user: { id: user.id, email: user.email } }.to_json }
 
     context 'when the user is signed in' do
       before do
@@ -57,7 +58,7 @@ describe Api::UsersController do
       end
 
       it 'should render the user\'s page' do
-        expect(response.body).to eq(user.to_json)
+        expect(response.body).to eq(user_res)
       end
     end
 

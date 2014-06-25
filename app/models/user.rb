@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 
   has_many :connections
   has_many :votes
+  has_and_belongs_to_many :roles
 
   # TODO: move this remember token logic
   def User.new_remember_token
@@ -16,6 +17,10 @@ class User < ActiveRecord::Base
 
   def User.digest(token)
     Digest::SHA1.hexdigest(token.to_s)
+  end
+
+  def has_role?(role)
+    roles.map(&:name).include?(role)
   end
 
   private

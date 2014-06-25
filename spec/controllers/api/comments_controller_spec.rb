@@ -75,23 +75,35 @@ describe Api::CommentsController do
       end
     end
 
-    context 'when a different user is logged in' do
+    context 'when a different, regular user is logged in' do
       let(:user2) { FactoryGirl.create :user, email: 'snape@hogwarts.com' }
       before do 
         sign_in user2
         put :update, id: comment.id, comment: comment_update
       end
 
-      it 'should return 404' do
-        expect(response.status).to eq(404)
+      it 'should return 403' do
+        expect(response.status).to eq(403)
+      end
+    end
+
+    context 'as a moderator' do
+      let(:moderator) { FactoryGirl.create :moderator }
+      before do
+        sign_in moderator
+        put :update, id: comment.id, comment: comment_update 
+      end
+
+      it 'should update the comment' do
+        expect(Comment.first.content).to eq('EDIT: Malfoy is not very nice')
       end
     end
 
     context 'when no user is logged in' do
       before { put :update, id: comment.id, comment: comment_update }
 
-      it 'should return 404' do
-        expect(response.status).to eq(404)
+      it 'should return 403' do
+        expect(response.status).to eq(403)
       end
     end
   end
@@ -114,12 +126,24 @@ describe Api::CommentsController do
     context 'when the proper user is not logged in' do
       before { delete :destroy, id: comment.id }
 
-      it 'should return 404' do
-        expect(response.status).to eq(404)
+      it 'should return 403' do
+        expect(response.status).to eq(403)
       end
 
       it 'should not update the comment' do
         expect(Comment.first.deleted).to be_false
+      end
+    end
+
+    context 'as a moderator' do
+      let(:moderator) { FactoryGirl.create :moderator }
+      before do
+        sign_in moderator
+        delete :destroy, id: comment.id
+      end
+
+      it 'should set the deleted flag on the comment' do
+        expect(Comment.first.deleted).to eq(true)
       end
     end
   end

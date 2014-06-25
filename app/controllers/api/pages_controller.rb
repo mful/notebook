@@ -1,5 +1,6 @@
 class Api::PagesController < ApiController
   before_filter :find_page, only: [:show, :update]
+  before_filter :authenticate!, only: [:update, :create]
 
   def show
     render json: { page: @page }, status: 200
@@ -17,6 +18,10 @@ class Api::PagesController < ApiController
   end
 
   private
+
+  def authenticate!
+    raise Annotate::NotFoundError unless can? :manage, Page
+  end
 
   def page_params
     params.require(:page).permit(:url)

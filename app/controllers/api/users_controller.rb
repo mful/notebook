@@ -22,7 +22,8 @@ class Api::UsersController < ApiController
   end
 
   def show
-    render json: @user, status: 200
+    user_attrs = { id: @user.id, email: @user.email }
+    render json: { user: user_attrs }, status: 200
   end
 
   def reset_password
@@ -42,7 +43,6 @@ class Api::UsersController < ApiController
 
   def find_user
     @user = User.find params[:id]
-    raise ::Annotate::NotFoundError unless @user
   end
 
   def authenticate!

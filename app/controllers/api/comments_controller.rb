@@ -1,6 +1,5 @@
 class Api::CommentsController < ApiController
   before_filter :find_comment, only: [:show, :update, :destroy] 
-  before_filter :authenticate!, only: [:update, :destroy]
 
   def show
     render json: { comment: @comment }, status: 200
@@ -14,12 +13,14 @@ class Api::CommentsController < ApiController
   end
 
   def update
+    raise Annotate::Unauthorized.new unless can? :edit, @comment
     redirect_or_err(@comment, :api_comment_path, 400) do
       @comment.update_attributes comment_params
     end
   end
 
   def destroy
+    raise Annotate::Unauthorized.new unless can? :delete, @comment
     @comment.update_attributes deleted: true
     render json: { acknowledged: true }, status: 200
   end
@@ -32,9 +33,5 @@ class Api::CommentsController < ApiController
 
   def find_comment
     @comment = Comment.find(params[:id])
-  end
-
-  def authenticate!
-    raise Annotate::NotFoundError.new unless signed_in? && @comment.user_id == current_user.id
   end
 end

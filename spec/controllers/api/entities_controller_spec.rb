@@ -1,27 +1,46 @@
 require 'spec_helper'
 
 describe Api::EntitiesController do 
+  include SessionsHelper
 
   describe '#create' do
-    context 'with valid data' do
-      let(:entity) { FactoryGirl.attributes_for :entity }
-      before { post :create, entity: entity }
+    let(:entity) { FactoryGirl.attributes_for :entity }
 
-      it 'should create a entity' do
-        expect(Entity.count).to eq(1)
+    context 'as an admin' do
+      let(:admin) { FactoryGirl.create :admin }
+      before { sign_in admin }
+
+      context 'with valid data' do
+        before { post :create, entity: entity }
+
+        it 'should create a entity' do
+          expect(Entity.count).to eq(1)
+        end
+
+        it 'should return the new entity' do
+          expect(response).to redirect_to(api_entity_path(Entity.first))
+        end
       end
 
-      it 'should return the new entity' do
-        expect(response).to redirect_to(api_entity_path(Entity.first))
+      context 'with invalid data' do
+        let(:entity) { { base_domain: 'asdfasdfas' } }
+        before { post :create, entity: entity }
+
+        it 'should return 400' do
+          expect(response.status).to eq(400)
+        end
       end
     end
 
-    context 'with invalid data' do
-      let(:entity) { { base_domain: 'asdfasdfas' } }
-      before { post :create, entity: entity }
+    context 'as a regular user' do
+      let(:user) { FactoryGirl.create :user }
+      before do
+        sign_in user
+        post :create, entity: entity
+      end
 
-      it 'should return 400' do
-        expect(response.status).to eq(400)
+      it 'should return 404' do
+        expect(response.status).to eq(404)
       end
     end
   end
@@ -48,30 +67,49 @@ describe Api::EntitiesController do
   describe '#update' do
     let!(:entity) { FactoryGirl.create :entity }
 
-    context 'with valid data' do
-      let(:url) { 'http://durmstrang.com/potions/recipes?polyjuice' }
-      before { put :update, id: entity.id, entity: entity.attributes.merge(base_domain: url) }
+    context 'as an admin' do
+      let(:admin) { FactoryGirl.create :admin }
+      before { sign_in admin }
 
-      it 'should update the entity' do
-        entity.reload
-        expect(entity.base_domain).to eq('durmstrang.com')
+      context 'with valid data' do
+        let(:url) { 'http://durmstrang.com/potions/recipes?polyjuice' }
+        before { put :update, id: entity.id, entity: entity.attributes.merge(base_domain: url) }
+
+        it 'should update the entity' do
+          entity.reload
+          expect(entity.base_domain).to eq('durmstrang.com')
+        end
+      end
+
+      context 'with invalid data' do
+        let(:url) { 'asdfasdf' }
+        before do
+          put :update, id: entity.id, entity: entity.attributes.merge(base_domain: url)
+        end
+
+        it 'should return errors' do
+          expect(JSON.parse(response.body)['errors'].present?).to be_true
+        end
+
+        it 'should return 400' do
+          entity.reload
+          expect(response.status).to eq(400)
+        end
       end
     end
 
-    context 'with invalid data' do
-      let(:url) { 'asdfasdf' }
+    context 'as a regular user' do
+      let(:user) { FactoryGirl.create :user }
+      let(:url) { 'http://durmstrang.com/potions/recipes?polyjuice' }
       before do
+        sign_in user
         put :update, id: entity.id, entity: entity.attributes.merge(base_domain: url)
       end
 
-      it 'should return errors' do
-        expect(JSON.parse(response.body)['errors'].present?).to be_true
-      end
-
-      it 'should return 400' do
-        entity.reload
-        expect(response.status).to eq(400)
+      it 'should return 404' do
+        expect(response.status).to eq(404)
       end
     end
   end
+
 end
