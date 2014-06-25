@@ -5,15 +5,14 @@ require './app/services/reset_password'
 describe ResetPassword do
   before do 
     stub_const 'User', Object.new
-    stub_const 'PasswordResetMailer', Object.new
+    stub_const 'ResetPasswordMailer', Object.new
   end
   
   describe '#reset!' do
     let!(:user) do
-      attrs = FactoryGirl.attributes_for :user
       OpenStruct.new(
-        email: attrs[:email],
-        password: attrs[:password]
+        email: 'hagrid@hogwarts.com',
+        password: 'blastendedscrewt'
       )
     end
     let(:resetter) { ResetPassword.new(user.email) }
@@ -31,7 +30,7 @@ describe ResetPassword do
       before do 
         User.stub(:find_by_email).and_return(user)
         user.stub(:update_attributes).and_return(true)
-        PasswordResetMailer.stub(:password_reset).and_return(true)
+        ResetPasswordMailer.stub(:password_reset).and_return(true)
       end
 
       it 'should return true' do
@@ -39,7 +38,7 @@ describe ResetPassword do
       end
 
       context 'when the email fails to send' do
-        before { PasswordResetMailer.stub(:password_reset).and_return(false) }
+        before { ResetPasswordMailer.stub(:password_reset).and_return(false) }
 
         it 'should return false' do
           expect(resetter.reset!).to be_false 

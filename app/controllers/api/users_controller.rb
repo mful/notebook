@@ -44,4 +44,10 @@ class Api::UsersController < ApiController
     @user = User.find params[:id]
     raise ::Annotate::NotFoundError unless @user
   end
+
+  def authenticate!
+    unless signed_in? && current_user.id == params[:id].to_i
+      raise Annotate::NotFoundError.new
+    end
+  end
 end

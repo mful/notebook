@@ -20,16 +20,8 @@ class ApplicationController < ActionController::Base
     render "#{Rails.root}/public/404.html", status: 404
   end
 
-  # TODO: redirect to login page
+  # TODO: redirect to login page if no current user
   def rescue_unauthorized
     render nothing: true, status: 403
   end
-
-  # TODO: rethink this
-  def authenticate!
-    unless signed_in? && current_user.id == params[:id].to_i
-      raise Annotate::NotFoundError
-    end
-  end
-
 end

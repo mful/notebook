@@ -23,6 +23,6 @@ class ResetPassword
   end
 
   def send_reset_email
-    PasswordResetMailer.password_reset @user.email, @password
+    ResetPasswordMailer.password_reset @user.email, @password
   end
 end

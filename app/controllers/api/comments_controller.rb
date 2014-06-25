@@ -1,7 +1,5 @@
 class Api::CommentsController < ApiController
-  before_filter :find_comment, only: [:show, :update, :destroy]
-  # TODO: should we be redirecting to login/register if !current_user?
-  # TODO: Should server or client make that decision? 
+  before_filter :find_comment, only: [:show, :update, :destroy] 
   before_filter :authenticate!, only: [:update, :destroy]
 
   def show

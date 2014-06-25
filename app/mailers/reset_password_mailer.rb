@@ -1,4 +1,4 @@
-class ResetPasswordMailer
+class ResetPasswordMailer < MandrillMailer::TemplateMailer
   default from: 'hello@intelligent.ly'
 
   def password_reset(email, password)
@@ -6,14 +6,14 @@ class ResetPasswordMailer
       template: 'Password Reset',
       subject: 'Intelligent.ly: Reset Password',
       to: { email: email },
-      vars: { 'PASSWORD' : password }
+      vars: { 'PASSWORD' => password },
       inline_css: true,
     )
   end
 
-  test_setup_for :welcome do |mailer, options|
+  test_setup_for :password_reset do |mailer, options|
     email = MandrillMailer::Mock.new({
-      options[:email],
+      email: options[:email]
     })
     password = SecureRandom.urlsafe_base64(10)
     mailer.welcome(email, password).deliver

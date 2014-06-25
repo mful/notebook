@@ -45,6 +45,6 @@ class AuthUser
   end
 
   def generate_password
-    SecureRandom.base64(20) + '!D9' # to pass validations
+    SecureRandom.base64(20)
   end
 end

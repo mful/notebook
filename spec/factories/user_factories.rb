@@ -6,7 +6,7 @@ FactoryGirl.define do
   end
 
   factory :google_user, class: :user do
-    pass = SecureRandom.urlsafe_base64 + '!D9' # to pass validations
+    pass = SecureRandom.urlsafe_base64
     email 'hagrid@gmail.com'
     password pass
     password_confirmation pass
