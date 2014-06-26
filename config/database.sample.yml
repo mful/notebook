@@ -1,18 +1,18 @@
 development:
   adapter: postgresql
-  database: agile_life_dev
+  database: annotate_dev
   pool: 5
   timeout: 5000
 
 test:
   adapter: postgresql
-  database: agile_life_test
+  database: annotate_test
   pool: 5
   timeout: 5000
 
 production:
   adapter: postgresql
-  database: agile_life
+  database: annotate
   user: <INSERT USER HERE>
   password: <INSERT PASSWORD HERE>
   pool: 5

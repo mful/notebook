@@ -3,8 +3,11 @@ class Comment < ActiveRecord::Base
   DEFAULT_RATING = 0.05
 
   belongs_to :user
+  belongs_to :annotation
   has_many :pages
   has_many :votes
+  has_many :comment_replies
+  has_many :replies, through: :comment_replies
 
   before_validation :sanitize_content
   before_create :set_rating
