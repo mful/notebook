@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140626012219) do
+ActiveRecord::Schema.define(version: 20140626015851) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,13 @@ ActiveRecord::Schema.define(version: 20140626012219) do
 
   add_index "annotations", ["page_id"], name: "index_annotations_on_page_id", using: :btree
 
+  create_table "comment_flags", force: true do |t|
+    t.integer "comment_id"
+    t.integer "user_id"
+  end
+
+  add_index "comment_flags", ["comment_id", "user_id"], name: "index_comment_flags_on_comment_id_and_user_id", unique: true, using: :btree
+
   create_table "comment_replies", id: false, force: true do |t|
     t.integer  "comment_id"
     t.integer  "reply_id"
@@ -32,12 +39,16 @@ ActiveRecord::Schema.define(version: 20140626012219) do
 
   add_index "comment_replies", ["comment_id", "reply_id"], name: "index_comment_replies_on_comment_id_and_reply_id", unique: true, using: :btree
 
+  create_table "comment_statuses", force: true do |t|
+    t.string "name"
+  end
+
   create_table "comments", force: true do |t|
     t.text    "content"
     t.integer "user_id"
-    t.boolean "deleted",       default: false
+    t.integer "comment_status_id"
     t.integer "annotation_id"
-    t.float   "rating",        default: 0.0
+    t.float   "rating",            default: 0.0
   end
 
   add_index "comments", ["annotation_id"], name: "index_comments_on_annotation_id", using: :btree

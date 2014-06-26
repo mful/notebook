@@ -110,6 +110,7 @@ describe Api::CommentsController do
 
   describe '#destroy' do
     let!(:comment) { FactoryGirl.create :comment, user: user }
+    let!(:deleted_status) { CommentStatus.create(name: 'deleted') }
     let!(:user) { FactoryGirl.create :user } 
 
     context 'when the proper user is logged in' do
@@ -119,7 +120,7 @@ describe Api::CommentsController do
       end
 
       it 'should set the deleted flag on the comment' do
-        expect(Comment.first.deleted).to eq(true)
+        expect(Comment.first.deleted?).to eq(true)
       end
     end
 
@@ -131,7 +132,7 @@ describe Api::CommentsController do
       end
 
       it 'should not update the comment' do
-        expect(Comment.first.deleted).to be_false
+        expect(Comment.first.deleted?).to be_false
       end
     end
 
@@ -143,7 +144,7 @@ describe Api::CommentsController do
       end
 
       it 'should set the deleted flag on the comment' do
-        expect(Comment.first.deleted).to eq(true)
+        expect(Comment.first.deleted?).to eq(true)
       end
     end
   end
@@ -166,4 +167,43 @@ describe Api::CommentsController do
       end
     end
   end
+
+  describe '#flag' do 
+    let(:comment) { FactoryGirl.create :comment }
+
+    context 'when not signed in' do
+      before { post :flag, id: comment.id }
+
+      it 'should return 403' do
+        expect(response.status).to eq(403)
+      end
+    end
+
+    context 'when signed in' do 
+      let(:user) { FactoryGirl.create :user, email: 'hagrid@eowls.com' }
+      before { sign_in user }
+
+      context 'as a user who has already flagged the comment' do
+        before do 
+          comment.comment_flags << CommentFlag.new(user: user)
+          comment.save
+          post :flag, id: comment.id
+        end
+
+        it 'should return 400' do
+          expect(response.status).to eq(400)
+        end
+      end
+
+      context 'as a user who has NOT already flagged the comment' do 
+        before { post :flag, id: comment.id }
+
+        it 'should add a flag to the comment' do
+          comment.reload
+          expect(comment.comment_flags.count).to eq(1)
+        end
+      end
+    end
+  end
+
 end

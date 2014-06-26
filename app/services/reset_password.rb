@@ -6,7 +6,7 @@ class ResetPassword
   end
   
   def initialize(email)
-    @user = User.find_by_email(email.to_s)
+    @user = User.find_by_email(email.to_s.downcase)
   end
 
   def reset!

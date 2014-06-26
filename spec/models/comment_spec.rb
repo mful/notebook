@@ -45,6 +45,7 @@ describe Comment do
 
   describe '#destroy' do
     let!(:comment) { FactoryGirl.create :comment }
+    let!(:deleted_status) { CommentStatus.create(name: 'deleted') }
     before { comment.destroy }
 
     it 'should not delete the comment' do
@@ -53,7 +54,7 @@ describe Comment do
 
     it 'should set the deleted column to true' do
       comment.reload
-      expect(comment.deleted).to be_true
+      expect(comment.deleted?).to be_true
     end
   end
 

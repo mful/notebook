@@ -9,9 +9,9 @@ class Ability
     elsif user.has_role?('moderator')
       can :delete, Comment
       can :edit, Comment
-    else
-      can :delete, Comment, user_id: user.id
-      can :edit, Comment, user_id: user.id
     end
+
+    can :delete, Comment, user_id: user.id
+    can :edit, Comment, user_id: user.id
   end
 end

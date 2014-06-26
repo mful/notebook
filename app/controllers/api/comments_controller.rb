@@ -1,5 +1,5 @@
 class Api::CommentsController < ApiController
-  before_filter :find_comment, only: [:show, :update, :destroy] 
+  before_filter :find_comment, only: [:show, :update, :destroy, :flag]
 
   def show
     render json: { comment: @comment }, status: 200
@@ -21,8 +21,17 @@ class Api::CommentsController < ApiController
 
   def destroy
     raise Annotate::Unauthorized.new unless can? :delete, @comment
-    @comment.update_attributes deleted: true
+    @comment.destroy
     render json: { acknowledged: true }, status: 200
+  end
+
+  def flag
+    if signed_in?
+      @comment.comment_flags << CommentFlag.new(user: current_user)
+      redirect_or_err(@comment, :api_comment_path, 400) { @comment.save }
+    else
+      raise Annotate::Unauthorized.new
+    end
   end
 
   private
