@@ -6,12 +6,12 @@ class Api::AnnotationsController < ApiController
   end
 
   def create
-    raise Annotate::Unauthorized.new unless signed_in?
+    # TODO: uncomment this out once we have user-auth figured out
+    # raise Annotate::Unauthorized.new unless signed_in?
     @annotation = Annotation.new(annotation_params)
 
     redirect_or_err(@annotation, :api_annotation_path, 400) do 
-      # should clients be allowed to explicity set url?
-      CreateAnnotation.create @annotation, request.url
+      CreateAnnotation.create @annotation, params[:url] || request.url
     end
   end
 
