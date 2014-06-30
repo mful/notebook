@@ -5,9 +5,11 @@
 
 window.annotate or= {}
 annotate.baseDomain = 'http://localhost:3000'
+annotate.containerId = 'annotate-wrapper'
 annotate.models = {}
 
 annotate.init = ->
+  annotate.container = annotate.appendContainer()
   annotate.vent = ev(document.createElement('div'))
   annotate.highlighter = new annotate.Highlighter()
   annotate.sidebar = new annotate.Sidebar()
@@ -15,6 +17,11 @@ annotate.init = ->
   annotate.delegateEvents()
 
   this
+
+annotate.appendContainer = ->
+  container = document.createElement('div')
+  container.id = annotate.containerId
+  document.body.appendChild(container)
 
 annotate.delegateEvents = ->
   annotate.vent.on 'annotation:new', annotate.newAnnotation
@@ -24,5 +31,11 @@ annotate.isBlank = (string) ->
 
 annotate.newAnnotation = ->
   annotate.activeAnnotation.save (err, res) =>
-    url = annotate.baseDomain + '/annotation/' + res.annotation.id
-    annotate.sidebar.render(url)
+    url = annotate.baseDomain + '/annotations/' + res.annotation.id
+    annotate.sidebar.navigate(url)
+
+annotate.debounce = (func, timeout) ->
+  timer = null
+  ->
+    clearTimeout(timer) if timer
+    timer = setTimeout(func, timeout)

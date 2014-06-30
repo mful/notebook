@@ -1,0 +1,27 @@
+.comment {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+
+  .username {
+    margin: 0 0 10px 0;
+  }
+}
+
+.comment-actions {
+  display: inline-block;
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+
+  li {
+    float: left;
+    color: #666;
+    margin-right: 10px;
+
+    &:hover {
+      color: #333;
+      cursor: pointer;
+    }
+  }
+}

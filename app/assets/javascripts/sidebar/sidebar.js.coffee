@@ -1,7 +1,7 @@
 class annotate.Sidebar
 
   constructor: ->
-    console.log 'Sidebar'
+    @sidebarView = new annotate.Sidebar.SidebarView()
 
-  render: (url) ->
-    console.log 'url'
+  navigate: (url) ->
+    @sidebarView.navigate(url)

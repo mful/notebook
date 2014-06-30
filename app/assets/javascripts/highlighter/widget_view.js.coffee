@@ -14,8 +14,8 @@ class annotate.Highlighter.WidgetView
 
   render: (model) =>
     @model = model
-    document.body.appendChild(@element) unless document.getElementById(@id) 
-    @show() 
+    annotate.container.appendChild(@element) unless document.getElementById(@id)
+    @show()
 
     this
 
