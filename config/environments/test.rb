@@ -33,4 +33,9 @@ Annotate::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  # Allow sidebar to load pages
+  config.action_dispatch.default_headers = {
+    'X-Frame-Options' => 'ALLOWALL'
+  }
 end
