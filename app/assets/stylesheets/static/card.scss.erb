@@ -1,0 +1,229 @@
+$red: #e6484e;
+$burgundy: #8a3722;
+$coral: #d65535;
+$blue: #518aac;
+$light-blue: #589ccf;
+$grey: #999;
+$light-grey: #e2e2e2;
+$dark-grey: #555555;
+$charcoal: #343434;
+$background2: rgb(250, 248, 247);
+$background: rgb(255, 251, 252);
+$mint: #3c948b;
+$mint2: #94d8c8;
+$forest2: #27615B;
+$forest: #19827D;
+$teal2: #5BE0D3;
+$teal: #3CCFC8;
+
+// mixins
+
+@mixin flex-display() {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin flex-wrap($wrap) {
+  -ms-flex-wrap: $wrap;
+  -webkit-flex-wrap: $wrap;
+  flex-wrap: $wrap;
+}
+
+@mixin flex($vals) {
+  -ms-flex: $vals;
+  -webkit-flex: $vals;
+  flex: $vals;
+}
+
+#card {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 450px;
+  min-height: 215px;
+  font-family: 'Vollkorn', serif;
+  box-shadow: 0 0 5px $charcoal;
+  background: $background;
+  margin: 10px 10px 0 0;
+}
+
+.comment-wrapper {
+  padding: 20px 5px;
+
+  p { margin-bottom: 0; }
+
+  .vote {
+    display: inline-block;
+    border-radius: 1.333333rem;
+    border: solid 2px #3c948b;
+    height: 1.333333rem;
+    width: 1.333333rem;
+    position: relative;
+    margin-bottom: -.333333rem;
+
+    i {
+      font-size: 0.74rem;
+      line-height: 0.5rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -.385rem;
+      margin-left: -.375rem;
+    }
+  }
+
+  .comment {
+    color: $dark-grey;
+    margin: 15px 0 20px 0;
+  }
+
+  .comment-text {
+    padding-left: 35px;
+    padding-right: 20px;
+  }
+
+  .button {
+    background: $teal;
+
+    &:hover {
+      background: $forest;
+    }
+  }
+
+  &#card {
+    .button {
+      margin-left: 0.5625rem;
+      width: 3.699rem;
+    }
+
+    .username {
+      font-size: 1.1em;
+    }
+  }
+
+  .expand-top {
+    margin-left: 5px;
+    margin-top: 2px;
+  }
+
+  .icon-fill {
+    font-size: 1.3333rem;
+    margin-top: 4px;
+  }
+
+  .clickable.flag {
+    display: inline-block;
+    margin-left: 6px;
+    color: $light-grey;
+    font-size: 0.75rem;
+
+    &:hover {
+      color: $grey;
+    }
+  }
+}
+
+.username {
+  display: inline-block;
+  font-size: .8rem;
+  line-height: 1rem;
+  font-family: 'Helvetica Nueue', sans-serif;
+  color: $grey;
+}
+
+.votes {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.expand-down {
+  margin-top: -20px;
+  margin-left: -4px;  
+}
+
+// utility classes
+
+body {
+  .button {
+    background: $teal;
+
+    &:hover {
+      background: $forest;
+    }
+
+    &.mini {
+      padding: 0.45rem 0.6rem;
+      font-size: 0.5625rem;
+    }
+  }
+
+  .right {
+    float: right;
+    text-align: right;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  .clickable {
+    cursor: pointer;
+    color: $teal;
+    line-height: 1rem;
+    font-family: 'Helvetica Nueue', sans-serif;
+    transition: 300ms;
+
+    &.inline {
+      font-family: 'Vollkorn', serif;
+      color: $forest;
+
+      &:hover {
+        color: $teal;
+      }
+    }
+
+    &:hover {
+      color: $forest;
+    }
+  }
+
+  .alt-clickable {
+    color: $light-grey;
+
+    &:hover {
+      color: $grey;
+    }
+  }
+
+  .arrow-right {
+    width: 0; 
+    height: 0; 
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid $teal;
+    transition: 300ms;
+    margin-top: 11px;
+
+    &:hover {
+      border-left-color: $forest;
+    }
+  }
+
+  // Unfortunately IE9 does not support flex, making it
+  // unusable due to SDK usage
+
+  .flex-row {
+    @include flex-display();
+    @include flex-wrap(wrap);
+    padding: 0 15px;
+  }
+
+  .flex-1 {
+    @include flex(1 1 16.66666666%);
+  }
+
+  .flex-2 {
+    @include flex(2 2 33.33333333%);
+  }
+}
