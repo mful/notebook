@@ -1,6 +1,9 @@
 Annotate::Application.routes.draw do
   mount Peek::Railtie => '/peek'
-  root to: 'pages#index'
+  root to: 'statics#index'
+
+  get 'card' => 'statics#card'
+  get 'sidebar' => 'statics#sidebar'
 
   namespace :api do 
     resources :users, only: [:new, :create, :show, :update]

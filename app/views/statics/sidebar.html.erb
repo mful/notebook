@@ -1,0 +1,18 @@
+<div id="sidebar">
+
+  <section id="comment-form">
+    <textarea placeholder="add comment or type @ to invite others"></textarea>
+
+    <button class="post-comment button">Post</button>  
+  </section>
+
+  <section id="comment-box">
+    <%= render 'card' %>
+
+    <div class="reply">
+      <%= render 'card' %>
+    </div>
+
+    <%= render 'card' %>
+  </section>
+</div>
