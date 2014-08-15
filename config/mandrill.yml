@@ -1,0 +1,10 @@
+default: &default
+  :username: ENV['MANDRILL_USERNAME']
+  :password: ENV['MANDRILL_PASS']
+  :api_key: ENV['MANDRILL_KEY']
+
+development: *default
+
+test: *default
+
+production: *default

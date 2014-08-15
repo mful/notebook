@@ -2,9 +2,9 @@
 /.bundle
 /log/*.log
 /tmp
-/config/database.yml
-/config/mandrill.yml
-/config/omniauth.yml
-/config/secret_token.yml
+/config/database.secret.yml
+/config/mandrill.secret.yml
+/config/omniauth.secret.yml
+/config/secret_token.secret.yml
 *\/\.
 *\.DS*

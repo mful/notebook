@@ -1,0 +1,19 @@
+development:
+  adapter: postgresql
+  database: annotate_dev
+  pool: 5
+  timeout: 5000
+
+test:
+  adapter: postgresql
+  database: annotate_test
+  pool: 5
+  timeout: 5000
+
+production:
+  adapter: postgresql
+  database: notebook
+  user: ENV['DB_USER']
+  password: ENV['DB_PASS']
+  pool: 5
+  timeout: 5000
