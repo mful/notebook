@@ -1,0 +1,17 @@
+$grey: #999;
+
+#thanks-container {
+  text-align: center;
+
+  h1 { color: $grey; }
+  h2 { margin-top: 40px; }
+
+  .share-icons {
+    font-size: 5rem;
+    margin-top: 30px;
+    
+    .share {
+      padding: 20px;
+    }
+  }
+}
