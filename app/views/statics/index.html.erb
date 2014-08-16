@@ -1,20 +1,20 @@
 <header>
   <div class="row">
-    <div class="small-3 large-4 column">
+    <div class="small-12 column">
       <h2 id="logo">scribble</h2>
+
+      <nav class="">
+        <ul>
+          <li>
+            <a href="#signup" onClick="document.getElementById('signup-input').focus()">join beta</a>
+          </li>
+
+          <li>
+            <a href="#how-it-works">how it works</a>
+          </li>
+        </ul>
+      </nav>
     </div>
-
-    <nav class="small-9 large-8 column">
-      <ul>
-        <li>
-          <a href="#signup" onClick="document.getElementById('signup-input').focus()">join beta</a>
-        </li>
-
-        <li>
-          <a href="#how-it-works">how it works</a>
-        </li>
-      </ul>
-    </nav>
   </div>
 </header>
 
@@ -48,7 +48,7 @@
           </div>
 
           <div class="small-12 medium-5 large-12 column">
-            <button class="button beta-button">Let Me Know</button>
+            <button class="button beta-button" id="top-signup">Let Me Know</button>
           </div>
         </div>
       </form>
@@ -160,3 +160,9 @@
     </ul>
   </div>
 </footer>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function(){
+    scribble.statics.initLanding()
+  });
+</script>
