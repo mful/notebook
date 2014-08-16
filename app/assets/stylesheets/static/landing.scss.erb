@@ -62,34 +62,29 @@ nav {
 
 // Above the fold
 
-.cta-header {
-    font-family: $primary_sans;
-    margin-bottom: 20px;
-    line-height: 2.2rem;
+.beta-form {
+  margin: 30px 0 15px 0;
+  
+  input {
+    height: 3.2625rem;
+  }
+} 
+
+.orange-panel {
+  background: $orange;
+  border: none;
+
+  h3.cta-header {
+    color: #fff;
+    font-weight: 600;
+    font-family: $primary_serif;
+    line-height: 1.4;
   }
 
-  .beta-form {
-    margin: 30px 0 15px 0;
-    
-    input {
-      height: 3.2625rem;
-    }
-  } 
-
-  .orange-panel {
-    background: $orange;
-    border: none;
-
-    h3.cta-header {
-      color: #fff;
-      font-weight: 600;
-      font-family: $primary_serif;
-    }
-
-    p {
-      color: #fff;
-    }
+  p {
+    color: #fff;
   }
+}
 
 #title-row {
   margin-bottom: 50px;
@@ -103,7 +98,7 @@ nav {
   margin-bottom: 40px;
 }
 
-#hero-image { margin-bottom: 50px; } 
+#hero-image { margin-bottom: 60px; } 
 
 .quote-divider {
   display: none;
@@ -165,6 +160,7 @@ nav {
     }
 
     &:before {
+      color: #fff;
       border-radius: 10rem;
       background: #3ccfc8;
       width: 2rem;
@@ -178,10 +174,9 @@ nav {
     }
   }
 
-  li {
+  li.row {
     margin-bottom: 50px;
     border-bottom: solid 1px $light-grey;
-    padding: 60px inherit;
 
     &:first-child {
       padding-top: 20px;
@@ -193,6 +188,7 @@ nav {
 
     img {
       box-shadow: 0 0 3px $light-grey;
+      margin-bottom: 60px;
     }
   }
 }

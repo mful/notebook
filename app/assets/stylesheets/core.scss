@@ -1,1 +1,20 @@
+$light-grey: #e2e2e2;
+$mint: #3c948b;
+$red: #e6484e;
+
 body { overflow-x: hidden; }
+
+.alert {
+  padding: 15px;
+  margin: 20px inherit;
+  background: $light-grey;
+  color: white;
+
+  &.alert-error {
+    background: $red;
+  }
+
+  &.alert-success {
+    background: $mint;
+  }
+}

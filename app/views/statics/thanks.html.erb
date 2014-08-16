@@ -19,22 +19,23 @@
 
   <div class="row share-icons">
     <div class="small-12 column">
-      <a href="#">
+      <a href="mailto:">
         <i class="ion-android-mail"></i>
       </a>
 
-      <a href="#">
+      <a href="" id="fb-share">
         <i class="ion-social-facebook"></i>
       </a>
 
-      <a href="#">
+      <a href="https://twitter.com/share?url=http://scribble.ly&text=Add%20comments%20inline%20and%20embed%20context%20into%20any%20web%20page%20with%20Scribble:&via=scribblely&source=webclient" id="twitter-share" target="_blank">
         <i class="ion-social-twitter"></i>
       </a>
-
-      <div class="share">
-        <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://scribble.ly" data-via="scribblely" data-size="large" data-count="none">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-      </div>
     </div>
   </div>
 </section>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function(){
+    scribble.statics.initThanks()
+  });
+</script>

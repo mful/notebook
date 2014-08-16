@@ -2,6 +2,9 @@ Annotate::Application.routes.draw do
   mount Peek::Railtie => '/peek'
   root to: 'statics#index'
 
+  post '/hello/signup' => 'statics#signup'
+  get '/thanks' => 'statics#thanks'
+
   get 'card' => 'statics#card'
   get 'sidebar' => 'statics#sidebar'
 
