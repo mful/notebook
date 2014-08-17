@@ -63,6 +63,8 @@ nav {
 
 // Above the fold
 
+#hero-wrapper { max-width: 100%; }
+
 .beta-form {
   margin: 30px 0 15px 0;
   
@@ -128,69 +130,22 @@ nav {
   padding: 50px 0;
 }
 
-.benefit-list {
-  color: $dark-grey;
-  counter-reset:li;
-  margin-left: 0;
+#benefit-list {
+  margin-bottom: 20px;
+}
 
-  p, img {
-    // margin-left: 4rem;
+.benefit {
+  margin-bottom: 30px;
+
+  .how-header {
+    margin-bottom: 0;
+    font-family: $primary_sans, sans-serif;
+    color: $dark-grey;
   }
 
-  .caption {
-    margin-left: 1rem;
-  }
-
-  > li {
-    list-style: none;
-
-    &:first-child:before {
-      content: '1'
-    }
-
-    &:nth-child(2):before {
-      content: '2'
-    }
-
-    &:nth-child(3):before {
-      content: '3'
-    }
-
-    &:nth-child(4):before {
-      content: '4'
-    }
-
-    &:before {
-      color: #fff;
-      border-radius: 10rem;
-      background: #3ccfc8;
-      width: 2rem;
-      height: 2rem;
-      line-height: 2rem;
-      display: inline-block;
-      text-align: center;
-      vertical-align: middle;
-      float: left;
-      background: $teal;
-    }
-  }
-
-  li.row {
-    margin-bottom: 50px;
-    border-bottom: solid 1px $light-grey;
-
-    &:first-child {
-      padding-top: 20px;
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    img {
-      box-shadow: 0 0 3px $light-grey;
-      margin-bottom: 60px;
-    }
+  i {
+    font-size: 2.2rem;
+    vertical-align: middle;
   }
 }
 
@@ -238,15 +193,14 @@ footer {
   font-style: italic;
 }
 
-// @media only screen and (min-width: 40.063em) {
-//   .quote-divider { display: none; }
-//   #above-fold { margin-bottom: 0; }
-//   #headline { font-size: 3.23rem; }
-// } 
+@media only screen and (min-width: 40.063em) {
+  .quote-divider { display: none; }
+  #above-fold { margin-bottom: 0; }
+}
 
-// @media only screen and (min-width: 64.063em) {
-//   #headline { font-size: 3.23rem; }
-//   #hero-image { margin-bottom: 0; }
-//   .quote-divider { display: block; }
-//   #above-fold { margin-bottom: 80px; }
-// }
+@media only screen and (min-width: 64.063em) {
+  #headline { font-size: 3.23rem; }
+  #hero-image { margin-bottom: 0; }
+  .quote-divider { display: block; }
+  #above-fold { margin-bottom: 80px; }
+}

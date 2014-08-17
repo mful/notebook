@@ -34,7 +34,9 @@
 
   <div class="row">
     <div class="large-8 medium-12 small-12 column">
-      <!-- <img src="<%= asset_path('landing_page/hero_shot.png') %>" id="hero-image"> -->
+      <div class="hero-wrapper">
+        <img src="<%= asset_path('landing_page/hero_shot_small.png') %>" id="hero-image">
+      </div>
     </div>
 
 
@@ -70,64 +72,58 @@
 <section id="how-it-works">
   <div class="row">
     <div class="small-12 column">
-      <h2 class="section-header">How it works</h2>
+      <h2 class="section-header">How It Works</h2>
+    </div>
+  </div>
+
+  <div id="benefit-list">
+    <div class="benefit-row row">
+      <div class="benefit large-6 medium-6 small-12 column"> 
+        <h4 class="how-header">
+          <i class="ion-edit"></i> 
+          Add Context Inline
+        </h4>
+        <p class="caption">
+          Highlight text, images or video to add info and sources. Just like writing in the margin of a book, except now others can comment, expand, and answer questions.
+        </p>
+      </div>
+
+      <div class="benefit large-6 medium-6 small-12 column">
+        <h4 class="how-header">
+          <i class="ion-document"></i>
+          Know More
+        </h4>
+        <p class="caption">
+          See explanations, counterpoints, and sources by clicking on an existing scribble.
+        </p>
+      </div>
+    </div>
+
+    <div class="benefit-row row">
+      <div class="benefit large-6 medium-6 small-12 column">
+        <h4 class="how-header">
+          <i class="ion-chatboxes"></i>
+          Quality Discourse
+        </h4>
+        <p class="caption">
+          Read and participate in intelligent, in-depth discussion of claims by expanding scribbles.
+        </p>
+      </div>
+
+      <div class="benefit large-6 medium-6 small-12 column">
+        <h4 class="how-header">
+          <i class="ion-ios7-people"></i>
+          Vetted by You
+        </h4>
+        <p class="caption">
+          Simple voting by the scribble community allows content to curate itself, ensuring the best quality rises to the top.
+        </p>
+      </div>
     </div>
   </div>
 
   <div class="row">
-    <ol class="benefit-list small-12 column">
-      <li class="benefit row">
-        <div class="large-5 small-11 column">
-          <p class="caption">
-            Add context to any page by highlighting and adding info and sources. Just like writing in the margin of a book, except now others can comment, expand, and answer questions.
-          </p>
-        </div>
-
-        <div class="large-6 small-11 column">
-          <img src="<%= asset_path('landing_page/highlight.png') %>">
-        </div>
-      </li>
-
-      <li class="benefit row">
-        <div class="large-5 small-11 column">
-          <p class="caption">
-            See explanations, counterpoints, and sources by hovering over an existing scribble.
-          </p>
-        </div>
-
-        <div class="large-6 small-11 column">
-          <img src="<%= asset_path('landing_page/hover.jpg') %>">
-        </div>
-      </li>
-
-      <li class="benefit row">
-        <div class="large-5 small-11 column">
-          <p class="caption">
-            Read and participate in intelligent, in-depth discussion of claims by expanding scribbles.
-          </p>
-        </div>
-
-        <div class="large-6 small-11 column">
-          <img src="<%= asset_path('landing_page/sidebar_partial.jpg') %>">
-        </div>
-      </li>
-
-      <li class="benefit row">
-        <div class="large-5 small-11 column">
-          <p class="caption">
-            Vetted by you. Simple voting by the scribble community combined with a few other signals allow content to curate itself, ensuring only quality content rises to the top.
-          </p>
-        </div>
-
-        <div class="large-6 small-11 column">
-          <img src="<%= asset_path('landing_page/vetting.jpg') %>">
-        </div>
-      </li>
-    </ol>
-  </div>
-
-  <div class="row">
-    <div class="large-12 small-12 column panel orange-panel">
+    <div class="large-12 small-12 column panel">
       <h3 class="cta-header">Tell Me When Scribble Launches</h3>
 
       <form class="beta-form" method="post" action="/hello/signup">
@@ -137,7 +133,7 @@
           </div>
 
           <div class="small-12 medium-5 large-5 column">
-            <button class="button beta-button">Let Me Know</button>
+            <button class="button beta-button orange">Let Me Know</button>
           </div>
         </div>
       </form>
