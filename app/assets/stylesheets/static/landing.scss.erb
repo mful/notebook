@@ -55,6 +55,20 @@ nav {
   }
 }
 
+#big-nav { display: none; }
+#baby-nav {
+  display: none;
+  position: absolute;
+  right: 0px;
+  top: 2rem;
+}
+
+.hamburger {
+  float: right;
+  display: inline;
+  color: $grey;
+}
+
 #logo {
   font-weight: 400;
   display: inline;
@@ -97,7 +111,7 @@ nav {
 }
 
 #headline {
-  font-size: 2.3125rem;
+  font-size: 4rem;
 }
 
 .section-header {
@@ -199,6 +213,8 @@ footer {
 @media only screen and (min-width: 40.063em) {
   .quote-divider { display: none; }
   #above-fold { margin-bottom: 0; }
+  #big-nav { display: block; }
+  .hamburger { display: none; }
 }
 
 @media only screen and (min-width: 64.063em) {

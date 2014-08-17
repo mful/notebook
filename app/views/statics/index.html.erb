@@ -3,7 +3,11 @@
     <div class="small-12 column">
       <h2 id="logo">scribble</h2>
 
-      <nav class="">
+      <h2 class="hamburger" id="menu-burger">
+        <i class="ion-navicon-round"></i>
+      </h2>
+
+      <nav id="big-nav">
         <ul>
           <li>
             <a href="#signup" onClick="document.getElementById('signup-input').focus()">join beta</a>
@@ -16,6 +20,18 @@
       </nav>
     </div>
   </div>
+
+  <nav id="baby-nav">
+    <ul>
+      <li>
+        <a href="#signup" onClick="document.getElementById('signup-input').focus()">join beta</a>
+      </li>
+
+      <li>
+        <a href="#how-it-works">how it works</a>
+      </li>
+    </ul>
+  </nav>
 </header>
 
 <section id='above-fold'>
@@ -35,7 +51,7 @@
   <div class="row">
     <div class="large-8 medium-12 small-12 column">
       <div id="hero-wrapper">
-        <img src="<%= asset_path('landing_page/hero_shot_small.png') %>" id="hero-image" width="300">
+        <img src="<%= asset_path('landing_page/hero_shot_small.png') %>" id="hero-image">
       </div>
     </div>
 
