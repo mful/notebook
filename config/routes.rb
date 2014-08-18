@@ -4,6 +4,7 @@ Annotate::Application.routes.draw do
 
   post '/hello/signup' => 'statics#signup'
   get '/thanks' => 'statics#thanks'
+  get '/privacy' => 'statics#privacy'
 
   get 'card' => 'statics#card'
   get 'sidebar' => 'statics#sidebar'

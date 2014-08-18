@@ -25,6 +25,9 @@ class StaticsController < ApplicationController
   def sidebar
   end
 
+  def privacy
+  end
+
   private
 
   def user_params
