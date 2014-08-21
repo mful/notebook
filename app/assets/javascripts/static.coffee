@@ -1,5 +1,9 @@
+#= require_self
+#
 #= require events.min
 #= require xhr
 #
+#= require ./analytics/analytics
 #= require ./statics/statics
-#= require_tree ./helpers
+
+window.scribble = {}

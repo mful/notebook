@@ -2,9 +2,8 @@
 #
 #= require_tree ./views
 
-window.scribble = {}
+window.scribble or= {}
 scribble.statics = {}
-scribble.helpers = {}
 scribble.statics.views = {}
 
 scribble.statics.initThanks = ->

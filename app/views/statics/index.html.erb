@@ -1,3 +1,10 @@
+<%
+  open_graph(
+    title: 'Add Context Anywhere',
+    description: 'Highlight text, images or video to view or add info and sources on any web page. Just like writing in the margin of a book, but shared with everyone.'
+  )
+%>
+
 <header>
   <div class="row">
     <div class="small-12 column">
@@ -46,22 +53,6 @@
         <h3 class="subheader">
           <ul>
             <li>
-              Have you...<span class="callout">wanted to add more info to an article?</span>
-            </li>
-
-            <li>
-              Do you...<span class="callout">question if a piece tells the whole story?</span>
-            </li>
-
-            <li>
-              Have you...<span class="callout">wondered if a stat is accurate?</span>
-            </li>
-
-            <li>
-              Do you...<span class="callout">find logical gaps in posts?</span>
-            </li>
-
-            <li>
               Have you...<span class="callout">thought there was more to a story?</span>
             </li>
 
@@ -70,7 +61,19 @@
             </li>
 
             <li>
-              Do you...<span class="callout">care about accuracy in media?</span>
+              Have you...<span class="callout">wondered if a stat is accurate?</span>
+            </li>
+
+            <li>
+              Do you...<span class="callout">question if an article tells the whole story?</span>
+            </li>
+
+            <li>
+              Have you...<span class="callout">wanted to add more info to an article?</span>
+            </li>
+
+            <li>
+              Do you...<span class="callout">find logical gaps in posts?</span>
             </li>
           </ul>
         </h3>
@@ -91,7 +94,7 @@
     </div>
 
 
-    <div id="signup" class="large-4 medium-12 small-12 column">
+    <div id="signup" class="large-4 medium-12 small-12 column panel orange-panel js-cta">
 
 
       <h3 class="cta-header">Get Notified When scribble Launches</h3>
@@ -99,11 +102,12 @@
       <form class="beta-form" method="post" action="/hello/signup">
         <div class="row">
           <div class="small-12 medium-7 large-12 column">
+            <input class="input-username" name="user[username]" type="text" placeholder="username">
             <input id="signup-input" name="user[email]" type="text" placeholder="email">
           </div>
 
           <div class="small-12 medium-5 large-12 column">
-            <button class="button beta-button orange" id="top-signup">Let Me Know</button>
+            <button class="button beta-button" id="top-signup">Let Me Know</button>
           </div>
         </div>
       </form>
@@ -176,12 +180,13 @@
   </div>
 
   <div class="row">
-    <div class="large-12 small-12 column">
-      <h3 class="cta-header"><span class="callout">Get Notified</span> When scribble Launches</h3>
+    <div class="large-12 small-12 column panel js-cta">
+      <h3 class="cta-header">Get Notified When scribble Launches</h3>
 
       <form class="beta-form" method="post" action="/hello/signup">
         <div class="row">
           <div class="small-12 medium-7 large-7 column">
+            <input class="input-username" name="user[username]" type="text" placeholder="username">
             <input type="text" name="user[email]" placeholder="email">
           </div>
 

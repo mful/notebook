@@ -24,7 +24,7 @@ class scribble.statics.views.ThanksView
     _trackShare('Email')
   
   _trackShare = (platform, options = {}) ->
-    scribble.helpers.analytics.trackGoogleEvent(
+    scribble.analytics.helpers.events.trackGoogleEvent(
       'Share', 
       platform,
       options.label,

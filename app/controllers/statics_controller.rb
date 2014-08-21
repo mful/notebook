@@ -1,6 +1,8 @@
 class StaticsController < ApplicationController
   layout 'statics'
 
+  caches_page :index, :thanks
+
   def index
   end
 

@@ -2,12 +2,13 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scribble - Intelligent Discussion Anywhere</title>
+  <title><%= page_title %></title>
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Vollkorn:400italic,400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
   <%= stylesheet_link_tag "static", media: "all" %>
   <%= javascript_include_tag "static" %>
   <%= csrf_meta_tags %>
+  <%= render 'shared/open_graph' %>
   <%= render 'shared/google_analytics' %>
 </head>
 <body>
