@@ -6,8 +6,7 @@ class Api::AnnotationsController < ApiController
   end
 
   def create
-    # TODO: uncomment this out once we have user-auth figured out
-    # raise Annotate::Unauthorized.new unless signed_in?
+    raise Annotate::Unauthorized.new unless signed_in?
     @annotation = Annotation.new(annotation_params)
 
     redirect_or_err(@annotation, :api_annotation_path, 400) do 

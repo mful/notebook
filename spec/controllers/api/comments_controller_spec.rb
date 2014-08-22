@@ -76,7 +76,7 @@ describe Api::CommentsController do
     end
 
     context 'when a different, regular user is logged in' do
-      let(:user2) { FactoryGirl.create :user, email: 'snape@hogwarts.com' }
+      let(:user2) { FactoryGirl.create :user, email: 'snape@hogwarts.com', username: 's' }
       before do 
         sign_in user2
         put :update, id: comment.id, comment: comment_update
@@ -180,7 +180,7 @@ describe Api::CommentsController do
     end
 
     context 'when signed in' do 
-      let(:user) { FactoryGirl.create :user, email: 'hagrid@eowls.com' }
+      let(:user) { FactoryGirl.create :user, email: 'hagrid@eowls.com', username: 'h2' }
       before { sign_in user }
 
       context 'as a user who has already flagged the comment' do

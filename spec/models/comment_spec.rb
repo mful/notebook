@@ -68,7 +68,7 @@ describe Comment do
     end
 
     context 'with votes' do
-      let(:user) { FactoryGirl.create :user, email: 'harry@hogwarts.com' }
+      let(:user) { FactoryGirl.create :user, email: 'harry@hogwarts.com', username: 'h1' }
       let!(:vote) { FactoryGirl.create :vote, comment: comment, user: user }
       before { comment.set_rating }
 

@@ -183,22 +183,12 @@ input.input-username {
 
 #hero-image { margin-bottom: 60px; } 
 
-.quote-divider {
+.page-divider {
   display: none;
   background: $teal;
+  padding: 50px;
 
-  blockquote {
-    border: none;
-    margin-top: 50px;
-    margin-bottom: 30px;
-
-    cite {
-      float: right;
-      color: $light-grey;
-    }
-  }
-
-  h3 {
+  h2 {
     font-family: $primary_sans, sans-serif;
     color: #fff;
   }
@@ -252,7 +242,6 @@ footer {
 }
 
 @media only screen and (min-width: 40.063em) {
-  .quote-divider { display: none; }
   #above-fold { margin-bottom: 0; }
   #big-nav { display: block; }
   .hamburger { display: none; }
@@ -272,7 +261,7 @@ footer {
 
 @media only screen and (min-width: 64.063em) {
   #hero-image { margin-bottom: 0; }
-  .quote-divider { display: block; }
+  .page-divider { display: block; }
   #above-fold { margin-bottom: 80px; }
   .slides ul { height: 2.3703rem;  }
   #title-row {

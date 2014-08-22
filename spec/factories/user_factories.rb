@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :user do
+    username 'h'
     email 'hagrid@hogwarts.com'
     password 'Wing4rdiumLev!osa'
     password_confirmation 'Wing4rdiumLev!osa'
@@ -17,6 +18,7 @@ FactoryGirl.define do
   end
 
   factory :admin, parent: User do 
+    username 'm'
     email 'minerva@hogwarts.com'
     password 'tabbycat'
     password_confirmation 'tabbycat'
@@ -28,6 +30,7 @@ FactoryGirl.define do
   end
 
   factory :moderator, parent: User do 
+    username 'f'
     email 'filch@hogwarts.com'
     password 'quickspell'
     password_confirmation 'quickspell'

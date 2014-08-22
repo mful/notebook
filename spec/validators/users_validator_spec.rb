@@ -1,11 +1,13 @@
 require 'fast_helper'
 require 'ostruct'
+require 'pry'
 require './app/validators/users_validator'
 
 describe UsersValidator do
   let(:user) do
     OpenStruct.new(
         email: 'hagrid@hogwarts.com',
+        username: 'h',
         password: 'Wing4rdiumLev!osa',
         password_confirmation: 'Wing4rdiumLev!osa',
         errors:  {}
@@ -27,9 +29,9 @@ describe UsersValidator do
 
     context 'with a bad submission' do
       before do
-       @bad_user = user.clone 
-       @bad_user.stub(:new_record?).and_return(true)
-     end
+        @bad_user = user.clone
+        @bad_user.stub(:new_record?).and_return(true)
+      end
 
       it 'should err with an invalid email' do
         @bad_user.email = 'ha ha@gmail.com'
@@ -73,6 +75,34 @@ describe UsersValidator do
         UsersValidator.validate(@bad_user)
         expect(@bad_user.errors.keys.length).to eq(1)
         expect(@bad_user.errors.keys.first).to eq(:password)
+      end
+
+      context 'with an already in-use username' do
+        let(:current_user) { OpenStruct.new(username: @bad_user.username, id: 1) }
+        before do
+          User.stub(:where).and_return([current_user])
+          UsersValidator.any_instance.stub(:validate_email).and_return(nil)
+        end
+
+        it 'should err' do
+          UsersValidator.validate(@bad_user)
+          expect(@bad_user.errors.keys.length).to eq(1)
+          expect(@bad_user.errors.keys.first).to eq(:username)
+        end
+      end
+
+      it 'should err with a too long username' do
+        @bad_user.username = 'a' * 21
+        UsersValidator.validate(@bad_user)
+        expect(@bad_user.errors.keys.length).to eq(1)
+        expect(@bad_user.errors.keys.first).to eq(:username)
+      end
+
+      it 'should err with a username containing invalid characters' do
+        @bad_user.username = '%h'
+        UsersValidator.validate(@bad_user)
+        expect(@bad_user.errors.keys.length).to eq(1)
+        expect(@bad_user.errors.keys.first).to eq(:username)
       end
 
       context 'without a password' do
