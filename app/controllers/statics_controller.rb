@@ -34,7 +34,7 @@ class StaticsController < ApplicationController
 
   def user_params
     password = SecureRandom.base64(20)
-    user_attrs = params.require(:user).permit(:email)
+    user_attrs = params.require(:user).permit(:email, :username)
 
     user_attrs.merge(password: password, password_confirmation: password)
   end
