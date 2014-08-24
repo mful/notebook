@@ -1,4 +1,8 @@
-mandrill_config = YAML.load_file(Rails.root + 'config/mandrill.yml')[Rails.env]
+if Rails.env == 'production'
+  mandrill_config = YAML.load_file(Rails.root + 'config/mandrill.yml')[Rails.env]
+else
+  mandrill_config = YAML.load_file(Rails.root + 'config/mandrill.secret.yml')[Rails.env]
+end
 
 ActionMailer::Base.smtp_settings = {
   :address   => "smtp.mandrillapp.com",

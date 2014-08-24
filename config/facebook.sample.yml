@@ -1,0 +1,7 @@
+development:
+  :app_id: <TEST APP ID>
+  :app_secret: <TEST APP SECRET>
+
+test:
+  :app_id: <TEST APP ID>
+  :app_secret: <TEST APP SECRET>

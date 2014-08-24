@@ -3,6 +3,7 @@
 /log/*.log
 /tmp
 /config/database.secret.yml
+/config/facebook.secret.yml
 /config/mandrill.secret.yml
 /config/omniauth.secret.yml
 /config/secret_token.secret.yml

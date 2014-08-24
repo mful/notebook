@@ -1,10 +1,10 @@
 class WelcomeMailer < MandrillMailer::TemplateMailer
-  default from: 'hello@intelligent.ly'
+  default from: 'm@scribble.ly'
 
   def welcome(user)
     mandrill_mail(
       template: 'Welcome',
-      subject: 'Welcome to Intelligent.ly',
+      subject: 'Hey Welcome to Scribble!',
       to: { email: user.email },
       inline_css: true,
     )

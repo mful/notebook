@@ -1,0 +1,11 @@
+default: &default
+  :google_id: <%= ENV['GOOGLE_ID'] %>
+  :google_secret: <%= ENV['GOOGLE_SECRET'] %>
+  :github_id: <%= ENV['GITHUB_ID'] %>
+  :github_secret: <%= ENV['GITHUB_SECRET'] %>
+
+test: *default
+
+development: *default
+
+production: *default
