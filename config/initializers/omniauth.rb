@@ -1,5 +1,10 @@
 if Rails.env == 'production'
-  omniauth_config = YAML.load_file(Rails.root + 'config/omniauth.yml')[Rails.env]
+  omniauth_config = {
+    google_id: ENV['GOOGLE_ID'],
+    google_secret: ENV['GOOGLE_SECRET'],
+    github_id: ENV['GITHUB_ID'],
+    github_secret: ENV['GITHUB_SECRET']
+  }
 else
   omniauth_config = YAML.load_file(Rails.root + 'config/omniauth.secret.yml')[Rails.env]
 end

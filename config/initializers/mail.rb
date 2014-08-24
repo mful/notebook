@@ -1,5 +1,9 @@
 if Rails.env == 'production'
-  mandrill_config = YAML.load_file(Rails.root + 'config/mandrill.yml')[Rails.env]
+  mandrill_config = {
+    api_key: ENV['MANDRILL_KEY'],
+    username: ENV['MANDRILL_USERNAME'],
+    password: ENV['MANDRILL_PASS']
+  }
 else
   mandrill_config = YAML.load_file(Rails.root + 'config/mandrill.secret.yml')[Rails.env]
 end
