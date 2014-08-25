@@ -20,7 +20,7 @@ class Api::PagesController < ApiController
   private
 
   def authenticate!
-    raise Annotate::NotFoundError unless can? :manage, Page
+    raise Notebook::NotFoundError unless can? :manage, Page
   end
 
   def page_params

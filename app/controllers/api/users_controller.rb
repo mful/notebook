@@ -30,7 +30,7 @@ class Api::UsersController < ApiController
     begin 
       ResetPassword.reset! params[:email]
       render nothing: true, status: 200
-    rescue Annotate::NotFoundError => e
+    rescue Notebook::NotFoundError => e
       render json:  { errors: ['User with that email does not exist']  }, status: 404
     end
   end
@@ -47,7 +47,7 @@ class Api::UsersController < ApiController
 
   def authenticate!
     unless signed_in? && current_user.id == params[:id].to_i
-      raise Annotate::NotFoundError.new
+      raise Notebook::NotFoundError.new
     end
   end
 end

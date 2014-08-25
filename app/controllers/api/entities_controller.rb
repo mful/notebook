@@ -20,7 +20,7 @@ class Api::EntitiesController < ApiController
   private
 
   def authenticate!
-    raise Annotate::NotFoundError unless can? :manage, Entity
+    raise Notebook::NotFoundError unless can? :manage, Entity
   end
 
   def find_entity

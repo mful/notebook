@@ -7,11 +7,11 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActiveRecord::RecordNotFound, with: :rescue_not_found
 
-  class Annotate::NotFoundError < StandardError; end
-  rescue_from Annotate::NotFoundError, with: :rescue_not_found
+  class Notebook::NotFoundError < StandardError; end
+  rescue_from Notebook::NotFoundError, with: :rescue_not_found
 
-  class Annotate::Unauthorized < StandardError; end
-  rescue_from Annotate::Unauthorized, with: :rescue_unauthorized
+  class Notebook::Unauthorized < StandardError; end
+  rescue_from Notebook::Unauthorized, with: :rescue_unauthorized
 
   protected
 

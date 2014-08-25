@@ -10,7 +10,7 @@ class ResetPassword
   end
 
   def reset!
-    raise Annotate::NotFoundError unless @user
+    raise Notebook::NotFoundError unless @user
 
     @password = SecureRandom.urlsafe_base64(PASSWORD_LENGTH)
     update_user && send_reset_email

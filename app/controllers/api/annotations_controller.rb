@@ -6,7 +6,7 @@ class Api::AnnotationsController < ApiController
   end
 
   def create
-    raise Annotate::Unauthorized.new unless signed_in?
+    raise Notebook::Unauthorized.new unless signed_in?
     @annotation = Annotation.new(annotation_params)
 
     redirect_or_err(@annotation, :api_annotation_path, 400) do 
@@ -28,7 +28,7 @@ class Api::AnnotationsController < ApiController
   def find_annotation
     begin @annotation = Annotation.find(params[:id])
     rescue
-      raise Annotate::NotFoundError.new
+      raise Notebook::NotFoundError.new
     end
   end
 

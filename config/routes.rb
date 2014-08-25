@@ -1,4 +1,4 @@
-Annotate::Application.routes.draw do
+Notebook::Application.routes.draw do
   mount Peek::Railtie => '/peek'
   root to: 'statics#index'
 

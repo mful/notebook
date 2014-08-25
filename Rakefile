@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Annotate::Application.load_tasks
+Notebook::Application.load_tasks

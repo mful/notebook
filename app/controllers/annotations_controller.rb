@@ -19,7 +19,7 @@ class AnnotationsController < ApplicationController
   def find_annotation
     begin @annotation = Annotation.find(params[:id])
     rescue
-      raise Annotate::NotFoundError.new
+      raise Notebook::NotFoundError.new
     end
   end
 
