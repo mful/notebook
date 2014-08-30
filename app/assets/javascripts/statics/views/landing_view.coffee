@@ -32,7 +32,8 @@ class scribble.statics.views.LandingView
   # private
 
   _trackSignup = (location) ->
-    Abba('Landing Headline').complete(label: location)
+    Abba('Landing Headline', label: location).complete()
+    Abba('CTA Test', label: location).complete()
 
   _headlineTest = ->
     Abba('Landing Headline')
