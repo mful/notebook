@@ -14,6 +14,11 @@ class AnnotationsController < ApplicationController
     end
   end
 
+  def new
+    @annotation = Annotation.new(text: params[:text])
+    @page_url = params[:url] || request.url
+  end
+
   private
 
   def find_annotation

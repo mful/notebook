@@ -1,29 +1,33 @@
 class Api::AnnotationsController < ApiController
   before_filter :find_annotation, only: [:show, :add_comment]
+  before_filter :verify_user, only: [:create, :add_comment, :create_with_comment]
 
   def show
     render json: { annotation: @annotation }, status: 200
   end
 
   def create
-    raise Notebook::Unauthorized.new unless signed_in?
     @annotation = Annotation.new(annotation_params)
 
     redirect_or_err(@annotation, :api_annotation_path, 400) do 
-      CreateAnnotation.create @annotation, params[:url] || request.url
+      url = params[:url] || request.url
+      CreateAnnotation.create @annotation, url, comment_params
     end
   end
 
   def add_comment
     comment = Comment.new(comment_params)
 
-    redirect_or_err(comment, :api_annotation_path, 400, @annotation.id) do
-      binding.pry
+    redirect_or_err(comment, :api_comment_path, 400) do
       @annotation.comments << comment && @annotation.save
     end
   end
 
   private
+
+  def verify_user
+    raise Notebook::Unauthorized.new unless signed_in?
+  end
 
   def find_annotation
     begin @annotation = Annotation.find(params[:id])

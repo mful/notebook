@@ -23,7 +23,7 @@ Notebook::Application.routes.draw do
     resources :comments, only: [:create, :update, :show, :destroy]
     post 'comments/:id/flag' => 'comments#flag', as: 'flag_comment'
 
-    resources :annotations, only: [:create, :show]
+    resources :annotations, only: [:create, :show, :new]
     post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'
   end
 
@@ -33,6 +33,6 @@ Notebook::Application.routes.draw do
   get '/auth/:provider/callback' => 'api/sessions#create_with_omniauth'
   get '/auth/failure' => 'api/sessions#auth_failure'
 
-  resources :annotations, only: [:show]
+  resources :annotations, only: [:show, :new]
   post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'
 end

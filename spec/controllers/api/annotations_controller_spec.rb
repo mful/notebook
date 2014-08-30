@@ -4,6 +4,7 @@ describe Api::AnnotationsController do
   include SessionsHelper
 
   describe '#create' do
+    let(:comment) { FactoryGirl.attributes_for :comment }
     let(:annotation) { FactoryGirl.attributes_for :annotation }
 
     context 'when signed in' do
@@ -11,7 +12,7 @@ describe Api::AnnotationsController do
       before { sign_in user }
 
       context 'with valid data' do
-        before { post :create, annotation: annotation }
+        before { post :create, annotation: annotation, comment: comment, url: 'http://hogwarts.com' }
 
         it 'should create the annotation' do
           expect(Annotation.count).to eq(1)
@@ -24,7 +25,7 @@ describe Api::AnnotationsController do
 
       context 'with invalid data' do
         let(:invalid_annotation) { annotation.merge(text: nil) }
-        before { post :create, annotation: invalid_annotation }
+        before { post :create, annotation: invalid_annotation, comment: comment, url: 'http://hogwarts.com' }
 
         it 'should return 400' do
           expect(response.status).to eq(400)
@@ -37,7 +38,7 @@ describe Api::AnnotationsController do
     end
 
     context 'when not signed in' do
-      before { post :create, annotation: annotation }
+      before { post :create, annotation: annotation, comment: comment, url: 'http://hogwarts.com' }
 
       it 'should return 403' do
         expect(response.status).to eq(403)

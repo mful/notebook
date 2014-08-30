@@ -42,11 +42,6 @@ class scribble.statics.views.LandingView
           <span class="callout">Intelligent Discussion</span> Anywhere.
         """
       )
-      .variant('Add Context Inline', ->
-        document.getElementById('headline').innerHTML = """
-          <span class="callout">Add Context</span> Inline.
-        """
-      )
       .start()
 
   _ctaTest = ->
