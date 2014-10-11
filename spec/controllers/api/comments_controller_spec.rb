@@ -11,7 +11,8 @@ describe Api::CommentsController do
       before { sign_in user }
 
       context 'with valid data' do
-        before { post :create, comment: comment }
+        let(:annotation) { FactoryGirl.create :annotation }
+        before { post :create, comment: comment, annotation_id: annotation.id }
 
         it 'should create the comment' do
           expect(Comment.count).to eq(1)
@@ -22,9 +23,23 @@ describe Api::CommentsController do
         end
       end
 
-      context 'with invalid data' do
+      context 'without an associated annotation' do
         let(:comment) { FactoryGirl.attributes_for :comment, content: '  ' }
         before { post :create, comment: comment }
+
+        it 'should return 404' do
+          expect(response.status).to eq(404)
+        end
+
+        it 'should not create a comment' do
+          expect(Comment.count).to eq(0)
+        end
+      end
+
+      context 'with invalid comment data' do
+        let(:annotation) { FactoryGirl.create :annotation }
+        let(:comment) { FactoryGirl.attributes_for :comment, content: '  ' }
+        before { post :create, comment: comment, annotation_id: annotation.id }
 
         it 'should return 400' do
           expect(response.status).to eq(400)
@@ -46,9 +61,9 @@ describe Api::CommentsController do
   end
 
   describe '#update' do
+    let(:user) { FactoryGirl.create :user }
     let!(:comment) { FactoryGirl.create :comment, user: user }
-    let(:comment_update) { { content: 'EDIT: Malfoy is <em>not</em> very nice' } } 
-    let!(:user) { FactoryGirl.create :user } 
+    let(:comment_update) { { content: 'EDIT: Malfoy is <em>not</em> very nice' } }
 
     context 'when the proper user is logged in' do
       before { sign_in user }

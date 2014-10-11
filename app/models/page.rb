@@ -1,6 +1,6 @@
 class Page < ActiveRecord::Base
   belongs_to :entity
-  belongs_to :comment
+  # belongs_to :comment
   has_many :annotations
 
   before_validation :sanitize_url

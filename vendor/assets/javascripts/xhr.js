@@ -1,3 +1,4 @@
+
 function request(type, url, opts, callback) {
   var xhr = new XMLHttpRequest(),
       pd;

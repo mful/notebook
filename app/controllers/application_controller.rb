@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
 
+  before_filter :bootstrap
+
   include SessionsHelper
 
   rescue_from ActiveRecord::RecordNotFound, with: :rescue_not_found
@@ -23,5 +25,11 @@ class ApplicationController < ActionController::Base
   # TODO: redirect to login page if no current user
   def rescue_unauthorized
     render nothing: true, status: 403
+  end
+
+  private
+
+  def bootstrap
+    gon.env = Rails.env
   end
 end

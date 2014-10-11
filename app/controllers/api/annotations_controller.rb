@@ -3,7 +3,7 @@ class Api::AnnotationsController < ApiController
   before_filter :verify_user, only: [:create, :add_comment, :create_with_comment]
 
   def show
-    render json: { annotation: @annotation }, status: 200
+    render json: @annotation, serializer: FullAnnotationSerializer, status: 200
   end
 
   def create

@@ -15,8 +15,18 @@ class AnnotationsController < ApplicationController
   end
 
   def new
-    @annotation = Annotation.new(text: params[:text])
-    @page_url = params[:url] || request.url
+    annotation = Annotation.new(text: params[:text])
+    page_url = params[:url] || request.url
+
+    # TODO: move to view model?
+    @presenter = {
+      annotation: {
+        text: annotation.text,
+        base_domain: URI.parse(page_url).host,
+        url: page_url
+      },
+      comments: []
+    }
   end
 
   private

@@ -1,7 +1,7 @@
 #= require_self
-#= require_tree ./models
-#= require_tree ./highlighter
-#= require_tree ./sidebar
+#= require_tree ./dev_crayon/models
+#= require_tree ./dev_crayon/highlighter
+#= require_tree ./dev_crayon/sidebar
 
 window.annotate or= {}
 annotate.baseDomain = 'http://localhost:3000'

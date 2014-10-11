@@ -8,6 +8,7 @@ class Api::CommentsController < ApiController
   def create
     raise Notebook::Unauthorized.new unless signed_in?
     @comment = Comment.new(comment_params)
+    @comment.annotation = Annotation.find(params[:annotation_id])
 
     redirect_or_err(@comment, :api_comment_path, 400) { @comment.save }
   end

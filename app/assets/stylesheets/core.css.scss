@@ -3,7 +3,8 @@ $light-grey: #e2e2e2;
 $dark-grey: #555555;
 $charcoal: #343434;
 
-$background: rgb(255, 251, 252);
+$background: #fff;
+$background2: rgb(255, 251, 252);
 
 $mint: #3c948b;
 $teal: #3CCFC8;
@@ -69,8 +70,24 @@ body { overflow-x: hidden; }
   &:hover {
     background: $mint;
   }
+
+  &.mini {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.5625rem;
+  }
 }
 
 .beta-button {
   width: 100%;
+}
+
+.clickable {
+  cursor: pointer;
+  color: $teal;
+  font-family: $primary_sans, sans-serif;
+  transition: 300ms;
+
+  &:hover, &:hover i {
+    color: $mint;
+  }
 }

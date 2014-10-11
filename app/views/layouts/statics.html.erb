@@ -3,14 +3,27 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= page_title %></title>
-  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Vollkorn:400italic,400,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
   <%= stylesheet_link_tag "static", media: "all" %>
   <%= csrf_meta_tags %>
   <%= render 'shared/open_graph' %>
   <%= render 'shared/google_analytics' %>
 </head>
 <body>
+  <%= javascript_include_tag "static", async: true %>
+
+  <% flash.each do |key, value| %>
+    <div class="row">
+      <div class="small-12 column">
+        <div class="alert alert-<%= key %>"><%= value %></div>
+      </div>
+    </div>
+  <% end %>
+
+  <%= yield %>
+
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Vollkorn:400italic,400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+
   <script>
     window.fbAsyncInit = function() {
       FB.init({
@@ -28,18 +41,6 @@
        fjs.parentNode.insertBefore(js, fjs);
      }(document, 'script', 'facebook-jssdk'));
   </script>
-
-  <% flash.each do |key, value| %>
-    <div class="row">
-      <div class="small-12 column">
-        <div class="alert alert-<%= key %>"><%= value %></div>
-      </div>
-    </div>
-  <% end %>
-
-  <%= yield %>
-
-  <%= javascript_include_tag "static" %>
 
 </body>
 </html>

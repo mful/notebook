@@ -7,6 +7,11 @@ gem 'pg'
 
 gem 'nokogiri'
 
+gem 'turbolinks'
+
+gem 'gon'
+gem 'active_model_serializers', '~> 0.9.0'
+
 gem 'sass-rails', '~> 4.0.2'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
@@ -25,6 +30,10 @@ gem 'peek-pg'
 gem 'actionpack-page_caching'
 
 gem 'cancancan', '~> 1.8'
+
+gem 'sprockets-commonjs', github: 'maccman/sprockets-commonjs'
+gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
+gem 'therubyracer', :platforms => :ruby
 
 group :production do
   gem 'rails_12factor'

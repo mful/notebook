@@ -3,24 +3,28 @@
 <head>
   <title>Annotate the Web - Scribble</title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
   <%= render 'shared/google_analytics' %>
 </head>
 <body>
-  <% if Rails.env == 'development' %>
-    <%= render 'peek/bar' %>
-  <% end %>
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>"><%= value %></div>
   <% end %>
 
-  <%= yield %>
+  <div id="content">
+    <%= yield %>
+  </div>
 
-  <script type="text/javascript">
-    notebook.init();
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+  <%= include_gon namespace: 'scribble_bootstrap' %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+
+  <script>
+    (function () {
+      document.addEventListener('DOMContentLoaded', function () {
+        window.scribble.init();
+      })
+    })();
   </script>
-
 </body>
 </html>

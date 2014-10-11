@@ -6,14 +6,14 @@ class Comment < ActiveRecord::Base
   belongs_to :user
   belongs_to :annotation
   belongs_to :comment_status
-  has_many :pages
+  # has_many :pages
   has_many :votes
   has_many :comment_replies
   has_many :replies, through: :comment_replies
   has_many :comment_flags
 
   before_validation :sanitize_content
-  before_create :set_rating
+  before_save :set_rating
   after_touch :set_rating # TODO: move to vote service
 
   validates_presence_of :content, :user
@@ -27,9 +27,11 @@ class Comment < ActiveRecord::Base
   end
 
   def set_rating
-    self.rating =
-      calculate_rating(votes.positive.count, votes.count, default_rating: DEFAULT_RATING)
-    save unless new_record?
+    self.rating = calculate_rating(
+      votes.positive.count,
+      votes.count,
+      default_rating: DEFAULT_RATING
+    )
   end
 
   private
