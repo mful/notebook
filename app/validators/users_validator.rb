@@ -48,6 +48,11 @@ class UsersValidator
   end
 
   def validate_username
+    if @user.username.blank?
+      @user.username = nil
+      return
+    end
+    
     valid_regex = @user.username.match /#{VALID_USERNAME_REGEX}/
     if valid_regex
       name_user = User.where('lower(username) = ?', @user.username.downcase)
