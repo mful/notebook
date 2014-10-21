@@ -5,6 +5,8 @@
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
   <%= render 'shared/google_analytics' %>
+  <script src="http://apis.google.com/js/client:platform.js" async defer>
+  </script>
 </head>
 <body>
   <% flash.each do |key, value| %>
@@ -15,8 +17,12 @@
     <%= yield %>
   </div>
 
+  <div id="scribble-modal"></div>
+
   <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
   <%= include_gon namespace: 'scribble_bootstrap' %>
+
+  <%= render 'shared/facebook_sdk' %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 
   <script>

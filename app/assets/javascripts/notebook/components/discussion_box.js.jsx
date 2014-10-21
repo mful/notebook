@@ -60,11 +60,12 @@ var DiscussionBox = React.createClass({
       <div className="discussion-box">
 
         <div className="new-comment">
-          <CommentForm onCommentSubmit={ this.handleCommentSubmit } />
+          <CommentForm form={ this.props.data.form } onCommentSubmit={ this.handleCommentSubmit } />
         </div>
         
         <HighlightText highlight={ this.state.annotation } />
         <CommentList data={ this.state.comments } />
+        <Menu />
       </div>
     );
   },

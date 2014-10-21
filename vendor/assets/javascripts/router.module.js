@@ -51,7 +51,6 @@ Router.prototype.initialize = function() {};
 
 Router.prototype.afterStart = function() {};
 
-
 /* public methods */
 
 Router.prototype.start = function() {
@@ -182,23 +181,12 @@ Router.prototype._navigate = function(url, options) {
 Router.prototype.renderRoute = function() {
   var parameters, route, triggerRenderedError, triggerRenderedSuccess;
   this.currentRoutingId += 1;
-  this.trigger('route');
   if (this.replacingStateData || this.replacingStateQueryParameter) {
     return;
   }
   route = this._findRoute(location.href);
   parameters = this._routeParameters(route);
-  triggerRenderedSuccess = (function(_this) {
-    return function() {
-      return _this.trigger('route_rendered_success');
-    };
-  })(this);
-  triggerRenderedError = (function(_this) {
-    return function() {
-      return _this.trigger('route_rendered_error');
-    };
-  })(this);
-  return route.render.apply(this, parameters).then(triggerRenderedSuccess, triggerRenderedError);
+  return route.render.apply(this, parameters);
 };
 
 Router.prototype._findRoute = function(path) {

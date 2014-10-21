@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 ruby '2.1.2'
-gem 'rails', '4.0.4'
+gem 'rails', '4.1.6'
 
 gem 'pg'
 
@@ -19,6 +19,8 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-github'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 gem 'gibbon'
 gem 'mandrill_mailer'

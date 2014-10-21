@@ -26,12 +26,11 @@ var CommentForm = React.createClass({
   },
 
   render: function () {
-    // TODO: move all annotation saving logic into store, to handle diff in new/old
     return (
       <form className="comment-form" id="comment-form" onSubmit={ this.handleSubmit }>
         <textarea name="comment[content]" placeholder="What's on your mind?" ref="content"></textarea>
         <button className="post-comment button" type="submit">Post</button>  
       </form>
-    )
+    );
   }
 });

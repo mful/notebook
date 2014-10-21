@@ -1,5 +1,7 @@
 class Api::SessionsController < ApiController
 
+  skip_before_filter :verify_authenticity_token
+
   def create
     user = User.find_by(email: params[:session][:email].downcase)
 
@@ -26,6 +28,6 @@ class Api::SessionsController < ApiController
 
   def destroy
     sign_out
-    redirect_to root_path
+    render json: {}, status: 200
   end
 end

@@ -1,18 +1,29 @@
 module SessionsHelper 
 
   def sign_in(user)
-    remember_token = User.new_remember_token
-    cookies.permanent[:remember_token] = remember_token
-    user.update_attribute(:remember_token, User.digest(remember_token))
+    session[:user_id] = user.id
     self.current_user = user
+    remember user
     Rails.logger.info "Login: User #{user.id}"
   end
 
+  def remember(user)
+    user.remember
+    cookies.permanent.signed[:user_id] = user.id
+    cookies.permanent[:remember_token] = user.digest(user.remember_token)
+  end
+
+  def forget(user)
+    if user
+      user.forget
+      cookies.delete(:user_id)
+      cookies.delete(:remember_token)
+    end
+  end
+
   def sign_out
-    return unless current_user
-    current_user.update_attribute(:remember_token,
-                                  User.digest(User.new_remember_token))
-    cookies.delete(:remember_token)
+    forget current_user
+    session.delete(:user_id)
     self.current_user = nil
   end
 
@@ -21,11 +32,19 @@ module SessionsHelper
   end
 
   def current_user
-    remember_token = User.digest(cookies[:remember_token])
-    @current_user ||= User.find_by(remember_token: remember_token)
+    if session[:user_id]
+      @current_user ||= User.find_by(id: session[:user_id])
+    elsif cookies.signed[:user_id]
+      user = User.find_by(id: cookies.signed[:user_id])
+      if user && user.authenticated?(cookies[:remember_token])
+        sign_in user
+      end
+    end
+
+    @current_user
   end
 
   def signed_in?
-    !current_user.nil?
+    current_user.present?
   end
 end

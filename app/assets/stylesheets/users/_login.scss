@@ -1,0 +1,13 @@
+.fb-login {
+  background: $fb-blue;
+  &:hover {
+    background: $fb-light-blue;
+  }
+}
+
+.twitter-login {
+  background: $twitter-blue;
+  &:hover {
+    background: $twitter-light-blue;
+  }
+}

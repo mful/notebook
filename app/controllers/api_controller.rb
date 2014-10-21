@@ -1,7 +1,12 @@
 class ApiController < ApplicationController
-  protect_from_forgery with: :null_session
+  protect_from_forgery with: :exception
   respond_to :json
   layout false
+
+  skip_before_filter :bootstrap
+  skip_before_filter :verify_authenticity_token
+
+  after_action :set_csrf_headers
 
   protected
 
@@ -21,5 +26,10 @@ class ApiController < ApplicationController
     else
       render json: { errors: model.errors.full_messages }, status: error_code
     end
+  end
+
+  def set_csrf_headers
+    response.headers['X-CSRF-Param'] = request_forgery_protection_token.to_s
+    response.headers['X-CSRF-Token'] = form_authenticity_token
   end
 end

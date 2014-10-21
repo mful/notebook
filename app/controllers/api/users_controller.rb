@@ -22,8 +22,7 @@ class Api::UsersController < ApiController
   end
 
   def show
-    user_attrs = { id: @user.id, email: @user.email }
-    render json: { user: user_attrs }, status: 200
+    render json: @user, status: 200, serializer: UserSerializer
   end
 
   def reset_password

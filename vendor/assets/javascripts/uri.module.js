@@ -57,6 +57,9 @@
     return this;
   }
 
+  module.exports = URI;
+  URI.URI = URI;
+
   URI.version = '1.14.1';
 
   var p = URI.prototype;

@@ -2,6 +2,21 @@ var EventEmitter = require('event_emitter').EventEmitter;
 
 var CHANGE_EVENT = 'change';
 var _comments = {};
+var _pendingComment;
+
+function handleCreateComment ( data ) {
+  _pendingComment = data;
+
+  if ( SessionStore.currentUser() ) {
+    createComment( _pendingComment );
+  }
+}
+
+function flushComment () {
+  if ( _pendingComment !== null ) {
+    createComment ( _pendingComment )
+  }
+}
 
 function setComments ( comments ) {
   CommentStore.reset();
@@ -36,7 +51,7 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   getAllAsList: function () {
     var commentsList = [];
     for ( var key in _comments ) {
-      commentsList.push(_comments[key]);
+      commentsList.push( _comments[key] );
     }
     return commentsList;
   },
@@ -49,30 +64,27 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     this.emit(CHANGE_EVENT);
   },
 
-  /**
-   * @param {function} callback
-   */
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  /**
-   * @param {function} callback
-   */
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  dispatcherIndex: AppDispatcher.register(function(payload) {
+  dispatchToken: AppDispatcher.register(function(payload) {
     var action = payload.action;
     var text;
 
-    switch(action.actionType) {
+    switch ( action.actionType ) {
       case AnnotationConstants.NOTIFY_COMMENTS:
         setComments(action.data);
         break;
       case AnnotationConstants.ADD_COMMENT:
-        createComment(action.data);
+        handleCreateComment(action.data);
+        break;
+      case SessionConstants.LOGIN_SUCCESS:
+        flushComment();
         break;
     }
 

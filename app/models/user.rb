@@ -11,11 +11,11 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
 
   # TODO: move this remember token logic
-  def User.new_remember_token
+  def new_remember_token
     SecureRandom.urlsafe_base64
   end
 
-  def User.digest(token)
+  def digest(token)
     Digest::SHA1.hexdigest(token.to_s)
   end
 
@@ -23,9 +23,22 @@ class User < ActiveRecord::Base
     roles.map(&:name).include?(role)
   end
 
+  def remember
+    update_attribute(:remember_token, digest(new_remember_token))
+  end
+
+  def forget
+    update_attribute(:remember_token, nil)
+  end
+
+  def authenticated?(token)
+    return false unless remember_token
+    digest(remember_token) == token
+  end
+
   private
 
   def create_remember_token
-    self.remember_token = User.digest(User.new_remember_token)
+    self.remember_token = digest(new_remember_token)
   end
 end

@@ -1,0 +1,7 @@
+default: &default
+  :app_id: <CONSUMER KEY HERE>
+  :app_secret: <CONSUMER SECRET HERE>
+
+development: *default
+
+test: *default

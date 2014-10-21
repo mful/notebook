@@ -2,8 +2,23 @@ var EventEmitter = require('event_emitter').EventEmitter;
 
 var CHANGE_EVENT = 'change';
 var _annotations = {};
+var _pendingAnnotation;
 
-function createWithComment( data ) {
+function handleCreateWithComment ( data ) {
+  _pendingAnnotation = data;
+
+  if ( SessionStore.currentUser() ) {
+    createWithComment(_pendingAnnotation);
+  }
+}
+
+function flushPendingAnnotation () {
+  if ( _pendingAnnotation !== null ) {
+    createWithComment(_pendingAnnotation);
+  }
+}
+
+function createWithComment ( data ) {
  scribble.helpers.xhr.post(
     scribble.helpers.routes.api_annotations_url(),
     data,
@@ -17,12 +32,12 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
     if ( err ) {
       alert('Whoops! Something went wrong. Try again?'); 
     } else if ( response.status === 200 ) {
-      AnnotationStore.reset();
-      AnnotationStore.separateComments(response.data);
+      _pendingAnnotation = null;
+      AnnotationStore.separateComments( response.data );
       AnnotationStore.emitChange();
+      scribble.router.navigate( '/annotations/' + response.data.annotation.id );
     } else if ( response.status === 403 ) {
-      // handle login
-      alert( 'Login!' );
+      scribble.router.navigate('/login');
     } else if ( response.status === 400 ) {
       alert( 'Invalid data!' )
     } else {
@@ -38,6 +53,10 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
     for ( var id in _annotations ) {
       return _annotations[id];
     }
+  },
+
+  getById: function ( id ) {
+    return _annotations[id];
   },
 
   reset: function () {
@@ -56,27 +75,24 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
     this.emit(CHANGE_EVENT);
   },
 
-  /**
-   * @param {function} callback
-   */
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  /**
-   * @param {function} callback
-   */
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  dispatcherIndex: AppDispatcher.register(function(payload) {
+  dispatchToken: AppDispatcher.register(function(payload) {
     var action = payload.action;
-    var text;
 
     switch(action.actionType) {
       case AnnotationConstants.CREATE_WITH_COMMENT:
-        createWithComment(action.data);
+        AppDispatcher.waitFor([SessionStore.dispatchToken])
+        handleCreateWithComment(action.data);
+        break;
+      case SessionConstants.LOGIN_SUCCESS:
+        flushPendingAnnotation();
         break;
     }
 

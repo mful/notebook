@@ -1,0 +1,43 @@
+#scribble-modal {
+  display: none;
+  position: fixed;
+  top: 10%;
+  width: 75%;
+  left: 12.5%;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 0 5px $grey;
+  
+  &.active {
+    display: block;
+  }
+
+  #modal-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  button {
+    width: 100%;
+    vertical-align: middle;
+
+    i {
+      font-size: 1.33rem;
+    }
+
+    &:last-child {
+      margin-bottom: 15px;
+    }
+  }
+
+  #email-signup-link {
+    color: $grey;
+    font-size: .75rem;
+    text-align: center;
+    margin-bottom: 40px;
+
+    &:hover {
+      color: $dark-grey;
+    }
+  }
+}
