@@ -24,7 +24,8 @@ class ApiController < ApplicationController
     if block.call
       redirect_to send(path.to_sym, path_params || model.id)
     else
-      render json: { errors: model.errors.full_messages }, status: error_code
+      errors = model ? model.errors.full_messages : []
+      render json: { errors: errors }, status: error_code
     end
   end
 

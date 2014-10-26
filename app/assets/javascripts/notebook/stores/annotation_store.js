@@ -4,28 +4,6 @@ var CHANGE_EVENT = 'change';
 var _annotations = {};
 var _pendingAnnotation;
 
-function handleCreateWithComment ( data ) {
-  _pendingAnnotation = data;
-
-  if ( SessionStore.currentUser() ) {
-    createWithComment(_pendingAnnotation);
-  }
-}
-
-function flushPendingAnnotation () {
-  if ( _pendingAnnotation !== null ) {
-    createWithComment(_pendingAnnotation);
-  }
-}
-
-function createWithComment ( data ) {
- scribble.helpers.xhr.post(
-    scribble.helpers.routes.api_annotations_url(),
-    data,
-    AnnotationStore.handleCreateResponse
-  );
-}
-
 var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
   
   handleCreateResponse: function ( err, response ) {
@@ -89,13 +67,37 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
     switch(action.actionType) {
       case AnnotationConstants.CREATE_WITH_COMMENT:
         AppDispatcher.waitFor([SessionStore.dispatchToken])
-        handleCreateWithComment(action.data);
+        AnnotationStore._handleCreateWithComment(action.data);
         break;
       case SessionConstants.LOGIN_SUCCESS:
-        flushPendingAnnotation();
+        AnnotationStore._flushPendingAnnotation();
         break;
     }
 
     return true;
-  })
+  }),
+
+  // private
+
+  _handleCreateWithComment: function ( data ) {
+    _pendingAnnotation = data;
+
+    if ( SessionStore.currentUser() ) {
+      this._createWithComment(_pendingAnnotation);
+    }
+  },
+
+  _flushPendingAnnotation: function () {
+    if ( _pendingAnnotation !== null ) {
+      this._createWithComment(_pendingAnnotation);
+    }
+  },
+
+  _createWithComment: function ( data ) {
+   scribble.helpers.xhr.post(
+      scribble.helpers.routes.api_annotations_url(),
+      data,
+      AnnotationStore.handleCreateResponse
+    );
+  }
 }});

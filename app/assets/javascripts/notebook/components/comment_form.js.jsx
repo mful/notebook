@@ -11,18 +11,20 @@ var CommentForm = React.createClass({
 
     this.validate( commentData );
     this.props.onCommentSubmit( commentData );
-    this.resetForm();
   },
 
   // TODO: move to store?
   // TODO: should this be server-side only?
-  // TODO: need to at least check login status
   validate: function ( data ) {
     return true
   },
 
   resetForm: function () {
     this.refs.content.getDOMNode().value = '';
+  },
+
+  componentDidMount: function() {
+    CommentStore.addChangeListener(this.resetForm);
   },
 
   render: function () {

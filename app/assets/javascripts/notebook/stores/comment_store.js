@@ -4,38 +4,6 @@ var CHANGE_EVENT = 'change';
 var _comments = {};
 var _pendingComment;
 
-function handleCreateComment ( data ) {
-  _pendingComment = data;
-
-  if ( SessionStore.currentUser() ) {
-    createComment( _pendingComment );
-  }
-}
-
-function flushComment () {
-  if ( _pendingComment !== null ) {
-    createComment ( _pendingComment )
-  }
-}
-
-function setComments ( comments ) {
-  CommentStore.reset();
-  for ( var i in comments ) {
-    var comment = comments[i]
-    _comments[comment.id] = comment
-  }
-
-  CommentStore.emitChange();
-}
-
-function createComment ( data ) {
-  scribble.helpers.xhr.post(
-    scribble.helpers.routes.api_comments_url(),
-    data,
-    CommentStore.handleCreateResponse
-  );
-}
-
 var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   
   handleCreateResponse: function ( err, response ) {
@@ -78,16 +46,50 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
     switch ( action.actionType ) {
       case AnnotationConstants.NOTIFY_COMMENTS:
-        setComments(action.data);
+        CommentStore._setComments(action.data);
         break;
       case AnnotationConstants.ADD_COMMENT:
-        handleCreateComment(action.data);
+        CommentStore._handleCreateComment(action.data);
         break;
       case SessionConstants.LOGIN_SUCCESS:
-        flushComment();
+        CommentStore._flushComment();
         break;
     }
 
     return true;
-  })
+  }),
+
+  // private
+
+  _handleCreateComment: function ( data ) {
+    _pendingComment = data;
+
+    if ( SessionStore.currentUser() ) {
+      this._createComment( _pendingComment );
+    }
+  },
+
+  _flushComment: function () {
+    if ( _pendingComment !== null ) {
+      this._createComment ( _pendingComment )
+    }
+  },
+
+  _setComments: function ( comments ) {
+    CommentStore.reset();
+    for ( var i in comments ) {
+      var comment = comments[i]
+      _comments[comment.id] = comment
+    }
+
+    CommentStore.emitChange();
+  },
+
+  _createComment: function ( data ) {
+    scribble.helpers.xhr.post(
+      scribble.helpers.routes.api_comments_url(),
+      data,
+      CommentStore.handleCreateResponse
+    );
+  }
 }});

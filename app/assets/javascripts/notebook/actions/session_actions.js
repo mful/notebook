@@ -21,6 +21,20 @@ var SessionActions = {
     });
   },
 
+  emailLogin: function ( loginInfo ) {
+    AppDispatcher.handleViewAction({
+      actionType: SessionConstants.EMAIL_LOGIN,
+      data: loginInfo
+    })
+  },
+
+  createUserWithEmail: function ( userInfo ) {
+    AppDispatcher.handleViewAction({
+      actionType: SessionConstants.CREATE_USER_WITH_EMAIL,
+      data: userInfo
+    })
+  },
+
   notifyLogin: function () {
     AppDispatcher.handleStoreRequest({
       actionType: SessionConstants.LOGIN_SUCCESS,

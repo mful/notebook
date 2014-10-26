@@ -50,11 +50,11 @@ var NotebookRouter = (function ( _super ) {
 
   NotebookRouter.prototype.openModal = function ( component ) {
     if  ( this.modal == null ) {
-      this.modal = document.getElementById('scribble-modal');
+      this.modal = document.getElementById('scribble-modal-container');
     }
 
     React.renderComponent(
-      component,
+      <Modal component={ component } />,
       this.modal
     );
     this.modal.className += ' active';
@@ -73,6 +73,7 @@ var NotebookRouter = (function ( _super ) {
 
     switch ( action.actionType ) {
       case SessionConstants.LOGIN_SUCCESS:
+      case ModalConstants.CLOSE_MODAL:
         scribble.router.closeModal();
         break;
     }

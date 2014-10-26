@@ -22,6 +22,18 @@ scribble.helpers.routes = {};
     return urlRoot() + '/api/signout';
   };
 
+  namespace.api_signin_url = function () {
+    return urlRoot() + '/api/sessions';
+  };
+
+  namespace.api_users_url = function () {
+    return urlRoot() + '/api/users';
+  };
+
+  namespace.privacy_policy_url = function () {
+    return urlRoot() + 'privacy';
+  };
+
   var urlRoot = function () {
     if ( _urlRoot == null ) {
       if (scribble.context.env === 'production') {

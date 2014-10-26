@@ -11,6 +11,7 @@ class UsersValidator
 
   def initialize(user)
     @user = user
+    @user.errors.clear
   end
 
   def validate
@@ -43,7 +44,7 @@ class UsersValidator
           "must be between #{PASSWORD_MIN_LENGTH} and #{PASSWORD_MAX_LENGTH} characters"
       )
     elsif @user.password != @user.password_confirmation
-      @user.errors.add :password, 'and confirmation have to match.'
+      @user.errors.add :password, 'and confirmation do not match.'
     end
   end
 

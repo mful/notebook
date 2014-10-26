@@ -2,38 +2,60 @@
 
 var LoginForm = React.createClass({
 
-  handleFbLogin: function ( e ) {
-    e.preventDefault();
-    SessionActions.fbLogin();
+  getInitialState: function () {
+    return { 
+      emailSignup: false,
+      error: false,
+    };
   },
 
-  handleGoogleLogin: function ( e ) {
-    e.preventDefault();
-    SessionActions.googleLogin();
+  toggleEmailForm: function () {
+    this.setState({
+      emailSignup: !this.state.emailSignup,
+      error: false
+    });
   },
 
-  handleEmailSubmit: function () {
+  componentDidMount: function () {
+    SessionStore.addChangeListener(this._onChange);
+  },
 
+  componentWillUnmount: function () {
+    SessionStore.removeChangeListener(this._onChange);
   },
 
   render: function () {
     return(
-      <div>
-        <h2 id="modal-header">Login or sign up to post!</h2>
+      <div id="login-form-component">
+        <div id="modal-header">
+          <h2 id="modal-header">Quick!</h2>
+          <h4 className="subheader">Signup to post.</h4>
+        </div>
 
-        <button className="fb-login" onClick={ this.handleFbLogin }>
-          <i className="ion-social-facebook"></i> Connect With Facebook
-        </button>
+        <SocialConnectButtons visible={ !this.state.emailSignup } toggleHandler={ this.toggleEmailForm } />
+        <EmailSignupForm visible={ this.state.emailSignup } toggleHandler={ this.toggleEmailForm } error={ this.state.error } />
 
-        <button className="google-login" onClick={ this.handleGoogleLogin }>
-          <i className="ion-social-google"></i> Connect With Google
-        </button>
-
-        <p id="email-signup-link" className="clickable">or signup with email</p>
-
-        <form id="email-signup-form" onSubmit={ this.handleEmailSubmit }>
-        </form>
+        <p className="privacy-policy">
+          we hate spam too - check out our rock solid&nbsp;
+          <a target="_blank" href={ scribble.helpers.routes.privacy_policy_url() }>
+            privacy policy
+          </a>
+        </p>
       </div>
-    )
+    );
+  },
+
+  // private
+
+  _onChange: function () {
+    user = SessionStore.currentUser();
+    if ( user && user.id ) {
+
+    } else {
+      this.setState({
+        emailSignup: this.state.emailSignup,
+        error: true
+      });
+    }
   }
 });
