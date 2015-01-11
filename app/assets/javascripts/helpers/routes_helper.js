@@ -30,8 +30,16 @@ scribble.helpers.routes = {};
     return urlRoot() + '/api/users';
   };
 
+  namespace.api_user_url = function ( id ) {
+    return urlRoot() + '/api/users/' + id + query;
+  };
+
   namespace.privacy_policy_url = function () {
     return urlRoot() + 'privacy';
+  };
+
+  namespace.signin_path = function ( params ) {
+    return '/signin' + queryString( params );
   };
 
   var urlRoot = function () {

@@ -70,6 +70,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
         AnnotationStore._handleCreateWithComment(action.data);
         break;
       case SessionConstants.LOGIN_SUCCESS:
+        AppDispatcher.waitFor([scribble.router.dispatchToken])
         AnnotationStore._flushPendingAnnotation();
         break;
     }
@@ -88,7 +89,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   _flushPendingAnnotation: function () {
-    if ( _pendingAnnotation !== null ) {
+    if ( _pendingAnnotation != null ) {
       this._createWithComment(_pendingAnnotation);
     }
   },

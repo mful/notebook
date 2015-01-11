@@ -24,7 +24,9 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   loginSuccess: function () {
-    SessionActions.notifyLogin();
+    if ( _currentUser && _currentUser.id && _currentUser.username ) {
+      SessionActions.notifyLogin();
+    }
     this.emitChange();
   },
 
@@ -62,6 +64,9 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
       case SessionConstants.CREATE_USER_WITH_EMAIL:
         SessionStore._createAndSigninWithEmail( action.data );
         break;
+      case SessionConstants.UPDATE_CURRENT_USER:
+        SessionStore._updateCurrentUser( action.data );
+        break;
       case SessionConstants.LOGOUT:
         SessionStore._deleteSession();
         break;
@@ -74,7 +79,9 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
   _ensureCurrentUser: function () {
     if ( !SessionStore.currentUser() ) {
-      scribble.router.navigate('/signin');
+      scribble.router.navigate(
+        scribble.helpers.routes.signin_path({ returnTo: document.location.pathname + document.location.search })
+      );
     }
   },
 
@@ -151,5 +158,22 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
       _userErrors = response.data.errors;
       SessionStore.emitChange();
     }
+  },
+
+  _updateCurrentUser: function ( data ) {
+    scribble.helpers.xhr.request('POST',
+      scribble.helpers.routes.api_user_url( _currentUser.id ),
+      { user: data },
+      function( err, response ) {
+        if ( !err ) {
+          if ( response.status == 200 ) {
+            _currentUser = response.data.user;
+            SessionStore.loginSuccess();
+          } else {
+            _userErrors = response.errors;
+          }
+        }
+      }
+    );
   }
 }});

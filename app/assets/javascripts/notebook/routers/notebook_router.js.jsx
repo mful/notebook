@@ -27,7 +27,16 @@ var NotebookRouter = (function ( _super ) {
   };
 
   NotebookRouter.prototype.newAnnotation = function () {
-    this.changePage( <DiscussionBox /> );
+    var queryParams = scribble.helpers.url.queryObject();
+    var url = scribble.helpers.url.parse( queryParams.url )
+
+    var annotation = {
+      text: queryParams.text,
+      url: url.href,
+      base_domain: url.hostname
+    }
+
+    this.changePage( <DiscussionBox data={ {annotation: annotation, comments: []} } /> );
   };
 
   NotebookRouter.prototype.showAnnotation = function () {
@@ -73,6 +82,8 @@ var NotebookRouter = (function ( _super ) {
 
     switch ( action.actionType ) {
       case SessionConstants.LOGIN_SUCCESS:
+        params = scribble.helpers.url.queryObject()
+        if ( !!params.returnTo ) scribble.router.navigate( params.returnTo );
       case ModalConstants.CLOSE_MODAL:
         scribble.router.closeModal();
         break;

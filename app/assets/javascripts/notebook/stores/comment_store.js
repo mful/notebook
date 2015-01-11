@@ -70,7 +70,7 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   _flushComment: function () {
-    if ( _pendingComment !== null ) {
+    if ( _pendingComment != null ) {
       this._createComment ( _pendingComment )
     }
   },
