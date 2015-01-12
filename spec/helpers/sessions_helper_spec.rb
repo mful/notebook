@@ -4,7 +4,7 @@ require 'spec_helper'
 describe SessionsHelper do
   let!(:user) { FactoryGirl.create :user }
   let!(:original_token) { user.remember_token }
-  
+
   describe '#sign_in' do
     before { sign_in user }
 
@@ -19,7 +19,7 @@ describe SessionsHelper do
   end
 
   describe '#sign_out' do
-    before do 
+    before do
       sign_in user
       sign_out
     end
@@ -34,6 +34,7 @@ describe SessionsHelper do
     end
   end
 
+  # TODO: UPDATE TESTS
   describe '#current_user' do
     context 'when there is no current user' do
       it 'should return nil without a token cookie' do
@@ -47,7 +48,7 @@ describe SessionsHelper do
 
         it 'should return the user' do
           expect(current_user).to eq(user)
-        end 
+        end
       end
     end
 
@@ -56,7 +57,7 @@ describe SessionsHelper do
 
       it 'should set the current user' do
         expect(current_user).to eq(user)
-      end      
+      end
     end
   end
 
@@ -76,4 +77,4 @@ describe SessionsHelper do
     end
   end
 
-end   
+end

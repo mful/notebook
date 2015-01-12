@@ -5,16 +5,16 @@ describe Api::SessionsController do
 
   describe '#new' do
     # do nothing
-  end  
+  end
 
   describe '#create' do
     let(:user) { FactoryGirl.create :user }
     context 'with proper credentials' do
-      before do 
-        post :create, session: { 
-          email: user.email, 
-          password: FactoryGirl.attributes_for(:user)[:password] 
-        }  
+      before do
+        post :create, session: {
+          email: user.email,
+          password: FactoryGirl.attributes_for(:user)[:password]
+        }
       end
 
       it 'should sign in the user' do
@@ -22,11 +22,10 @@ describe Api::SessionsController do
       end
 
       it 'should set the remember_token cookie' do
-        token = User.digest(response.cookies['remember_token'])
-        expect(token).to eq(current_user.remember_token)
+        expect(response.cookies['remember_token']).to eq(current_user.digest(current_user.remember_token))
       end
     end
-    
+
     context 'without invalid credentials' do
       before { post :create, session: { email: user.email } }
 

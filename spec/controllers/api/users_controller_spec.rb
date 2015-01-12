@@ -34,22 +34,22 @@ describe Api::UsersController do
       end
 
       it 'should return 400' do
-        expect(response.status).to eq(400)      
+        expect(response.status).to eq(400)
       end
     end
   end
 
   describe '#new' do
-    before { get :new } 
+    before { get :new }
 
     it 'should return a new user' do
-      expect(response.body).to eq(User.new.to_json)
+      expect(response.body).to eq({ user: UserSerializer.new(User.new).serializable_hash }.to_json)
     end
   end
 
   describe '#show' do
     let(:user) { FactoryGirl.create :user }
-    let(:user_res) { { user: { id: user.id, email: user.email } }.to_json }
+    let(:user_res) { { user: { id: user.id, email: user.email, username: user.username } }.to_json }
 
     context 'when the user is signed in' do
       before do
@@ -77,7 +77,7 @@ describe Api::UsersController do
 
     context 'when not logged in' do
       before { put :update, id: user.id, user: user_update }
-      
+
       it 'should return 404' do
         expect(response.status).to eq(404)
       end
@@ -96,7 +96,7 @@ describe Api::UsersController do
 
         it 'should redirect to the user\'s page' do
           expect(response).to redirect_to(api_user_path(user.id))
-        end 
+        end
       end
 
       context 'when update fails' do
@@ -112,7 +112,7 @@ describe Api::UsersController do
 
   describe '#reset_password' do
     context 'when given an email that does not match a user' do
-      before { get :reset_password, email: 'asfasd' }      
+      before { get :reset_password, email: 'asfasd' }
 
       it 'should return a 404 error' do
         expect(response.status).to eq(404)
@@ -120,16 +120,16 @@ describe Api::UsersController do
     end
 
     context 'when given an email that does not match a user' do
-      let(:user) { FactoryGirl.create :user } 
-      let!(:password_digest) { user.password_digest } 
-      before { get :reset_password, email: user.email } 
+      let(:user) { FactoryGirl.create :user }
+      let!(:password_digest) { user.password_digest }
+      before { get :reset_password, email: user.email }
 
       it 'should update the user\'s password' do
         expect(user.password_digest).not_to eq(password_digest)
       end
 
       it 'should respond with a 200' do
-        expect(response.status).to eq(200) 
+        expect(response.status).to eq(200)
       end
     end
   end

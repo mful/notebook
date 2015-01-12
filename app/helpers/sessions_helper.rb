@@ -5,7 +5,6 @@ module SessionsHelper
     session[:user_id] = user.id
     self.current_user = user
     remember user
-    Rails.logger.info "Login: User #{user.id}"
   end
 
   def remember(user)
