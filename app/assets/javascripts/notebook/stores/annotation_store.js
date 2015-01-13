@@ -18,6 +18,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
       scribble.router.navigate('/login');
     } else if ( response.status === 400 ) {
       alert( 'Invalid data!' )
+      // TODO: add flash handling here
     } else {
       alert( 'Well, this is embarassing. There was an error. Try again?' );
     }

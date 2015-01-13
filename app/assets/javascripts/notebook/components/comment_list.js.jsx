@@ -1,16 +1,31 @@
 /** @jsx React.DOM */
 
 var CommentList = React.createClass({
-  render: function () {
-    var commentNodes = this.props.data.map(function (comment) {
+
+  getInitialState: function () {
+    return {comments: this.props.comments}
+  },
+
+  componentWillReceiveProps: function ( props ) {
+    this.setState({ comments: props.comments });
+  },
+
+  collectComments: function () {
+    var _this = this;
+
+    var commentNodes = this.state.comments.map( function ( comment ) {
       return (
-        <Comment author={comment.author} content={comment.content} />
+        <CommentGroup key={ "commentGroup-" + comment.id } comment={ comment } replies={ comment.replies } />
       );
     });
 
+    return commentNodes;
+  },
+
+  render: function () {
     return (
       <div className="commentList">
-        {commentNodes}
+        { this.collectComments() }
       </div>
     );
   }

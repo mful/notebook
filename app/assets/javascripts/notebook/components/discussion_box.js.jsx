@@ -38,7 +38,7 @@ var DiscussionBox = React.createClass({
 
   addComment: function ( commentData ) {
     AnnotationActions.addComment({
-      annotation_id: this.state.annotation.id, 
+      annotation_id: this.state.annotation.id,
       comment: commentData
     });
   },
@@ -62,9 +62,9 @@ var DiscussionBox = React.createClass({
         <div className="new-comment">
           <CommentForm form={ this.props.data.form } onCommentSubmit={ this.handleCommentSubmit } />
         </div>
-        
+
         <HighlightText highlight={ this.state.annotation } />
-        <CommentList data={ this.state.comments } />
+        <CommentList comments={ this.state.comments } />
         <Menu />
       </div>
     );

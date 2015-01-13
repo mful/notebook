@@ -27,11 +27,22 @@ var CommentForm = React.createClass({
     CommentStore.addChangeListener(this.resetForm);
   },
 
+  cancelButton: function () {
+    if ( typeof this.props.onCancel === "function" ) {
+      return (
+        <button className="button alt" onClick={ this.props.onCancel }>
+          Cancel
+        </button>
+      );
+    }
+  },
+
   render: function () {
     return (
       <form className="comment-form" id="comment-form" onSubmit={ this.handleSubmit }>
         <textarea name="comment[content]" placeholder="What's on your mind?" ref="content"></textarea>
-        <button className="post-comment button" type="submit">Post</button>  
+        <button className="post-comment button" type="submit">Post</button>
+        { this.cancelButton() }
       </form>
     );
   }

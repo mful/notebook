@@ -5,7 +5,7 @@ var LoginForm = React.createClass({
   getInitialState: function () {
     if ( this.props.header == null ) this.props.header = 'Quick!';
     if ( this.props.subHeader == null ) this.props.subHeader = 'Signup to post.';
-    return { 
+    return {
       emailSignup: false,
       error: false,
       header: this.props.header,

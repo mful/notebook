@@ -1,8 +1,8 @@
 class Api::CommentsController < ApiController
-  before_filter :find_comment, only: [:show, :update, :destroy, :flag]
+  before_filter :find_comment, only: [:show, :update, :destroy, :flag, :add_reply]
 
   def show
-    render json: { comment: @comment }, status: 200
+    render json: @comment, status: 200, serializer: CommentSerializer
   end
 
   def create
@@ -17,6 +17,14 @@ class Api::CommentsController < ApiController
     raise Notebook::Unauthorized.new unless can? :edit, @comment
     redirect_or_err(@comment, :api_comment_path, 400) do
       @comment.update_attributes comment_params
+    end
+  end
+
+  def add_reply
+    @reply = Comment.new(reply_params)
+
+    redirect_or_err(@comment, :api_comment_path, 400) do
+      @reply.save && @comment.replies << @reply
     end
   end
 
@@ -39,6 +47,10 @@ class Api::CommentsController < ApiController
 
   def comment_params
     params.require(:comment).permit(:content).merge(user: current_user)
+  end
+
+  def reply_params
+    params.require(:reply).permit(:content).merge(user: current_user)
   end
 
   def find_comment

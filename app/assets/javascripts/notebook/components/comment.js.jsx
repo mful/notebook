@@ -1,9 +1,20 @@
 /** @jsx React.DOM */
 
-// style="transform: rotate(180deg);margin-left: 2px;"
-
 var Comment = React.createClass({
-  render: function() {
+
+  replyForm: function () {
+    if ( this.props.allowReply === true ) {
+      return(
+        <div className="row">
+          <div className="small-12 column">
+            <CommentReplyForm commentId={ this.props.key } />
+          </div>
+        </div>
+      );
+    }
+  },
+
+  render: function () {
     return (
       <div className="comment-wrapper">
         <div className="row">
@@ -12,7 +23,7 @@ var Comment = React.createClass({
               <div className="vote clickable">
                 <i className="ion-arrow-up-b"></i>
               </div>
-              
+
               <div className="vote clickable">
                 <i className="ion-arrow-down-b"></i>
               </div>
@@ -36,13 +47,7 @@ var Comment = React.createClass({
           </div>
         </div>
 
-        <div className="row">
-          <div className="small-12 column">
-            <p className="button mini">
-              Reply
-            </p>
-          </div>
-        </div>
+        { this.replyForm() }
       </div>
 
     );

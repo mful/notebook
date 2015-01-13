@@ -1,6 +1,7 @@
 class CommentSerializer < ActiveModel::Serializer
-  # TODO: add rating, flags, etc
+
   attributes :id, :content, :author, :annotation_id
+  has_many :replies, each_serializer: CommentSerializer
 
   def author
     object.user.username

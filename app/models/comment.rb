@@ -17,6 +17,7 @@ class Comment < ActiveRecord::Base
   after_touch :set_rating # TODO: move to vote service
 
   validates_presence_of :content, :user
+  validates :content, length: { minimum: 15 }
 
   def destroy
     update_attribute :comment_status, CommentStatus.find_by_name('deleted')

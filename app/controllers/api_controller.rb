@@ -4,6 +4,7 @@ class ApiController < ApplicationController
   layout false
 
   skip_before_filter :bootstrap
+  # TODO: Figure out proper autheticity token and security
   skip_before_filter :verify_authenticity_token
 
   after_action :set_csrf_headers

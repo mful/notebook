@@ -13,6 +13,10 @@ scribble.helpers.routes = {};
     return urlRoot() + '/api/comments';
   };
 
+  namespace.api_comment_replies_url = function ( id ) {
+    return urlRoot() + '/api/comments/' + id + '/replies';
+  };
+
   namespace.api_omniauth_login_url = function ( provider, options ) {
     var query = queryString( options );
     return urlRoot() + '/auth/' + provider + '/callback' + query;

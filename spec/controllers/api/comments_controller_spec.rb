@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Api::CommentsController do
   include SessionsHelper
-  
+
   describe '#create' do
     let(:comment) { FactoryGirl.attributes_for :comment }
     let!(:user) { FactoryGirl.create :user }
@@ -77,7 +77,7 @@ describe Api::CommentsController do
 
         it 'should return the comment' do
           expect(response).to redirect_to(api_comment_path(comment.id))
-        end 
+        end
       end
 
       context 'with invalid data' do
@@ -92,7 +92,7 @@ describe Api::CommentsController do
 
     context 'when a different, regular user is logged in' do
       let(:user2) { FactoryGirl.create :user, email: 'snape@hogwarts.com', username: 's' }
-      before do 
+      before do
         sign_in user2
         put :update, id: comment.id, comment: comment_update
       end
@@ -106,7 +106,7 @@ describe Api::CommentsController do
       let(:moderator) { FactoryGirl.create :moderator }
       before do
         sign_in moderator
-        put :update, id: comment.id, comment: comment_update 
+        put :update, id: comment.id, comment: comment_update
       end
 
       it 'should update the comment' do
@@ -123,10 +123,46 @@ describe Api::CommentsController do
     end
   end
 
+  describe '#add_reply' do
+    let(:parent_comment) { FactoryGirl.create :comment }
+
+    context 'when there is a logged in user' do
+      let(:user) { FactoryGirl.create :user, username: 'u2', email: 'h@hogwarts.com' }
+      before do
+        sign_in user
+        post :add_reply, id: parent_comment.id, reply: reply
+      end
+
+      context 'when the reply is valid' do
+        let(:reply) { FactoryGirl.attributes_for :comment }
+
+        it 'should associate a reply with the comment' do
+          expect(parent_comment.replies.count).to eq(1)
+        end
+
+        it 'should redirect to the api comment path' do
+          expect(response).to redirect_to(api_comment_path parent_comment.id)
+        end
+      end
+
+      context 'whent he reply is invalid' do
+        let(:reply) { FactoryGirl.attributes_for(:comment).merge(content: 'too$hort') }
+
+        it 'should return 400' do
+          expect(response.status).to eq(400)
+        end
+      end
+    end
+
+    context 'when there is no logged in user' do
+
+    end
+  end
+
   describe '#destroy' do
     let!(:comment) { FactoryGirl.create :comment, user: user }
     let!(:deleted_status) { CommentStatus.create(name: 'deleted') }
-    let!(:user) { FactoryGirl.create :user } 
+    let!(:user) { FactoryGirl.create :user }
 
     context 'when the proper user is logged in' do
       before do
@@ -183,7 +219,7 @@ describe Api::CommentsController do
     end
   end
 
-  describe '#flag' do 
+  describe '#flag' do
     let(:comment) { FactoryGirl.create :comment }
 
     context 'when not signed in' do
@@ -194,12 +230,12 @@ describe Api::CommentsController do
       end
     end
 
-    context 'when signed in' do 
+    context 'when signed in' do
       let(:user) { FactoryGirl.create :user, email: 'hagrid@eowls.com', username: 'h2' }
       before { sign_in user }
 
       context 'as a user who has already flagged the comment' do
-        before do 
+        before do
           comment.comment_flags << CommentFlag.new(user: user)
           comment.save
           post :flag, id: comment.id
@@ -210,7 +246,7 @@ describe Api::CommentsController do
         end
       end
 
-      context 'as a user who has NOT already flagged the comment' do 
+      context 'as a user who has NOT already flagged the comment' do
         before { post :flag, id: comment.id }
 
         it 'should add a flag to the comment' do

@@ -5,7 +5,7 @@ var _comments = {};
 var _pendingComment;
 
 var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
-  
+
   handleCreateResponse: function ( err, response ) {
     var comment = response.data.comment;
     _comments[comment.id] = comment;
@@ -46,13 +46,16 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
     switch ( action.actionType ) {
       case AnnotationConstants.NOTIFY_COMMENTS:
-        CommentStore._setComments(action.data);
+        CommentStore._setComments( action.data );
         break;
       case AnnotationConstants.ADD_COMMENT:
-        CommentStore._handleCreateComment(action.data);
+        CommentStore._handleCreateComment( action.data );
         break;
       case SessionConstants.LOGIN_SUCCESS:
         CommentStore._flushComment();
+        break;
+      case CommentConstants.ADD_REPLY:
+        CommentStore._addReply( action.data );
         break;
     }
 
@@ -91,5 +94,13 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
       data,
       CommentStore.handleCreateResponse
     );
+  },
+
+  _addReply: function ( data ) {
+    scribble.helpers.xhr.post(
+      scribble.helpers.routes.api_comment_replies_url( data.comment_id ),
+      data,
+      CommentStore.handleCreateResponse
+    )
   }
 }});
