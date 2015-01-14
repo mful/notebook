@@ -15,6 +15,11 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
     return _currentUser;
   },
 
+  // TODO: move to User store
+  isCurrentUserComplete: function () {
+    return _currentUser && _currentUser.username !== null && _currentUser.username.trim() !== ""
+  },
+
   userErrors: function () {
     return _userErrors;
   },
@@ -24,9 +29,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   loginSuccess: function () {
-    if ( _currentUser && _currentUser.id && _currentUser.username ) {
-      SessionActions.notifyLogin();
-    }
+    if ( this.isCurrentUserComplete() ) SessionActions.notifyLogin();
     this.emitChange();
   },
 
@@ -64,6 +67,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
       case SessionConstants.CREATE_USER_WITH_EMAIL:
         SessionStore._createAndSigninWithEmail( action.data );
         break;
+      // TODO: move to user Store
       case SessionConstants.UPDATE_CURRENT_USER:
         SessionStore._updateCurrentUser( action.data );
         break;
@@ -75,10 +79,8 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
     return true;
   }),
 
-  // private
-
   _ensureCurrentUser: function () {
-    if ( !SessionStore.currentUser() ) {
+    if ( !SessionStore.isCurrentUserComplete() ) {
       scribble.router.navigate(
         scribble.helpers.routes.signin_path({ returnTo: document.location.pathname + document.location.search })
       );
@@ -128,6 +130,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
           );
         } else {
           // google authentication failed
+          // TODO: handle this
         }
       });
   },
@@ -160,6 +163,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
     }
   },
 
+  // TODO: Move to User Store
   _updateCurrentUser: function ( data ) {
     scribble.helpers.xhr.request('POST',
       scribble.helpers.routes.api_user_url( _currentUser.id ),
@@ -171,6 +175,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
             SessionStore.loginSuccess();
           } else {
             _userErrors = response.errors;
+            SessionStore.emitChange();
           }
         }
       }

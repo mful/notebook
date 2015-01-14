@@ -35,7 +35,7 @@ scribble.helpers.routes = {};
   };
 
   namespace.api_user_url = function ( id ) {
-    return urlRoot() + '/api/users/' + id + query;
+    return urlRoot() + '/api/users/' + id;
   };
 
   namespace.privacy_policy_url = function () {

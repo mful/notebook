@@ -67,7 +67,7 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   _handleCreateComment: function ( data ) {
     _pendingComment = data;
 
-    if ( SessionStore.currentUser() ) {
+    if ( SessionStore.isCurrentUserComplete() ) {
       this._createComment( _pendingComment );
     }
   },
@@ -97,10 +97,14 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   _addReply: function ( data ) {
-    scribble.helpers.xhr.post(
-      scribble.helpers.routes.api_comment_replies_url( data.comment_id ),
-      data,
-      CommentStore.handleCreateResponse
-    )
+    if ( SessionStore.isCurrentUserComplete() ) {
+      scribble.helpers.xhr.post(
+        scribble.helpers.routes.api_comment_replies_url( data.comment_id ),
+        data,
+        CommentStore.handleCreateResponse
+      )
+    } else {
+      SessionStore._ensureCurrentUser()
+    }
   }
 }});

@@ -5,10 +5,10 @@ var _annotations = {};
 var _pendingAnnotation;
 
 var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
-  
+
   handleCreateResponse: function ( err, response ) {
     if ( err ) {
-      alert('Whoops! Something went wrong. Try again?'); 
+      alert('Whoops! Something went wrong. Try again?');
     } else if ( response.status === 200 ) {
       _pendingAnnotation = null;
       AnnotationStore.separateComments( response.data );
@@ -84,7 +84,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
   _handleCreateWithComment: function ( data ) {
     _pendingAnnotation = data;
 
-    if ( SessionStore.currentUser() ) {
+    if ( SessionStore.isCurrentUserComplete() ) {
       this._createWithComment(_pendingAnnotation);
     }
   },

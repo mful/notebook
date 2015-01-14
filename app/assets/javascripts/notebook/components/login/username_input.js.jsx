@@ -3,7 +3,7 @@
 var UsernameInput = React.createClass({
 
   getInitialState: function () {
-    return { 
+    return {
       visible: this.props.visible,
       errors: this.props.error
     };
@@ -25,7 +25,9 @@ var UsernameInput = React.createClass({
     }
   },
 
-  submitUsername: function () {
+  submitUsername: function ( e ) {
+    e.preventDefault();
+
     SessionActions.updateCurrentUser({
       username: this.refs.username.getDOMNode().value.trim()
     });
