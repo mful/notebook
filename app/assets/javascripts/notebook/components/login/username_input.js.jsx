@@ -38,7 +38,7 @@ var UsernameInput = React.createClass({
       <form id="username-select-component" className={ this.visibilityClass() } onSubmit={ this.submitUsername }>
         <FlashComponent visible={ this.state.error } type="error" messages={ this.errorMessage() } />
 
-        <input ref="username" type="text" placeholder="pick your username" />
+        <input name="user[username]" id="user_username" ref="username" type="text" placeholder="pick your username" />
         <button type="submit">Finish</button>
       </form>
     );

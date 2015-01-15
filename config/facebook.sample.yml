@@ -1,6 +1,6 @@
 development:
-  :app_id: <TEST APP ID>
-  :app_secret: <TEST APP SECRET>
+  :app_id: <DEV APP ID>
+  :app_secret: <DEV APP SECRET>
 
 test:
   :app_id: <TEST APP ID>

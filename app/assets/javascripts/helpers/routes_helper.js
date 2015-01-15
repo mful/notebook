@@ -48,10 +48,12 @@ scribble.helpers.routes = {};
 
   var urlRoot = function () {
     if ( _urlRoot == null ) {
-      if (scribble.context.env === 'production') {
+      if ( scribble_bootstrap.env === 'production' ) {
         _urlRoot = 'http://scribble.ly';
-      } else {
+      } else if ( scribble_bootstrap.env === 'development' ) {
         _urlRoot = 'http://scribble.dev:3000';
+      } else {
+        _urlRoot = 'http://' + document.location.host;
       }
     }
 

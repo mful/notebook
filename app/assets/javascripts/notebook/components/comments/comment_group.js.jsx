@@ -23,7 +23,7 @@ var CommentGroup = React.createClass({
     });
 
     return (
-      <div class="comment-group">
+      <div className="comment-group">
         <Comment author={ this.state.comment.author }
                  content={ this.state.comment.content }
                  key={ this.state.comment.id }

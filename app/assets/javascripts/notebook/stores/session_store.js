@@ -6,7 +6,10 @@ var _currentUser, _userErrors;
 var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
   initialize: function () {
-    _currentUser = scribble.context.current_user.user;
+    if ( scribble.context.current_user ) {
+      _currentUser = scribble.context.current_user.user;
+    }
+
     // don't expose session info globally
     scribble.context.current_user = null;
   },

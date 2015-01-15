@@ -14,6 +14,7 @@ var NotebookRouter = (function ( _super ) {
 
   NotebookRouter.prototype.initialize = function () {
     this.appContainer = document.getElementById('content');
+    this.start();
   };
 
   NotebookRouter.prototype.routes = {

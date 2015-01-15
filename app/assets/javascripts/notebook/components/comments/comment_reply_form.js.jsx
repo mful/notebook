@@ -27,7 +27,7 @@ var CommentReplyForm = React.createClass({
       return <CommentForm onCommentSubmit={ this.submitReply } onCancel={ this.toggleForm } />
     } else {
       return (
-        <div ref="reply-button" class="comment-reply-button">
+        <div ref="reply-button" className="comment-reply-button">
           <p onClick={ this.toggleForm } className="button mini">
             Reply
           </p>

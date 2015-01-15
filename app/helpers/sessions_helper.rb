@@ -1,7 +1,6 @@
 module SessionsHelper
 
   def sign_in(user)
-    sign_out if @current_user.present?
     session[:user_id] = user.id
     self.current_user = user
     remember user

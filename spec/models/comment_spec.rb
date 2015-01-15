@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Comment do
-  
+
   describe '#save' do
 
     context 'with valid data' do
@@ -38,7 +38,7 @@ describe Comment do
       end
 
       it 'should return an error' do
-        expect(comment.errors.full_messages.length).to eq(1)
+        expect(comment.errors.full_messages.length).to eq(2)
       end
     end
   end

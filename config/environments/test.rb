@@ -38,4 +38,8 @@ Notebook::Application.configure do
   config.action_dispatch.default_headers = {
     'X-Frame-Options' => 'ALLOWALL'
   }
+
+  config.react.addons = true
+
+  Rails.application.routes.default_url_options[:host] = 'scribble.test:31234'
 end

@@ -3,7 +3,7 @@
 var EmailSignupForm = React.createClass({
 
   getInitialState: function () {
-    return { 
+    return {
       login: false,
       visible: this.props.visible,
       error: this.props.error
@@ -94,11 +94,11 @@ var EmailSignupForm = React.createClass({
           <input ref="password" type="password" id="user_password" name="user[password]" placeholder="password" />
           <input ref="passwordConfirmation" className={ this.signupClass() } type="password" id="user_password_confirmation" name="user[password_confirmation]" placeholder="password one more time" />
 
-          <button type="submit">{ this.submitCTA() }</button>
+          <button type="submit" id="email-form-submit">{ this.submitCTA() }</button>
         </form>
 
-        <p className={ 'signup-login-toggle ' + this.signupClass() }>Already have an account? <span className="clickable" onClick={ this.toggleLogin }>Login</span></p>
-        <p className={ 'signup-login-toggle ' + this.loginClass() }>New to these parts? <span className="clickable" onClick={ this.toggleLogin }>Signup</span></p>
+        <p className={ 'signup-login-toggle ' + this.signupClass() }>Already have an account? <span className="clickable email-login-toggler" onClick={ this.toggleLogin }>Login</span></p>
+        <p className={ 'signup-login-toggle ' + this.loginClass() }>New to these parts? <span className="clickable email-login-toggler" onClick={ this.toggleLogin }>Signup</span></p>
 
         <p className="clickable email-form-toggle" onClick={ this.props.toggleHandler }>
           or connect with Facebook or Google

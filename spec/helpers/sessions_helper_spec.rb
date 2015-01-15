@@ -34,16 +34,16 @@ describe SessionsHelper do
     end
   end
 
-  # TODO: UPDATE TESTS
   describe '#current_user' do
     context 'when there is no current user' do
       it 'should return nil without a token cookie' do
         expect(current_user).to eq(nil)
       end
 
-      context 'but the remember_token cookie is set' do
+      context 'but the remember_token and signed cookie are set' do
         before do
-          User.stub(:digest).and_return(user.remember_token)
+          sign_in user
+          session.delete(:user_id)
         end
 
         it 'should return the user' do

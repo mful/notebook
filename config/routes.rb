@@ -34,6 +34,8 @@ Notebook::Application.routes.draw do
   get '/auth/:provider/callback' => 'api/sessions#create_with_omniauth', as: 'api_omniauth_login'
   get '/auth/failure' => 'api/sessions#auth_failure'
 
+  get '/signin' => 'sessions#signin', as: 'signin'
+
   resources :annotations, only: [:show, :new]
   post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'
 end

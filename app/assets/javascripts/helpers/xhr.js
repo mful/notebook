@@ -58,10 +58,14 @@ scribble.helpers.xhr = {};
 
   function getCSRFHeaders () {
     if ( _csrfHeaders != null ) return _csrfHeaders;
+    var token, param;
 
     _csrfHeaders = {};
-    _csrfHeaders.token = document.querySelector("meta[name='csrf-token']").content,
-    _csrfHeaders.param = document.querySelector("meta[name='csrf-param']").content
+    token = document.querySelector("meta[name='csrf-token']");
+    param = document.querySelector("meta[name='csrf-param']");
+
+    if ( token ) _csrfHeaders.token = token.content;
+    if ( param ) _csrfHeaders.param = param.content;
 
     return _csrfHeaders;
   }
