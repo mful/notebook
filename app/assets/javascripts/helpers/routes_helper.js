@@ -5,6 +5,10 @@ scribble.helpers.routes = {};
 
   var _urlRoot;
 
+  namespace.api_annotation_url = function ( id ) {
+    return urlRoot() + '/api/annotations/' + id;
+  };
+
   namespace.api_annotations_url = function () {
     return urlRoot() + '/api/annotations';
   };
@@ -38,8 +42,12 @@ scribble.helpers.routes = {};
     return urlRoot() + '/api/users/' + id;
   };
 
+  namespace.annotation_path = function ( id ) {
+    return '/annotations/' + id;
+  };
+
   namespace.privacy_policy_url = function () {
-    return urlRoot() + 'privacy';
+    return urlRoot() + '/privacy';
   };
 
   namespace.signin_path = function ( params ) {

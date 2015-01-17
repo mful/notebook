@@ -1,18 +1,1 @@
-<p class="annotation-text"><%= @annotation.text %></p>
 
-<div class="new-comment">
-  <%= form_for :comment, url: annotation_comments_path do |f| %>
-    <%= f.text_area :content, placeholder: 'What\'s on your mind?' %>
-    <%= f.submit %>
-  <% end %>
-</div>
-
-<div class="comments-wrapper">
-  <% @annotation.comments.order('rating DESC').each do |comment| %>
-    <%= render 'comments/comment', comment: comment %>
-  <% end %>
-</div>
-
-<% unless signed_in? %>
-  <a href='/signin'>Sign In</a>
-<% end %>

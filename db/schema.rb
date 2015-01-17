@@ -11,21 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140822103310) do
+ActiveRecord::Schema.define(version: 20150116233318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "annotations", force: true do |t|
-    t.text    "text"
-    t.integer "page_id"
+    t.text     "text"
+    t.integer  "page_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "annotations", ["page_id"], name: "index_annotations_on_page_id", using: :btree
 
   create_table "comment_flags", force: true do |t|
-    t.integer "comment_id"
-    t.integer "user_id"
+    t.integer  "comment_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "comment_flags", ["comment_id", "user_id"], name: "index_comment_flags_on_comment_id_and_user_id", unique: true, using: :btree
@@ -40,15 +44,19 @@ ActiveRecord::Schema.define(version: 20140822103310) do
   add_index "comment_replies", ["comment_id", "reply_id"], name: "index_comment_replies_on_comment_id_and_reply_id", unique: true, using: :btree
 
   create_table "comment_statuses", force: true do |t|
-    t.string "name"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "comments", force: true do |t|
-    t.text    "content"
-    t.integer "user_id"
-    t.integer "comment_status_id"
-    t.integer "annotation_id"
-    t.float   "rating",            default: 0.0
+    t.text     "content"
+    t.integer  "user_id"
+    t.integer  "comment_status_id"
+    t.integer  "annotation_id"
+    t.float    "rating",            default: 0.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "comments", ["annotation_id"], name: "index_comments_on_annotation_id", using: :btree
@@ -89,8 +97,10 @@ ActiveRecord::Schema.define(version: 20140822103310) do
   end
 
   create_table "roles_users", id: false, force: true do |t|
-    t.integer "user_id"
-    t.integer "role_id"
+    t.integer  "user_id"
+    t.integer  "role_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
@@ -115,5 +125,6 @@ ActiveRecord::Schema.define(version: 20140822103310) do
   end
 
   add_index "votes", ["comment_id"], name: "index_votes_on_comment_id", using: :btree
+  add_index "votes", ["user_id", "comment_id"], name: "index_votes_on_user_id_and_comment_id", unique: true, using: :btree
 
 end

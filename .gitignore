@@ -1,6 +1,7 @@
 .idea
 /.bundle
 /log/*.log
+/log
 /tmp
 /config/database.secret.yml
 /config/facebook.secret.yml
@@ -10,3 +11,4 @@
 /config/secret_token.secret.yml
 *\/\.
 *\.DS*
+chalkboard.rb

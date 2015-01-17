@@ -2,6 +2,19 @@ require 'spec_helper'
 
 describe Comment do
 
+  describe '#create' do
+    let(:user) { FactoryGirl.create :user }
+
+    context 'with valid data' do
+      before { @comment = FactoryGirl.create :comment, user: user }
+
+      it 'should add a vote by the author' do
+        expect(@comment.votes.length).to eq(1)
+        expect(@comment.votes.first.user).to eq(user)
+      end
+    end
+  end
+
   describe '#save' do
 
     context 'with valid data' do
@@ -9,10 +22,6 @@ describe Comment do
 
       it 'should create the comment' do
         expect(Comment.count).to eq(1)
-      end
-
-      it 'should strip the HTML' do
-        expect(comment.content).to eq('Malfoy fucking sucks. srsly.')
       end
     end
 

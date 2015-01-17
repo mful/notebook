@@ -12,12 +12,14 @@ class Comment < ActiveRecord::Base
   has_many :replies, through: :comment_replies
   has_many :comment_flags
 
-  before_validation :sanitize_content
-  before_save :set_rating
+  after_create :add_selfie_vote
+  after_save :set_rating, on: :update
   after_touch :set_rating # TODO: move to vote service
 
   validates_presence_of :content, :user
   validates :content, length: { minimum: 15 }
+
+  scope :by_rating, -> { order('rating DESC') }
 
   def destroy
     update_attribute :comment_status, CommentStatus.find_by_name('deleted')
@@ -28,8 +30,8 @@ class Comment < ActiveRecord::Base
   end
 
   def set_rating
-    self.rating = calculate_rating(
-      votes.positive.count,
+    update_column :rating, calculate_rating(
+      votes.where(positive: true).count,
       votes.count,
       default_rating: DEFAULT_RATING
     )
@@ -37,7 +39,7 @@ class Comment < ActiveRecord::Base
 
   private
 
-  def sanitize_content
-    self.content = Nokogiri::HTML(content).text.strip
+  def add_selfie_vote
+    self.votes << Vote.new(user: user, positive: true)
   end
 end

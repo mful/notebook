@@ -1,19 +1,18 @@
 /** @jsx React.DOM */
 
-function getAnnotationState() {
-  return AnnotationStore.getFirst();
-}
-
-function getCommentState() {
-  return CommentStore.getAllAsList();
-}
-
 var DiscussionBox = React.createClass({
   getInitialState: function () {
     return {
       annotation: this.props.data.annotation,
       comments: this.props.data.comments
     };
+  },
+
+  componentWillReceiveProps: function ( props ) {
+    this.setState({
+      annotation: props.annotation,
+      comments: props.comments
+    })
   },
 
   handleCommentSubmit: function ( commentData ) {
@@ -73,9 +72,18 @@ var DiscussionBox = React.createClass({
   // private
 
   _onChange: function() {
+    var annotation, comments;
+
+    if ( this.state.annotation.id ) {
+      annotation = AnnotationStore.getById( this.state.annotation.id );
+    } else {
+      annotation = AnnotationStore.getFirst();
+    }
+    comments = annotation.id ? CommentStore.getByAnnotationAsList( annotation.id ) : [];
+
     this.setState({
-      annotation: getAnnotationState(),
-      comments: getCommentState()
+      annotation: annotation,
+      comments: comments
     });
   }
 });

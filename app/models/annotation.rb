@@ -1,6 +1,6 @@
 class Annotation < ActiveRecord::Base
   belongs_to :page
-  has_many :comments
+  has_many :comments, -> { order 'rating DESC' }
 
   before_validation :sanitize_text
 

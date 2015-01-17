@@ -41,7 +41,7 @@ var Comment = React.createClass({
 
         <div className="row comment">
           <div className="small-12 column">
-            <p>
+            <p className="comment-content">
               { this.props.content }
             </p>
           </div>

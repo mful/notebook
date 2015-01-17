@@ -21,7 +21,22 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     for ( var key in _comments ) {
       commentsList.push( _comments[key] );
     }
-    return commentsList;
+    return this.sortByRating( commentsList );
+  },
+
+  getByAnnotationAsList: function ( id ) {
+    var comments = []
+
+    for ( var key in _comments ) {
+      if ( _comments[key].annotation_id === id )
+        comments.push( _comments[key] );
+    }
+
+    return this.sortByRating( comments );
+  },
+
+  sortByRating: function ( comments ) {
+    return _( comments ).sortBy( function ( comment ) { return -1 * comment.rating } )
   },
 
   reset: function () {

@@ -37,19 +37,26 @@ var NotebookRouter = (function ( _super ) {
       base_domain: url.hostname
     }
 
+    AnnotationActions.newAnnotation( annotation );
+
     this.changePage( <DiscussionBox data={ {annotation: annotation, comments: []} } /> );
   };
 
   NotebookRouter.prototype.showAnnotation = function () {
-    var data = {
-      annotation: AnnotationStore.getById(arguments[0]),
-      comments: CommentStore.getAllAsList()
-    };
-    this.changePage( <DiscussionBox data={ data } /> );
+    var _this = this, annotation, data;
+
+
+    AnnotationStore.getById( arguments[0], function ( annotation ) {
+      data = {
+        annotation: annotation,
+        comments: CommentStore.getByAnnotationAsList( annotation.id )
+      };
+
+      _this.changePage( <DiscussionBox data={ data } /> );
+    });
   };
 
   NotebookRouter.prototype.changePage = function ( component ) {
-    if ( this.initialRoute ) return;
     this.closeModal();
 
     React.renderComponent(

@@ -72,7 +72,7 @@ describe Api::CommentsController do
         before { put :update, id: comment.id, comment: comment_update }
 
         it 'should update the comment' do
-          expect(Comment.first.content).to eq('EDIT: Malfoy is not very nice')
+          expect(Comment.first.content).to eq(comment_update[:content])
         end
 
         it 'should return the comment' do
@@ -81,7 +81,7 @@ describe Api::CommentsController do
       end
 
       context 'with invalid data' do
-        let(:comment_update) { { content: '<em></em>' } }
+        let(:comment_update) { { content: '  ' } }
         before { put :update, id: comment.id, comment: comment_update }
 
         it 'should return 400' do
@@ -110,7 +110,7 @@ describe Api::CommentsController do
       end
 
       it 'should update the comment' do
-        expect(Comment.first.content).to eq('EDIT: Malfoy is not very nice')
+        expect(Comment.first.content).to eq(comment_update[:content])
       end
     end
 

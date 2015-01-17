@@ -1,4 +1,4 @@
-require "/Users/matty/projects/notebook/features/feature_helper"
+require "./features/feature_helper"
 
 # NOTE: Google does not provide a mechanism for testing their auth
 describe 'the login process', type: :feature, js: true do

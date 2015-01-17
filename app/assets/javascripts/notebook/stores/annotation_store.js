@@ -12,8 +12,9 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
     } else if ( response.status === 200 ) {
       _pendingAnnotation = null;
       AnnotationStore.separateComments( response.data );
-      AnnotationStore.emitChange();
-      scribble.router.navigate( '/annotations/' + response.data.annotation.id );
+      scribble.router.navigate(
+        scribble.helpers.routes.annotation_path( response.data.annotation.id )
+      );
     } else if ( response.status === 403 ) {
       scribble.router.navigate('/login');
     } else if ( response.status === 400 ) {
@@ -29,13 +30,34 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   getFirst: function () {
-    for ( var id in _annotations ) {
-      return _annotations[id];
+    if ( Object.keys( _annotations ).length === 0 ) return this.getPending();
+
+    for ( var key in _annotations ) {
+      return _annotations[key];
     }
   },
 
-  getById: function ( id ) {
-    return _annotations[id];
+  getById: function ( id, callback ) {
+    if ( _annotations[id] ) return _annotations[id];
+
+    scribble.helpers.xhr.get(
+      scribble.helpers.routes.api_annotation_url( id ),
+      function ( err, response ) {
+        if ( err ) {
+          alert('Whoops! Something went wrong. Try again?');
+        } else if ( response.status === 200 ) {
+          AnnotationStore.separateComments( response.data );
+          _annotations[id] = response.data.annotation;
+          callback( _annotations[id] );
+        } else if ( response.status === 404 ) {
+          // stub
+        }
+      }
+    )
+  },
+
+  getPending: function () {
+    return _pendingAnnotation;
   },
 
   reset: function () {
@@ -73,6 +95,10 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
       case SessionConstants.LOGIN_SUCCESS:
         AppDispatcher.waitFor([scribble.router.dispatchToken])
         AnnotationStore._flushPendingAnnotation();
+        break;
+      case AnnotationConstants.NEW_ANNOTATION:
+        _pendingAnnotation = action.data;
+        AnnotationStore.emitChange();
         break;
     }
 
