@@ -25,6 +25,7 @@ Notebook::Application.routes.draw do
     post 'comments/:id/flag' => 'comments#flag', as: 'flag_comment'
     post 'comments/:id/replies' => 'comments#add_reply', as: 'comment_replies'
 
+    get 'annotations/by_page' => 'annotations#by_page', as: 'page_annotations'
     resources :annotations, only: [:create, :show, :new]
     post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'
   end

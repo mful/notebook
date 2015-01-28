@@ -14,17 +14,17 @@ class Page < ActiveRecord::Base
     page ? page : CreatePage.create(Page.new(url: url))
   end
 
-  private
-
-  def sanitize_url
-    self.url = self.class.filter_url(url)
-  end
-
   def self.filter_url(url)
     uri = URI.parse(url)
     url_string = "%s%s" % [uri.host, uri.path]
     url_string.concat("?#{uri.query}") if uri.query
 
     url_string
+  end
+
+  private
+
+  def sanitize_url
+    self.url = self.class.filter_url(url)
   end
 end

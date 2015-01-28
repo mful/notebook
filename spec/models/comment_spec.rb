@@ -70,19 +70,20 @@ describe Comment do
   describe '#set_rating' do
     let!(:comment) { FactoryGirl.create :comment }
 
-    context 'without votes' do
-      it 'should set the rating to the default value' do
-        expect(comment.rating).to eq(Comment::DEFAULT_RATING)
+    context 'with only the default vote' do
+      it 'should set the rating' do
+        expect(comment.rating > 0).to be_true
       end
     end
 
     context 'with votes' do
+      let!(:original_rating) { comment.rating }
       let(:user) { FactoryGirl.create :user, email: 'harry@hogwarts.com', username: 'h1' }
       let!(:vote) { FactoryGirl.create :vote, comment: comment, user: user }
-      before { comment.set_rating }
+      before { comment.save }
 
       it 'should set the custom rating' do
-        expect(comment.rating != Comment::DEFAULT_RATING && comment.rating > 0).to be_true
+        expect(comment.rating > original_rating).to be_true
       end
     end
   end

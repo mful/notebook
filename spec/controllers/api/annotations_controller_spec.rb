@@ -64,5 +64,38 @@ describe Api::AnnotationsController do
       end
     end
   end
-  
+
+  describe '#by_page' do
+    context 'when the page exists' do
+      context 'and the page has annotations' do
+        let(:annotation) { FactoryGirl.create :annotation }
+        before { get :by_page, url: annotation.page.url }
+        let(:expected_res) do
+          [FullAnnotationSerializer.new(annotation).serializable_hash.stringify_keys]
+        end
+
+        it 'should return an array of serialized annotations' do
+          expect(JSON.parse(response.body)['annotations']).to eq(expected_res)
+        end
+      end
+
+      context 'and the page does not have any annotations yet' do
+        let(:page) { FactoryGirl.create :page }
+        before { get :by_page, url: page.url }
+
+        it 'should return an empty array of annotations' do
+          expect(JSON.parse(response.body)['annotations']).to eq([])
+        end
+      end
+    end
+
+    context 'when the page does not exist' do
+      before { get :by_page, url: 'http://test.com' }
+
+      it 'should return an empty array of annotations' do
+        expect(JSON.parse(response.body)['annotations']).to eq([])
+      end
+    end
+  end
+
 end

@@ -9,7 +9,7 @@ class Api::AnnotationsController < ApiController
   def create
     @annotation = Annotation.new(annotation_params)
 
-    redirect_or_err(@annotation, :api_annotation_path, 400) do 
+    redirect_or_err(@annotation, :api_annotation_path, 400) do
       url = params[:url] || request.url
       CreateAnnotation.create @annotation, url, comment_params
     end
@@ -21,6 +21,13 @@ class Api::AnnotationsController < ApiController
     redirect_or_err(comment, :api_comment_path, 400) do
       @annotation.comments << comment && @annotation.save
     end
+  end
+
+  def by_page
+    page = Page.find_by_url Page.filter_url(params[:url])
+    @annotations = page ? page.annotations : []
+
+    render json: @annotations, each_serializer: FullAnnotationSerializer, status: 200
   end
 
   private
