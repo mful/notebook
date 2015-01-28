@@ -1,3 +1,4 @@
+<% @og_props ||= {} %>
 <meta property="og:type" content="<%= @og_props[:type] || 'website' %>" />
 <meta property="og:url" content="<%= @og_props[:url] || request.url.split('?').first %>" />
 <meta property="og:image" content="" />
