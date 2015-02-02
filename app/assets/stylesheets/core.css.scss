@@ -1,4 +1,3 @@
-$grey: #999;
 $light-grey: #e2e2e2;
 $dark-grey: #555555;
 $charcoal: #343434;
@@ -9,16 +8,15 @@ $background2: rgb(255, 251, 252);
 $mint: #3c948b;
 $teal: #3CCFC8;
 $orange: #f99173;
-$red: #e6484e;
 
 $google-red: #D50F25;
 $fb-blue: #3B5998;
 $fb-light-blue: #4C6AA9;
 
-$primary_serif: 'Vollkorn', serif;
-$primary_sans: 'Montserrat';
-
-body { overflow-x: hidden; }
+body {
+  background: $paper;
+  overflow-x: hidden;
+}
 
 .alert {
   padding: 15px;
@@ -49,7 +47,7 @@ body { overflow-x: hidden; }
 
   h3.cta-header {
     color: #fff;
-    font-family: $primary_serif;
+    font-family: $default_serif;
     line-height: 1.4;
   }
 
@@ -70,15 +68,6 @@ body { overflow-x: hidden; }
   &.blue {
     background: $teal;
   }
-
-  &:hover {
-    background: $mint;
-  }
-
-  &.mini {
-    padding: 0.45rem 0.6rem;
-    font-size: 0.5625rem;
-  }
 }
 
 .beta-button {
@@ -87,8 +76,8 @@ body { overflow-x: hidden; }
 
 .clickable {
   cursor: pointer;
-  color: $teal;
-  font-family: $primary_sans, sans-serif;
+  color: $purple;
+  font-family: $default_sans, sans-serif;
   transition: 300ms;
 
   &:hover, &:hover i {

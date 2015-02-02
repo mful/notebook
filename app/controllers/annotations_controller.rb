@@ -1,7 +1,17 @@
 class AnnotationsController < ApplicationController
+  layout :pick_layout
+
   before_filter :find_annotation, only: [:show, :add_comment]
 
   def show
+    comments = @annotation.comments.map do |comment|
+      CommentSerializer.new(comment).serializable_hash
+    end
+
+    @presenter = {
+      annotation: @annotation,
+      comments: comments
+    }
   end
 
   def add_comment
@@ -30,6 +40,15 @@ class AnnotationsController < ApplicationController
   end
 
   private
+
+  def pick_layout
+    case action_name
+    when 'show'
+      'bubble'
+    else
+      'application'
+    end
+  end
 
   def find_annotation
     begin @annotation = Annotation.find(params[:id])

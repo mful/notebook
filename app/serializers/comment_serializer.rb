@@ -1,7 +1,7 @@
 class CommentSerializer < ActiveModel::Serializer
 
-  attributes :id, :content, :author, :annotation_id, :replies, :rating,
-             :created_at, :updated_at
+  attributes :id, :content, :author, :annotation_id, :rating,
+             :created_at, :updated_at, :score
 
   def author
     object.user.username
@@ -11,9 +11,7 @@ class CommentSerializer < ActiveModel::Serializer
     object.annotation_id
   end
 
-  def replies
-    object.replies.order('rating DESC').map do |reply|
-      CommentSerializer.new(reply).serializable_hash
-    end
+  def score
+    object.simple_score
   end
 end

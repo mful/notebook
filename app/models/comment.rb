@@ -37,6 +37,10 @@ class Comment < ActiveRecord::Base
     )
   end
 
+  def simple_score
+    votes.count - votes.where(positive: false).count
+  end
+
   private
 
   def add_selfie_vote

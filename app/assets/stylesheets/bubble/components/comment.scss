@@ -1,0 +1,38 @@
+.comment-component {
+  height: 238px;
+  padding: 10px 0;
+  position: relative;
+
+  .author {
+    font-style: italic;
+    font-weight: 700;
+  }
+
+  .comment-actions {
+    bottom: 10px;
+    position: absolute;
+    text-transform: uppercase;
+
+    .button {
+      float: right;
+      margin: 0 0 0 10px;
+    }
+  }
+
+  .comment-content {
+    left: 90px;
+    position: absolute;
+    right: 0;
+  }
+
+  .content {
+    height: 135px;
+    overflow-y: scroll;
+  }
+
+  .votes-wrapper {
+    float: left;
+    height: 100%;
+    width: 90px;
+  }
+}

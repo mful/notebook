@@ -87,4 +87,19 @@ describe Comment do
       end
     end
   end
+
+  describe '#simple_score' do
+    let(:user) { FactoryGirl.create :user }
+    let(:user_2) { FactoryGirl.create :admin }
+    let(:user_3) { FactoryGirl.create :moderator }
+    let(:comment) { FactoryGirl.create :comment, user: user }
+    before do
+      FactoryGirl.create :vote, comment: comment, user: user_2
+      FactoryGirl.create :vote, positive: false, comment: comment, user: user_3
+    end
+
+    it 'should return the difference between positive and negative votes' do
+      expect(comment.simple_score).to eq(2)
+    end
+  end
 end
