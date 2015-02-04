@@ -6,5 +6,13 @@ var AnalyticsActions = {
       annotation.url,
       commentCount
     );
+  },
+
+  trackViewReplies: function ( comment ) {
+    scribble.helpers.analytics.trackGoogleEvent(
+      AnalyticsConstants.VIEW_REPLIES,
+      comment.id,
+      comment.reply_count
+    )
   }
 };

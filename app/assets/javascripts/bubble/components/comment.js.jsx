@@ -5,6 +5,7 @@ var Comment = React.createClass({
   getInitialState: function () {
     return {
       content: this.props.comment.content,
+      replyCount: this.props.comment.reply_count,
       score: this.props.comment.score,
       userVote: this.props.comment.current_user_vote
     }
@@ -13,9 +14,25 @@ var Comment = React.createClass({
   componentWillReceiveProps: function ( props ) {
     this.setState({
       content: props.comment.content,
+      replyCount: props.comment.reply_count,
       score: props.comment.score,
       userVote: props.comment.current_user_vote
     });
+  },
+
+  replyButtonText: function () {
+    if ( this.state.replyCount === 0 ) {
+      return 'Reply';
+    } else {
+      return 'View Replies (' + this.state.replyCount + ')';
+    }
+  },
+
+  viewReplies: function () {
+    AnalyticsActions.trackViewReplies( this.props.comment );
+    alert(
+      "Well, we haven't actually built this feature yet -- we wanted to make sure people would use it. Your click has been noted :)"
+    );
   },
 
   render: function () {
@@ -49,8 +66,8 @@ var Comment = React.createClass({
               Add Annotation
             </div>
 
-            <div className="button tiny">
-              View Replies (6)
+            <div className="button tiny" onClick={ this.viewReplies }>
+              { this.replyButtonText() }
             </div>
           </div>
         </div>
