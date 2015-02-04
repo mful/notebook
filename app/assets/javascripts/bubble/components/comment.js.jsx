@@ -5,19 +5,24 @@ var Comment = React.createClass({
   getInitialState: function () {
     return {
       content: this.props.comment.content,
-      score: this.props.comment.score
+      score: this.props.comment.score,
+      userVote: this.props.comment.current_user_vote
     }
   },
 
   componentWillReceiveProps: function ( props ) {
-    this.setState({ comments: props.comments });
+    this.setState({
+      content: props.comment.content,
+      score: props.comment.score,
+      userVote: props.comment.current_user_vote
+    });
   },
 
   render: function () {
     return (
       <div className="comment-component">
         <div className="votes-wrapper">
-          <VotingBooth score={ this.state.score } />
+          <VotingBooth score={ this.state.score } userVote={ this.state.userVote } commentId={ this.props.comment.id } />
         </div>
 
         <div className="comment-content">

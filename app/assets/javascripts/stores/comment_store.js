@@ -66,11 +66,17 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
       case AnnotationConstants.ADD_COMMENT:
         CommentStore._handleCreateComment( action.data );
         break;
+      case AppConstants.INITIALIZE_DATA:
+        CommentStore._initializeComments( action.data )
+        break;
       case SessionConstants.LOGIN_SUCCESS:
         CommentStore._flushComment();
         break;
       case CommentConstants.ADD_REPLY:
         CommentStore._addReply( action.data );
+        break;
+      case CommentConstants.VOTE:
+        CommentStore._addVote( action.data );
         break;
     }
 
@@ -78,6 +84,26 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   }),
 
   // private
+
+  _addVote: function ( data ) {
+    if ( !_comments[data.id] ) return;
+
+    var userVote = _comments[data.id].current_user_vote,
+        voteVal = data.positive ? 'up' : 'down';
+    if ( userVote && voteVal === userVote ) return;
+
+    scribble.helpers.xhr.post(
+      scribble.helpers.routes.api_comment_votes_url( data.id ),
+      {vote: data},
+      CommentStore._handleVoteResponse
+    );
+  },
+
+  _flushComment: function () {
+    if ( _pendingComment != null ) {
+      this._createComment ( _pendingComment )
+    }
+  },
 
   _handleCreateComment: function ( data ) {
     _pendingComment = data;
@@ -87,10 +113,26 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     }
   },
 
-  _flushComment: function () {
-    if ( _pendingComment != null ) {
-      this._createComment ( _pendingComment )
+  _handleVoteResponse: function ( err, response ) {
+    if ( err ) return;
+
+    if ( response.status === 200 ) {
+      _comments[response.data.comment.id] = response.data.comment;
+    } else if ( response.status === 403 ) {
+      // SessionStore.ensureCurrentUser();
     }
+
+    CommentStore.emitChange();
+  },
+
+  _initializeComments: function ( data ) {
+    if ( data.comments ) {
+      for ( var i = 0; i < data.comments.length; i++ ) {
+        _comments[data.comments[i].id] = data.comments[i];
+      }
+    }
+
+    return _comments;
   },
 
   _setComments: function ( comments ) {

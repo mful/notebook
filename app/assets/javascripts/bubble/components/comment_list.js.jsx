@@ -12,6 +12,14 @@ var CommentList = React.createClass({
     this.setState({ comments: props.comments });
   },
 
+  componentDidMount: function () {
+    CommentStore.addChangeListener( this._onChange );
+  },
+
+  componentWillUnmount: function () {
+    CommentStore.removeChangeListener( this._onChange );
+  },
+
   collectComments: function () {
     return this.state.comments.map( function ( comment ) {
       return <Comment comment={ comment } key={ comment.id } />;
@@ -24,5 +32,13 @@ var CommentList = React.createClass({
         { this.collectComments() }
       </div>
     );
+  },
+
+  // private
+
+  _onChange: function () {
+    this.setState({
+      comments: CommentStore.getAllAsList()
+    });
   }
 });

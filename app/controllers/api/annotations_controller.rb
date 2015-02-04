@@ -3,7 +3,7 @@ class Api::AnnotationsController < ApiController
   before_filter :verify_user, only: [:create, :add_comment, :create_with_comment]
 
   def show
-    render json: @annotation, serializer: FullAnnotationSerializer, status: 200
+    render json: @annotation, status: 200, serializer: FullAnnotationSerializer, current_user: current_user
   end
 
   def create
@@ -27,7 +27,8 @@ class Api::AnnotationsController < ApiController
     page = Page.find_by_url Page.filter_url(params[:url])
     @annotations = page ? page.annotations : []
 
-    render json: @annotations, each_serializer: FullAnnotationSerializer, status: 200
+    # TODO: move to less robust serializer
+    render json: @annotations, status: 200, each_serializer: FullAnnotationSerializer, current_user: current_user
   end
 
   private

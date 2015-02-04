@@ -1,7 +1,7 @@
 scribble.helpers || (scribble.helpers = {});
 scribble.helpers.routes = {};
 
-(function (namespace) {
+( function ( namespace ) {
 
   var _urlRoot;
 
@@ -19,6 +19,10 @@ scribble.helpers.routes = {};
 
   namespace.api_comment_replies_url = function ( id ) {
     return urlRoot() + '/api/comments/' + id + '/replies';
+  };
+
+  namespace.api_comment_votes_url = function ( id ) {
+    return urlRoot() + '/api/comments/' + id + '/votes';
   };
 
   namespace.api_omniauth_login_url = function ( provider, options ) {
@@ -81,4 +85,4 @@ scribble.helpers.routes = {};
     return query.substring(0, query.length - 1);
   };
 
-})(scribble.helpers.routes);
+})( scribble.helpers.routes );

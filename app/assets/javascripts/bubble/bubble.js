@@ -1,6 +1,7 @@
 //= require_self
 
 //= require ../helpers/analytics
+//= require ../helpers/routes
 //= require ../helpers/xhr
 //= require_tree ../constants
 //= require_tree ../dispatchers

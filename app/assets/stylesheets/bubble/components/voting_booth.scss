@@ -18,6 +18,10 @@
       }
     }
 
+    &.active:after {
+      cursor: default;
+    }
+
     &:after {
       border: solid transparent 14px;
       content: " ";
@@ -37,6 +41,10 @@
         border-bottom: solid $purple 24px;
         top: -13px;
       }
+
+      &.active:after {
+        border-bottom: solid $purple_dark 24px;
+      }
     }
 
     &.down-vote {
@@ -45,6 +53,10 @@
       &:after {
         border-top: solid $purple 24px;
         top: 0;
+      }
+
+      &.active:after {
+        border-top: solid $purple_dark 24px;
       }
     }
   }

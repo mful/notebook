@@ -5,12 +5,13 @@ class AnnotationsController < ApplicationController
 
   def show
     comments = @annotation.comments.map do |comment|
-      CommentSerializer.new(comment).serializable_hash
+      CommentSerializer.new(comment).serializable_hash current_user: current_user
     end
 
     @presenter = {
       annotation: @annotation,
-      comments: comments
+      comments: comments,
+      server_rendered: true
     }
   end
 

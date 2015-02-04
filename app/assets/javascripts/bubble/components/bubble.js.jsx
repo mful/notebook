@@ -3,6 +3,13 @@
 var Bubble = React.createClass({
 
   getInitialState: function () {
+    if ( this.props.server_rendered ) {
+      AppActions.initializeData({
+        annotations: [this.props.annotation],
+        comments: this.props.comments
+      });
+    }
+
     return this.props;
   },
 

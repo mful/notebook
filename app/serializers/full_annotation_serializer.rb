@@ -12,7 +12,7 @@ class FullAnnotationSerializer < ActiveModel::Serializer
 
   def comments
     object.comments.order('rating DESC').map do |comment|
-      CommentSerializer.new(comment).serializable_hash
+      CommentSerializer.new(comment).serializable_hash(current_user: serialization_options[:current_user])
     end
   end
 end

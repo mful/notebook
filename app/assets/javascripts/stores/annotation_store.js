@@ -92,6 +92,9 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
         AppDispatcher.waitFor([SessionStore.dispatchToken])
         AnnotationStore._handleCreateWithComment(action.data);
         break;
+      case AppConstants.INITIALIZE_DATA:
+        AnnotationStore._initializeAnnotations( action.data )
+        break;
       case SessionConstants.LOGIN_SUCCESS:
         AppDispatcher.waitFor([scribble.router.dispatchToken])
         AnnotationStore._flushPendingAnnotation();
@@ -107,6 +110,12 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
   // private
 
+  _flushPendingAnnotation: function () {
+    if ( _pendingAnnotation != null ) {
+      this._createWithComment(_pendingAnnotation);
+    }
+  },
+
   _handleCreateWithComment: function ( data ) {
     _pendingAnnotation = data;
 
@@ -114,11 +123,14 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
       this._createWithComment(_pendingAnnotation);
     }
   },
-
-  _flushPendingAnnotation: function () {
-    if ( _pendingAnnotation != null ) {
-      this._createWithComment(_pendingAnnotation);
+  _initializeAnnotations: function ( data ) {
+    if ( data.annotations ) {
+      for ( var i = 0; i < data.annotations.length; i++ ) {
+        _annotations[data.annotations[i].id] = data.annotations[i];
+      }
     }
+
+    return _annotations;
   },
 
   _createWithComment: function ( data ) {

@@ -1,8 +1,9 @@
 class Api::CommentsController < ApiController
-  before_filter :find_comment, only: [:show, :update, :destroy, :flag, :add_reply]
+  before_filter :find_comment, only: [:show, :update, :destroy, :flag, :add_reply, :add_vote]
+  before_filter :ensure_signed_in, only: [:flag, :add_vote, :add_reply]
 
   def show
-    render json: @comment, status: 200, serializer: CommentSerializer
+    render json: @comment, status: 200, serializer: CommentSerializer, current_user: current_user
   end
 
   def create
@@ -23,9 +24,21 @@ class Api::CommentsController < ApiController
   def add_reply
     @reply = Comment.new(reply_params)
 
-    redirect_or_err(@comment, :api_comment_path, 400) do
+    redirect_or_err @comment, :api_comment_path, 400 do
       @reply.save && @comment.replies << @reply
     end
+  end
+
+  def add_vote
+    @vote = @comment.votes.find_by_user_id(current_user.id)
+
+    if @vote
+      @vote.positive = vote_params[:positive]
+    else
+      @vote = Vote.new(vote_params)
+    end
+
+    redirect_or_err(@vote, :api_comment_path, 400, @comment.id) { @vote.save }
   end
 
   def destroy
@@ -35,15 +48,15 @@ class Api::CommentsController < ApiController
   end
 
   def flag
-    if signed_in?
-      @comment.comment_flags << CommentFlag.new(user: current_user)
-      redirect_or_err(@comment, :api_comment_path, 400) { @comment.save }
-    else
-      raise Notebook::Unauthorized.new
-    end
+    @comment.comment_flags << CommentFlag.new(user: current_user)
+    redirect_or_err(@comment, :api_comment_path, 400) { @comment.save }
   end
 
   private
+
+  def ensure_signed_in
+    raise Notebook::Unauthorized.new unless signed_in?
+  end
 
   def comment_params
     params.require(:comment).permit(:content).merge(user: current_user)
@@ -51,6 +64,10 @@ class Api::CommentsController < ApiController
 
   def reply_params
     params.require(:reply).permit(:content).merge(user: current_user)
+  end
+
+  def vote_params
+    params.require(:vote).permit(:positive).merge(user: current_user, comment: @comment)
   end
 
   def find_comment

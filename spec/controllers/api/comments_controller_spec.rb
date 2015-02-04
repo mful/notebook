@@ -145,7 +145,7 @@ describe Api::CommentsController do
         end
       end
 
-      context 'whent he reply is invalid' do
+      context 'when the reply is invalid' do
         let(:reply) { FactoryGirl.attributes_for(:comment).merge(content: 'too$hort') }
 
         it 'should return 400' do
@@ -155,7 +155,89 @@ describe Api::CommentsController do
     end
 
     context 'when there is no logged in user' do
+      before do
+        post :add_reply, id: parent_comment.id, reply: FactoryGirl.attributes_for(:comment)
+      end
 
+      it 'should return 403' do
+        expect(response.status).to eq(403)
+      end
+    end
+  end
+
+  describe '#add_vote' do
+    let(:comment) { FactoryGirl.create :comment }
+    let(:vote) { FactoryGirl.attributes_for :vote }
+    let(:user) { comment.user }
+    let(:user_2) { FactoryGirl.create :user, username: 'testr', email: 'test@rr.com' }
+
+    context 'when there is a logged in user' do
+
+      context 'and that user has not already voted' do
+        before do
+          sign_in user_2
+          @original_count = comment.votes.count
+          post :add_vote, id: comment.id, vote: vote
+        end
+
+        it 'should add a vote to the comment' do
+          comment.reload
+          expect(comment.votes.count).to eq(@original_count + 1)
+        end
+
+        it 'should redirect to the api comment path' do
+          expect(response).to redirect_to(api_comment_path(comment.id))
+        end
+      end
+
+      context 'and that user has already voted' do
+        before do
+          sign_in user
+          @original_count = comment.votes.count
+        end
+
+        context 'with the same up/down value' do
+          before do
+            post :add_vote, id: comment.id, vote: vote
+          end
+
+          it 'should not add another vote' do
+            comment.reload
+            expect(comment.votes.count).to eq(@original_count)
+          end
+
+          it 'should redirect to the api comment path' do
+            expect(response).to redirect_to(api_comment_path(comment.id))
+          end
+        end
+
+        context 'with a differnt up/down value' do
+          before do
+            @original_pos = vote[:positive]
+            vote[:positive] = !vote[:positive]
+            post :add_vote, id: comment.id, vote: vote
+          end
+
+          it 'should switch the value of the positive column on the vote' do
+            comment.reload
+            expect(comment.votes.first.positive).to eq(!@original_pos)
+          end
+
+          it 'should redirect to the api comment path' do
+            expect(response).to redirect_to(api_comment_path(comment.id))
+          end
+        end
+      end
+    end
+
+    context 'when there is no logged in user' do
+      before do
+        post :add_vote, id: comment.id, vote: vote
+      end
+
+      it 'should return 403' do
+        expect(response.status).to eq(403)
+      end
     end
   end
 

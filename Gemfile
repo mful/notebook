@@ -10,7 +10,7 @@ gem 'nokogiri'
 gem 'turbolinks'
 
 gem 'gon'
-gem 'active_model_serializers', '~> 0.9.0'
+gem 'active_model_serializers', git: 'https://github.com/rails-api/active_model_serializers.git', branch: '0-9-stable'
 
 gem 'sass-rails', '~> 4.0.2'
 gem 'uglifier', '>= 1.3.0'
