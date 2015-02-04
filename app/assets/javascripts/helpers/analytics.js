@@ -8,7 +8,7 @@ scribble.helpers.analytics = {};
     var currentUser = SessionStore.currentUser() ? SessionStore.currentUser() : {};
 
     if (typeof ga !== "undefined" && ga !== null) {
-      return ga('send', 'event', category, action, label, value, {
+      return ga('send', 'event', category, action + '', label + '', value, {
         'metric1': currentUser.id
       });
     }

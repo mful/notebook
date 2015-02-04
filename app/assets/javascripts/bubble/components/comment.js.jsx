@@ -20,6 +20,11 @@ var Comment = React.createClass({
     });
   },
 
+  addAnnotation: function () {
+    AnalyticsActions.trackAddAnnotation();
+    // stub actual functionality
+  },
+
   replyButtonText: function () {
     if ( this.state.replyCount === 0 ) {
       return 'Reply';
@@ -62,7 +67,7 @@ var Comment = React.createClass({
 
         <div className="comment-actions row">
           <div className="small-12 column">
-            <div className="button tiny">
+            <div className="button tiny" onClick={ this.addAnnotation }>
               Add Annotation
             </div>
 
