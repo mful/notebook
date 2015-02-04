@@ -4,13 +4,12 @@ class AnnotationsController < ApplicationController
   before_filter :find_annotation, only: [:show, :add_comment]
 
   def show
-    comments = @annotation.comments.map do |comment|
-      CommentSerializer.new(comment).serializable_hash current_user: current_user
-    end
+    serialized_annotation =
+      FullAnnotationSerializer.new(@annotation).serializable_hash current_user: current_user
 
     @presenter = {
-      annotation: @annotation,
-      comments: comments,
+      annotation: serialized_annotation,
+      comments: serialized_annotation[:comments],
       server_rendered: true
     }
   end

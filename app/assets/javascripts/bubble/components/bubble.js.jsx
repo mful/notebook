@@ -13,6 +13,13 @@ var Bubble = React.createClass({
     return this.props;
   },
 
+  componentDidMount: function () {
+    AnalyticsActions.trackAnnotationView(
+      this.state.annotation,
+      this.state.comments.length
+    );
+  },
+
   render: function () {
     return (
       <div className="bubble-component">

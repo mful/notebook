@@ -14,7 +14,6 @@ window.scribble = {};
 scribble.helpers = {};
 
 bubble.init = function () {
-  window.scribble.context = scribble_bootstrap;
   SessionStore.initialize();
 
   return this;
