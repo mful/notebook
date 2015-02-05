@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sidekiq/testing'
 
 describe Api::AnnotationsController do
   include SessionsHelper
@@ -69,13 +70,20 @@ describe Api::AnnotationsController do
     context 'when the page exists' do
       context 'and the page has annotations' do
         let(:annotation) { FactoryGirl.create :annotation }
-        before { get :by_page, url: annotation.page.url }
         let(:expected_res) do
           [FullAnnotationSerializer.new(annotation).serializable_hash.stringify_keys]
+        end
+        before do
+          GATrackWorker.drain
+          get :by_page, url: annotation.page.url
         end
 
         it 'should return an array of serialized annotations' do
           expect(JSON.parse(response.body)['annotations']).to eq(expected_res)
+        end
+
+        it 'should queue a GA track worker' do
+          expect(GATrackWorker.jobs.size).to eq(1)
         end
       end
 

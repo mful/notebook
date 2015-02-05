@@ -4,6 +4,11 @@ ruby '2.1.2'
 gem 'rails', '4.1.6'
 
 gem 'pg'
+gem 'redis'
+
+gem 'sidekiq'
+
+gem 'gabba'
 
 gem 'nokogiri'
 

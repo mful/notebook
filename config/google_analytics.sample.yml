@@ -1,0 +1,16 @@
+default: &default
+  tracking_code: 'UA-53863884-1'
+  host: 'scribble.dev'
+
+production:
+  tracking_code: 'UA-53863884-1'
+  host: 'scribble.ly'
+
+stage:
+  <<: *default
+
+development:
+  <<: *default
+
+test:
+  <<: *default

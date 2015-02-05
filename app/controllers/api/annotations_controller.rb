@@ -27,6 +27,10 @@ class Api::AnnotationsController < ApiController
     page = Page.find_by_url Page.filter_url(params[:url])
     @annotations = page ? page.annotations : []
 
+    if @annotations.length > 0
+      GATrackWorker.perform_async 'Load Annotated Page', page.url, @annotations.length
+    end
+
     # TODO: move to less robust serializer
     render json: @annotations, status: 200, each_serializer: FullAnnotationSerializer, current_user: current_user
   end

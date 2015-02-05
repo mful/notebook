@@ -5,6 +5,7 @@
 /tmp
 /config/database.secret.yml
 /config/facebook.secret.yml
+/config/google_analytics.secret.yml
 /config/twitter.secret.yml
 /config/mandrill.secret.yml
 /config/omniauth.secret.yml
