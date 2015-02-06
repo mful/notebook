@@ -96,7 +96,6 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
         AnnotationStore._initializeAnnotations( action.data )
         break;
       case SessionConstants.LOGIN_SUCCESS:
-        AppDispatcher.waitFor([scribble.router.dispatchToken])
         AnnotationStore._flushPendingAnnotation();
         break;
       case AnnotationConstants.NEW_ANNOTATION:

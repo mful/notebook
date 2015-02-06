@@ -1,0 +1,28 @@
+.social-connect-buttons-component {
+  margin-bottom: 20px;
+
+  .button {
+    border: none;
+    width: 100%;
+  }
+
+  .email-form-toggle {
+    font-size: 1.33rem;
+  }
+
+  #fb-login {
+    background: $fb_blue;
+
+    &:hover {
+      background: $fb_light_blue
+    }
+  }
+
+  #google-login {
+    background: $google_red;
+
+    &:hover {
+      background: $red;
+    }
+  }
+}

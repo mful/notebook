@@ -5,7 +5,7 @@ scribble.helpers.url = {};
 
   namespace.queryObject = function () {
     var params = {};
-    var queryString = window.location.search.substring(1); 
+    var queryString = window.location.search.substring(1);
     var queryParams = queryString.split('&');
 
     for ( param in queryParams ) {
@@ -19,6 +19,10 @@ scribble.helpers.url = {};
     }
 
     return params;
+  };
+
+  namespace.origin = function ( urlString ) {
+    return namespace.parse( urlString ).origin;
   };
 
   namespace.parse = function ( urlString ) {

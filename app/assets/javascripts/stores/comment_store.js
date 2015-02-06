@@ -2,7 +2,7 @@ var EventEmitter = require('event_emitter').EventEmitter;
 
 var CHANGE_EVENT = 'change';
 var _comments = {};
-var _pendingComment;
+var _pendingComment, _pendingVote;
 
 var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
@@ -71,12 +71,13 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
         break;
       case SessionConstants.LOGIN_SUCCESS:
         CommentStore._flushComment();
+        CommentStore._flushVote();
         break;
       case CommentConstants.ADD_REPLY:
         CommentStore._addReply( action.data );
         break;
       case CommentConstants.VOTE:
-        CommentStore._addVote( action.data );
+        CommentStore._handleAddVote( action.data );
         break;
     }
 
@@ -86,12 +87,6 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   // private
 
   _addVote: function ( data ) {
-    if ( !_comments[data.id] ) return;
-
-    var userVote = _comments[data.id].current_user_vote,
-        voteVal = data.positive ? 'up' : 'down';
-    if ( userVote && voteVal === userVote ) return;
-
     scribble.helpers.xhr.post(
       scribble.helpers.routes.api_comment_votes_url( data.id ),
       {vote: data},
@@ -102,6 +97,28 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   _flushComment: function () {
     if ( _pendingComment != null ) {
       this._createComment ( _pendingComment )
+      _pendingComment = null;
+    }
+  },
+
+  _flushVote: function () {
+    if( _pendingVote != null ) {
+      this._addVote( _pendingVote );
+      _pendingVote = null;
+    }
+  },
+
+  _handleAddVote: function ( data ) {
+    if ( !_comments[data.id] ) return;
+
+    var userVote = _comments[data.id].current_user_vote,
+        voteVal = data.positive ? 'up' : 'down';
+    if ( userVote && voteVal === userVote ) return;
+
+    _pendingVote = data;
+
+    if ( SessionStore.isCurrentUserComplete() ) {
+      this._addVote( _pendingVote );
     }
   },
 

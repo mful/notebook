@@ -37,6 +37,7 @@ Notebook::Application.routes.draw do
   get '/auth/failure' => 'api/sessions#auth_failure'
 
   get '/signin' => 'sessions#signin', as: 'signin'
+  get '/signup' => 'sessions#signup', as: 'signup'
 
   resources :annotations, only: [:show, :new]
   post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'

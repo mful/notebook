@@ -1,11 +1,13 @@
 require 'spec_helper'
+require 'sidekiq/testing'
 
 describe CreateUser do
   describe '#create' do
     context 'with a valid user' do
       let(:user) { FactoryGirl.build :user }
       before do
-        CreateUser.create user 
+        GATrackWorker.drain
+        CreateUser.create user
         @email = MandrillMailer::deliveries.detect { |mail|
           mail.template_name == 'Welcome' &&
           mail.message['to'].any? { |to| to[:email] == user.email }
@@ -19,6 +21,10 @@ describe CreateUser do
 
       it 'should send the user a welcome email' do
         expect(@email).to_not be_nil
+      end
+
+      it 'should queue an event tracking worker' do
+        expect(GATrackWorker.jobs.size).to eq(1)
       end
     end
 

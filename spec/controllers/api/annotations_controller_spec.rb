@@ -47,7 +47,7 @@ describe Api::AnnotationsController do
     end
   end
 
-  describe 'show' do
+  describe '#show' do
     context 'when the annotation exists' do
       let(:annotation) { FactoryGirl.create :annotation }
       before { get :show, id: annotation.id }

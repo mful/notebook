@@ -1,6 +1,7 @@
 module SessionsHelper
 
   def sign_in(user)
+    GATrackWorker.perform_async 'Login', user.id
     session[:user_id] = user.id
     self.current_user = user
     remember user

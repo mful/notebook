@@ -38,7 +38,10 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   loginSuccess: function () {
-    if ( this.isCurrentUserComplete() ) SessionActions.notifyLogin();
+    if ( this.isCurrentUserComplete() ) {
+      SessionActions.notifyLogin();
+      CourierActions.postLogin( _currentUser );
+    }
     this.emitChange();
   },
 
@@ -56,13 +59,21 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  dispatchToken: AppDispatcher.register(function ( payload ) {
+  dispatchToken: AppDispatcher.register( function ( payload ) {
     var action = payload.action;
 
     switch(action.actionType) {
       case AnnotationConstants.CREATE_WITH_COMMENT:
+        SessionStore._ensureCurrentUser( 'add an annotation' );
+        break;
       case AnnotationConstants.ADD_COMMENT:
-        SessionStore._ensureCurrentUser();
+        SessionStore._ensureCurrentUser( 'comment' );
+        break;
+      case CommentConstants.VOTE:
+        SessionStore._ensureCurrentUser( 'vote' );
+        break;
+      case CourierConstants.POST_LOGIN:
+        SessionStore._setCurrentUser( action.data.currentUser );
         break;
       case SessionConstants.FB_LOGIN:
         SessionStore._loginWithFb();
@@ -89,12 +100,9 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
     return true;
   }),
 
-  _ensureCurrentUser: function () {
+  _ensureCurrentUser: function ( referringAction ) {
     if ( !SessionStore.isCurrentUserComplete() ) {
-      // TODO: remove router usage here
-      scribble.router.navigate(
-        scribble.helpers.routes.signin_path({ returnTo: document.location.pathname + document.location.search })
-      );
+      Courier.post( SessionConstants.AUTH_NEEDED, {referringAction: referringAction} );
     }
   },
 
@@ -172,6 +180,15 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
       _userErrors = response.data.errors;
       SessionStore.emitChange();
     }
+  },
+
+  _setCurrentUser: function ( user ) {
+    _currentUser = user;
+    // TODO: this is a bad hack around Flux's one way data flow constraint.
+    // TODO: I think the true solution is to use two dispatchers: one for
+    // TODO: View -> Store communication, and one for Store <-> Store comm.
+    setTimeout( SessionActions.notifyLogin, 0 );
+    SessionStore.emitChange();
   },
 
   // TODO: Move to User Store
