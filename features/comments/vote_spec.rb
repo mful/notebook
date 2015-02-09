@@ -19,6 +19,6 @@ describe 'voting on a comment', type: :feature, js: true do
     find('.up-vote').click
     expect(find('.vote-count')).to have_content('2')
     find('.down-vote').click
-    expect(find('.vote-count')).to have_content('1')
+    expect(find('.vote-count')).to have_content('0')
   end
 end

@@ -38,7 +38,7 @@ class Comment < ActiveRecord::Base
   end
 
   def simple_score
-    votes.count - votes.where(positive: false).count
+    votes.where(positive: true).size - votes.where(positive: false).size
   end
 
   private

@@ -99,7 +99,7 @@ describe Comment do
     end
 
     it 'should return the difference between positive and negative votes' do
-      expect(comment.simple_score).to eq(2)
+      expect(comment.simple_score).to eq(1)
     end
   end
 end
