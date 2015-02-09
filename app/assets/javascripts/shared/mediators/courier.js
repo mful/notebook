@@ -21,17 +21,5 @@ var Courier = React.addons.update(EventEmitter.prototype, {$merge: {
     ) return;
 
     CourierActions.dispatch( JSON.parse(event.data) );
-  },
-
-  dispatchToken: AppDispatcher.register( function ( payload ) {
-    var action = payload.action;
-
-    switch( action.actionType ) {
-      case CourierConstants.POST_LOGIN:
-        Courier.post( CourierConstants.POST_LOGIN, action.data );
-        break;
-    }
-
-    return true;
-  })
+  }
 }});

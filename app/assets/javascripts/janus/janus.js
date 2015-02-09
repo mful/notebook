@@ -1,12 +1,13 @@
 //= require_self
 
-//= require ../helpers/analytics
-//= require ../helpers/routes
-//= require ../helpers/url
-//= require ../helpers/xhr
-//= require_tree ../constants
-//= require_tree ../dispatchers
-//= require_tree ../stores
+//= require ../shared/helpers/analytics
+//= require ../shared/helpers/routes
+//= require ../shared/helpers/url
+//= require ../shared/helpers/xhr
+//= require_tree ../shared/constants
+//= require_tree ../shared/dispatchers
+//= require ../shared/mediators/courier
+//= require_tree ../shared/stores
 //= require_tree ./components
 //= require_tree ./actions
 //= require_tree ./mediators
@@ -17,7 +18,7 @@ scribble.helpers = {};
 
 janus.init = function () {
   SessionStore.initialize();
-  Courier.initialize();
+  JanusCourier.initialize();
 
   return this;
 }
