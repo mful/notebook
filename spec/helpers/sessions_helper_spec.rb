@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sidekiq/testing'
 
 # NOTE: all cookie tests are done in sessions_controller_spec for convenience
 describe SessionsHelper do
@@ -6,7 +7,10 @@ describe SessionsHelper do
   let!(:original_token) { user.remember_token }
 
   describe '#sign_in' do
-    before { sign_in user }
+    before do
+      GATrackWorker.drain
+      sign_in user
+    end
 
     it 'should update the users\'s remember_token' do
       user.reload
@@ -15,6 +19,10 @@ describe SessionsHelper do
 
     it 'should set the current user' do
       expect(current_user).to eq(user)
+    end
+
+    it 'should queue a GA track worker' do
+      expect(GATrackWorker.jobs.size).to eq(1)
     end
   end
 

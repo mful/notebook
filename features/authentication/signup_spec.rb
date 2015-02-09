@@ -2,10 +2,9 @@ require "./features/feature_helper"
 
 describe 'email signup', type: :feature, js: true do
   let(:user_attrs) { FactoryGirl.attributes_for :user }
-  let(:return_to) { new_annotation_path }
 
   before do
-    visit signin_path(returnTo: return_to)
+    visit signup_path(referring_action: 'vote')
     find('.email-form-toggle').click
     fill_in 'user_email', with: user_attrs[:email]
     fill_in 'user_password', with: 'foobar'
@@ -16,7 +15,9 @@ describe 'email signup', type: :feature, js: true do
     sleep 1
   end
 
-  it 'should login the user and redirect to the returnTo' do
-    expect(current_path).to eq(return_to)
+  # checking actual session status is tough here. We can assume it worked
+  # for the most part, if we get through the before block without errors
+  it 'should update the username of the user' do
+    expect(User.first.username).to eq(user_attrs[:username])
   end
 end

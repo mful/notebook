@@ -1,4 +1,5 @@
 var SessionConstants = {
+  AUTH_NEEDED: 'auth_needed',
   LOGIN_SUCCESS: 'login',
   LOGOUT_SUCCESS: 'logged_out',
   LOGOUT: 'logout',

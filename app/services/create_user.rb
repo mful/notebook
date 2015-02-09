@@ -9,7 +9,11 @@ class CreateUser
   end
 
   def create
-    send_welcome_email if @user.save
+    if @user.save
+      send_welcome_email
+      track_create
+    end
+
     @user
   end
 
@@ -17,5 +21,9 @@ class CreateUser
 
   def send_welcome_email
     WelcomeMailer.welcome(@user).deliver
+  end
+
+  def track_create
+    GATrackWorker.perform_async 'Create User'
   end
 end

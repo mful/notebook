@@ -11,11 +11,11 @@
 //= require_tree ./actions
 //= require_tree ./mediators
 
-window.bubble = {};
+window.janus = {};
 window.scribble = {};
 scribble.helpers = {};
 
-bubble.init = function () {
+janus.init = function () {
   SessionStore.initialize();
   Courier.initialize();
 

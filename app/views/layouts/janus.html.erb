@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Annotate the Web - Scribble</title>
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600,300italic|Lora:400,700,400italic' rel='stylesheet' type='text/css'>
+  <%= stylesheet_link_tag "janus", media: "all", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+  <%= render 'shared/google_analytics' %>
+  <script src="http://apis.google.com/js/client:platform.js" async defer>
+  </script>
+</head>
+<body>
+  <div id="content">
+    <%= yield %>
+  </div>
+
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+  <%= include_gon namespace: 'scribble_bootstrap' %>
+
+  <%= render 'shared/facebook_sdk' %>
+  <%= javascript_include_tag "janus", "data-turbolinks-track" => true %>
+
+  <script>
+    (function () {
+      document.addEventListener('DOMContentLoaded', function () {
+        window.janus.init();
+      })
+    })();
+  </script>
+</body>
+</html>

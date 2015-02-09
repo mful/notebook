@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sidekiq/testing'
 
 describe Api::UsersController do
   include SessionsHelper
@@ -6,7 +7,10 @@ describe Api::UsersController do
   describe '#create' do
     context 'on succesful save' do
       let(:user) { FactoryGirl.attributes_for :user }
-      before { @res = post :create, user: user }
+      before do
+        GATrackWorker.drain
+        @res = post :create, user: user
+      end
 
       it 'should create a user' do
         expect(User.count).to eq(1)
@@ -18,6 +22,10 @@ describe Api::UsersController do
 
       it 'should sign in the user' do
         expect(current_user.email).to eq(user[:email])
+      end
+
+      it 'should queue an event tracking worker for both the user creation and the login' do
+        expect(GATrackWorker.jobs.size).to eq(2)
       end
     end
 

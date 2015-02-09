@@ -5,10 +5,9 @@ describe 'the login process', type: :feature, js: true do
   include FbIntegrationHelper
 
   let(:user) { FactoryGirl.create :user, username: nil, password: 'foobar', password_confirmation: 'foobar' }
-  let(:return_to) { new_annotation_path }
 
   before do
-    visit signin_path(returnTo: return_to)
+    visit signup_path(referring_action: 'vote')
   end
 
   describe 'when logging in with email' do
@@ -24,8 +23,11 @@ describe 'the login process', type: :feature, js: true do
       sleep 1
     end
 
-    it 'should login the user and redirect to the returnTo' do
-      expect(current_path).to eq(return_to)
+    # checking actual session status is tough here. We can assume it worked
+    # for the most part, if we get through the before block without errors
+    it 'should update the username of the user' do
+      user.reload
+      expect(user.username).to eq('hagrid')
     end
   end
 
@@ -47,10 +49,13 @@ describe 'the login process', type: :feature, js: true do
       click_button 'Finish'
 
       sleep 1
+      visit signup_path
     end
 
-    it 'should login the user and redirect to the returnTo' do
-      expect(current_path).to eq(return_to)
+    # checking actual session status is tough here. We can assume it worked
+    # for the most part, if we get through the before block without errors
+    it 'should update the username of the user' do
+      expect(User.first.username).to eq('hagrid')
     end
   end
 
