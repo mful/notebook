@@ -41,4 +41,9 @@ Notebook::Application.routes.draw do
 
   resources :annotations, only: [:show, :new]
   post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'
+
+
+  ### Paper ###
+
+  get 'annotations/:id/comments/new' => 'paper/comments#new', as: 'new_annotation_comment'
 end
