@@ -12,16 +12,10 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
     } else if ( response.status === 200 ) {
       _pendingAnnotation = null;
       AnnotationStore.separateComments( response.data );
-      scribble.router.navigate(
-        scribble.helpers.routes.annotation_path( response.data.annotation.id )
-      );
-    } else if ( response.status === 403 ) {
-      scribble.router.navigate('/login');
+      AnnotationActions.notifyCreate( response.data.annotation );
     } else if ( response.status === 400 ) {
-      alert( 'Invalid data!' )
-      // TODO: add flash handling here
-    } else {
-      alert( 'Well, this is embarassing. There was an error. Try again?' );
+      errors = "- " + response.data.errors.join("\n- ");
+      alert( "Whoops! There were some errors:\n\n" + errors );
     }
   },
 
@@ -119,7 +113,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
     _pendingAnnotation = data;
 
     if ( SessionStore.isCurrentUserComplete() ) {
-      this._createWithComment(_pendingAnnotation);
+      this._createWithComment( _pendingAnnotation );
     }
   },
   _initializeAnnotations: function ( data ) {
@@ -133,7 +127,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   _createWithComment: function ( data ) {
-   scribble.helpers.xhr.post(
+    scribble.helpers.xhr.post(
       scribble.helpers.routes.api_annotations_url(),
       data,
       AnnotationStore.handleCreateResponse

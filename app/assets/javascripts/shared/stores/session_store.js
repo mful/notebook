@@ -66,6 +66,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
       case AnnotationConstants.CREATE_WITH_COMMENT:
         SessionStore._ensureCurrentUser( 'add an annotation' );
         break;
+      case CommentConstants.CREATE_COMMENT:
       case AnnotationConstants.ADD_COMMENT:
         SessionStore._ensureCurrentUser( 'comment' );
         break;

@@ -39,11 +39,12 @@ Notebook::Application.routes.draw do
   get '/signin' => 'sessions#signin', as: 'signin'
   get '/signup' => 'sessions#signup', as: 'signup'
 
-  resources :annotations, only: [:show, :new]
+  resources :annotations, only: [:show], constraints: { id: /\d+/ }
   post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'
 
 
   ### Paper ###
 
+  get 'annotations/new' => 'paper/annotations#new', as: 'new_annotation'
   get 'annotations/:id/comments/new' => 'paper/comments#new', as: 'new_annotation_comment'
 end

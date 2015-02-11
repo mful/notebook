@@ -6,14 +6,21 @@ var Paper = React.createClass({
     return this.props;
   },
 
-  submitHandler: function(content) {
-    CommentActions.createComment({
-      annotation_id: this.props.id,
-      comment: {
-        content: content
-      }
-    });
-    return;
+  submitHandler: function ( content ) {
+    if ( this.props.type === 'comment' ) {
+      CommentActions.createComment({
+        annotation_id: this.props.id,
+        comment: {
+          content: content
+        }
+      });
+    } else if ( this.props.type === 'annotation' ) {
+      AnnotationActions.createWithComment({
+        annotation: {text: this.props.text},
+        url: this.props.url,
+        comment: {content: content}
+      });
+    }
   },
 
   render: function () {
