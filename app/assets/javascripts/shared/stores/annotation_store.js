@@ -83,7 +83,6 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
     switch(action.actionType) {
       case AnnotationConstants.CREATE_WITH_COMMENT:
-        AppDispatcher.waitFor([SessionStore.dispatchToken])
         AnnotationStore._handleCreateWithComment(action.data);
         break;
       case AppConstants.INITIALIZE_DATA:
@@ -106,6 +105,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
   _flushPendingAnnotation: function () {
     if ( _pendingAnnotation != null ) {
       this._createWithComment(_pendingAnnotation);
+      _pendingAnnotation = null;
     }
   },
 
@@ -116,6 +116,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
       this._createWithComment( _pendingAnnotation );
     }
   },
+
   _initializeAnnotations: function ( data ) {
     if ( data.annotations ) {
       for ( var i = 0; i < data.annotations.length; i++ ) {

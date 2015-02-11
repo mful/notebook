@@ -27,7 +27,7 @@ var CommentList = React.createClass({
       comment = document.querySelector(
         '.comment-component[data-key="' + this.state.newComment.id + '"]'
       );
-      window.scroll( 0, comment.offsetTop - comment.clientHeight );
+      window.scroll( 0, comment.offsetTop );
     }
   },
 
@@ -48,12 +48,12 @@ var CommentList = React.createClass({
   // private
 
   _onChange: function () {
-    var comments = CommentStore.getAllAsList(), match = false, newComment;
+    var comments = CommentStore.getAllAsList(), match = false, newComment, i, j;
 
-    for( var j = 0; j < comments.length; j++ ) {
+    for( j = 0; j < comments.length; j++ ) {
       match = false;
 
-      for( var i = 0; i < this.state.comments.length; i++){
+      for( i = 0; i < this.state.comments.length; i++){
         if ( comments[j].id === this.state.comments[i].id ) {
           match = true;
           break;
@@ -62,7 +62,7 @@ var CommentList = React.createClass({
 
       if ( match ) continue;
 
-      newComment = comments[i];
+      newComment = comments[j];
       break;
     }
 
