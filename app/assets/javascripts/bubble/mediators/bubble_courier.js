@@ -5,7 +5,7 @@ var BubbleCourier = React.addons.update(Courier, {$merge: {
 
     switch( action.actionType ) {
       case CourierConstants.POST_LOGIN:
-        Courier.post( SessionConstants.LOGIN_SUCCESS, action.data );
+        BubbleCourier.post( SessionConstants.LOGIN_SUCCESS, action.data );
         break;
     }
 

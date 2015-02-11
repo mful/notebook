@@ -5,7 +5,7 @@ var JanusCourier = React.addons.update(Courier, {$merge: {
 
     switch( action.actionType ) {
       case CourierConstants.POST_LOGIN:
-        Courier.post( CourierConstants.POST_LOGIN, action.data );
+        JanusCourier.post( CourierConstants.POST_LOGIN, action.data );
         break;
     }
 

@@ -7,8 +7,20 @@ var _pendingComment, _pendingVote;
 var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
   handleCreateResponse: function ( err, response ) {
-    var comment = response.data.comment;
-    _comments[comment.id] = comment;
+    var comment, errors;
+
+    if ( err ) {
+      alert("Well, that didn't work...try again?");
+      return;
+    } else if ( response.status === 200 ) {
+      comment = response.data.comment;
+      _comments[comment.id] = comment;
+      CommentActions.notifyCreate( comment );
+    } else if ( response.status === 400 ) {
+      errors = "- " + response.data.errors.join("\n- ");
+      alert( "Whoops! There were some errors:\n\n" + errors );
+    }
+
     CommentStore.emitChange();
   },
 
@@ -63,8 +75,12 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
       case AnnotationConstants.NOTIFY_COMMENTS:
         CommentStore._setComments( action.data );
         break;
+      case CommentConstants.CREATE_COMMENT:
       case AnnotationConstants.ADD_COMMENT:
         CommentStore._handleCreateComment( action.data );
+        break;
+      case CourierConstants.POST_CREATE_COMMENT:
+        CommentStore._receiveComment( action.data.comment );
         break;
       case AppConstants.INITIALIZE_DATA:
         CommentStore._initializeComments( action.data )
@@ -150,6 +166,11 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     }
 
     return _comments;
+  },
+
+  _receiveComment: function ( comment ) {
+    _comments[comment.id] = comment;
+    CommentStore.emitChange();
   },
 
   _setComments: function ( comments ) {

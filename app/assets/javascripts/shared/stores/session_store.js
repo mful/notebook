@@ -184,10 +184,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
   _setCurrentUser: function ( user ) {
     _currentUser = user;
-    // TODO: this is a bad hack around Flux's one way data flow constraint.
-    // TODO: I think the true solution is to use two dispatchers: one for
-    // TODO: View -> Store communication, and one for Store <-> Store comm.
-    setTimeout( SessionActions.notifyLogin, 0 );
+    SessionActions.notifyLogin();
     SessionStore.emitChange();
   },
 

@@ -15,10 +15,17 @@ var AppDispatcher = React.addons.update(Dispatcher.prototype, {$merge: {
   },
 
   handleStoreRequest: function ( action ) {
-    this.dispatch({
-      source: 'STORE_ACTION',
-      action: action
-    });
+    var _this = this;
+    setTimeout(
+      function () {
+        _this.dispatch({
+          source: 'STORE_ACTION',
+          action: action
+        });
+      }
+    ,
+      0
+    )
   }
 
 }});

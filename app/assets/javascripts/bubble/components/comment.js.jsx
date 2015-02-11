@@ -22,7 +22,7 @@ var Comment = React.createClass({
 
   addAnnotation: function () {
     AnalyticsActions.trackAddAnnotation();
-    // stub actual functionality
+    CommentActions.newComment( this.props.comment.annotation_id );
   },
 
   replyButtonText: function () {
@@ -42,7 +42,7 @@ var Comment = React.createClass({
 
   render: function () {
     return (
-      <div className="comment-component">
+      <div className="comment-component" data-key={ this.props.key }>
         <div className="votes-wrapper">
           <VotingBooth score={ this.state.score } userVote={ this.state.userVote } commentId={ this.props.comment.id } />
         </div>
