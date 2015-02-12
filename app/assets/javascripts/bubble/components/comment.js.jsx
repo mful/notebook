@@ -34,10 +34,12 @@ var Comment = React.createClass({
   },
 
   viewReplies: function () {
-    AnalyticsActions.trackViewReplies( this.props.comment );
-    alert(
-      "Well, we haven't actually built this feature yet -- we wanted to make sure people would use it. Your click has been noted :)"
-    );
+    if ( this.state.replyCount === 0 ) {
+      CommentActions.newReply( this.props.comment.id );
+    } else {
+      AnalyticsActions.trackViewReplies( this.props.comment );
+      // stub
+    }
   },
 
   render: function () {

@@ -2,7 +2,7 @@ var EventEmitter = require('event_emitter').EventEmitter;
 
 var CHANGE_EVENT = 'change';
 var _comments = {};
-var _pendingComment, _pendingVote;
+var _pendingComment, _pendingReply, _pendingVote;
 
 var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
@@ -102,6 +102,14 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
   // private
 
+  _addReply: function ( data ) {
+    scribble.helpers.xhr.post(
+      scribble.helpers.routes.api_comment_replies_url( data.comment_id ),
+      data,
+      CommentStore.handleCreateResponse
+    )
+  },
+
   _addVote: function ( data ) {
     scribble.helpers.xhr.post(
       scribble.helpers.routes.api_comment_votes_url( data.id ),
@@ -135,6 +143,14 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
     if ( SessionStore.isCurrentUserComplete() ) {
       this._addVote( _pendingVote );
+    }
+  },
+
+  _handleAddReply: function ( data ) {
+    _pendingReply = data;
+
+    if ( SessionStore.isCurrentUserComplete() ) {
+      this._addReply( pendingReply );
     }
   },
 
@@ -189,17 +205,5 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
       data,
       CommentStore.handleCreateResponse
     );
-  },
-
-  _addReply: function ( data ) {
-    if ( SessionStore.isCurrentUserComplete() ) {
-      scribble.helpers.xhr.post(
-        scribble.helpers.routes.api_comment_replies_url( data.comment_id ),
-        data,
-        CommentStore.handleCreateResponse
-      )
-    } else {
-      SessionStore._ensureCurrentUser()
-    }
   }
 }});

@@ -10,15 +10,18 @@ var Paper = React.createClass({
     if ( this.props.type === 'comment' ) {
       CommentActions.createComment({
         annotation_id: this.props.id,
-        comment: {
-          content: content
-        }
+        comment: {content: content}
       });
     } else if ( this.props.type === 'annotation' ) {
       AnnotationActions.createWithComment({
         annotation: {text: this.props.text},
         url: this.props.url,
         comment: {content: content}
+      });
+    } else if ( this.props.type === 'reply' ) {
+      CommentActions.createReply({
+        comment_id: this.props.id,
+        reply: {content: content}
       });
     }
   },
