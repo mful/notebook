@@ -1,7 +1,14 @@
 .comment-component {
-  height: 238px;
-  padding: 10px 0;
+  border-bottom: solid 1px $paper_dark;
+  margin: 0 10px;
+  min-height: 240px;
+  overflow: auto;
+  padding: 40px 0;
   position: relative;
+
+  &:first-child {
+    padding-top: 10px;
+  }
 
   .author {
     font-style: italic;
@@ -9,8 +16,6 @@
   }
 
   .comment-actions {
-    bottom: 10px;
-    position: absolute;
     text-transform: uppercase;
 
     .button {
@@ -20,19 +25,12 @@
   }
 
   .comment-content {
-    left: 90px;
-    position: absolute;
-    right: 0;
-  }
-
-  .content {
-    height: 135px;
-    overflow-y: scroll;
+    margin-left: 90px;
   }
 
   .votes-wrapper {
-    float: left;
-    height: 100%;
+    left: 0;
+    position: absolute;
     width: 90px;
   }
 }

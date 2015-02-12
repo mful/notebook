@@ -65,19 +65,21 @@ var Comment = React.createClass({
               </p>
             </div>
           </div>
-        </div>
 
-        <div className="comment-actions row">
-          <div className="small-12 column">
-            <div className="button tiny" onClick={ this.addAnnotation }>
-              Add Annotation
-            </div>
+          <div className="comment-actions row">
+            <div className="small-12 column">
+              <div className="button tiny" onClick={ this.addAnnotation }>
+                Add Annotation
+              </div>
 
-            <div className="button tiny" onClick={ this.viewReplies }>
-              { this.replyButtonText() }
+              <div className="button tiny" onClick={ this.viewReplies }>
+                { this.replyButtonText() }
+              </div>
             </div>
           </div>
         </div>
+
+
       </div>
     );
   }
