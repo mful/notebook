@@ -29,6 +29,12 @@ class Comment < ActiveRecord::Base
     comment_status && comment_status.name == 'deleted'
   end
 
+  def parent_comment
+    Comment.joins(:comment_replies).
+      where("comment_replies.comment_id = comments.id AND comment_replies.reply_id = ?", id).
+      first
+  end
+
   def set_rating
     update_column :rating, calculate_rating(
       votes.where(positive: true).count,

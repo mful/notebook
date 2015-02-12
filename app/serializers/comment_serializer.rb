@@ -1,7 +1,8 @@
 class CommentSerializer < ActiveModel::Serializer
 
   attributes :id, :content, :author, :annotation_id, :rating, :created_at,
-             :updated_at, :score, :current_user_vote, :reply_count
+             :updated_at, :score, :current_user_vote, :reply_count,
+             :parent_comment_id
 
   def author
     object.user.username
@@ -20,6 +21,10 @@ class CommentSerializer < ActiveModel::Serializer
         vote.positive ? 'up' : 'down'
       end
     end
+  end
+
+  def parent_comment_id
+    object.parent_comment.try :id
   end
 
   def reply_count

@@ -24,7 +24,7 @@ class Api::CommentsController < ApiController
   def add_reply
     @reply = Comment.new(reply_params)
 
-    redirect_or_err @comment, :api_comment_path, 400 do
+    redirect_or_err @reply, :api_comment_path, 400 do
       @reply.save && @comment.replies << @reply
     end
   end

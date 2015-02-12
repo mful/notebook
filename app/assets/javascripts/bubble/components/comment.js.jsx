@@ -29,7 +29,7 @@ var Comment = React.createClass({
     if ( this.state.replyCount === 0 ) {
       return 'Reply';
     } else {
-      return 'View Replies (' + this.state.replyCount + ')';
+      return 'Expand Replies ( ' + this.state.replyCount + ' )';
     }
   },
 
@@ -38,7 +38,7 @@ var Comment = React.createClass({
       CommentActions.newReply( this.props.comment.id );
     } else {
       AnalyticsActions.trackViewReplies( this.props.comment );
-      // stub
+      CommentActions.showReplies( this.props.comment.id );
     }
   },
 

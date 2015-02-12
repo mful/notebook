@@ -47,8 +47,12 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     return this.sortByRating( comments );
   },
 
+  sortByDate: function ( comments ) {
+    return _( comments ).sortBy( function ( comment ) { return -1 * comment.created_at; } );
+  },
+
   sortByRating: function ( comments ) {
-    return _( comments ).sortBy( function ( comment ) { return -1 * comment.rating } )
+    return _( comments ).sortBy( function ( comment ) { return -1 * comment.rating; } );
   },
 
   reset: function () {
@@ -90,7 +94,7 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
         CommentStore._flushVote();
         break;
       case CommentConstants.ADD_REPLY:
-        CommentStore._addReply( action.data );
+        CommentStore._handleAddReply( action.data );
         break;
       case CommentConstants.VOTE:
         CommentStore._handleAddVote( action.data );
@@ -150,7 +154,7 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     _pendingReply = data;
 
     if ( SessionStore.isCurrentUserComplete() ) {
-      this._addReply( pendingReply );
+      this._addReply( _pendingReply );
     }
   },
 

@@ -140,8 +140,8 @@ describe Api::CommentsController do
           expect(parent_comment.replies.count).to eq(1)
         end
 
-        it 'should redirect to the api comment path' do
-          expect(response).to redirect_to(api_comment_path parent_comment.id)
+        it 'should redirect to the api comment path, for the reply' do
+          expect(response).to redirect_to(api_comment_path Comment.last.id)
         end
       end
 

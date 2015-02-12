@@ -88,6 +88,25 @@ describe Comment do
     end
   end
 
+  describe '#parent_comment' do
+    let(:comment) { FactoryGirl.create :comment }
+
+    context 'when the comment is a reply' do
+      let(:parent) { FactoryGirl.create :comment, user: comment.user }
+      before { parent.replies << comment }
+
+      it 'should return the parent comment' do
+        expect(comment.parent_comment).to eq(parent)
+      end
+    end
+
+    context 'when the comment is not a reply' do
+      it 'should return nil' do
+        expect(comment.parent_comment).to be_nil
+      end
+    end
+  end
+
   describe '#simple_score' do
     let(:user) { FactoryGirl.create :user }
     let(:user_2) { FactoryGirl.create :admin }
