@@ -15,17 +15,17 @@ class scribble.statics.views.ThanksView
     _trackShare('FB')
     FB.ui
       method: 'send'
-      link: 'https://scribble.ly'
+      link: 'https://scribblely.herokuapp.com'
 
   twitterShare: (e) =>
     _trackShare('Twitter')
 
   emailShare: =>
     _trackShare('Email')
-  
+
   _trackShare = (platform, options = {}) ->
     scribble.analytics.helpers.events.trackGoogleEvent(
-      'Share', 
+      'Share',
       platform,
       options.label,
       options.value
