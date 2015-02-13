@@ -7,11 +7,11 @@ class Api::AnnotationsController < ApiController
   end
 
   def create
-    @annotation = Annotation.new(annotation_params)
+    url = params[:url] || request.url
+    @annotation = CreateAnnotation.create annotation_params, url, comment_params
 
     redirect_or_err(@annotation, :api_annotation_path, 400) do
-      url = params[:url] || request.url
-      CreateAnnotation.create @annotation, url, comment_params
+      @annotation.persisted?
     end
   end
 

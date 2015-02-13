@@ -2,30 +2,48 @@ require 'spec_helper'
 
 describe CreateAnnotation do
   let(:user) { FactoryGirl.create :user }
-  
+
   describe '#create' do
     let(:comment_params) { FactoryGirl.attributes_for(:comment).merge(user: user) }
 
     context 'when the page exists' do
       let!(:page) { FactoryGirl.create :page }
-      let(:annotation) { FactoryGirl.build :annotation, page: nil }
-      before { CreateAnnotation.create annotation, page.url, comment_params }
+      let(:annotation) { FactoryGirl.attributes_for :annotation, page: nil }
 
-      it 'should create the annotation' do
-        expect(Annotation.count).to eq(1)
+      context 'and there is not an annotation on that page with the same text' do
+        before { CreateAnnotation.create annotation, page.url, comment_params }
+
+        it 'should create the annotation' do
+          expect(Annotation.count).to eq(1)
+        end
+
+        it 'should associate the annotation with the page' do
+          expect(Annotation.first.page).to eq(page)
+        end
+
+        it 'should not create a new entity' do
+          expect(Page.count).to eq(1)
+        end
       end
 
-      it 'should associate the annotation with the page' do
-        expect(Annotation.first.page).to eq(page)
-      end
+      context 'and there is already an annotation on that page with the same text' do
+        let!(:existing_annotation) { FactoryGirl.create :annotation, page: page }
+        let!(:initial_comment_count) { existing_annotation.comments.size }
+        before { CreateAnnotation.create annotation, page.url, comment_params }
 
-      it 'should not create a new entity' do
-        expect(Page.count).to eq(1)
+        it 'should not create a new annotation' do
+          expect( Annotation.count ).to eq(1)
+        end
+
+        it 'should add a comment to that annotation' do
+          existing_annotation.reload
+          expect( existing_annotation.comments.size ).to eq(initial_comment_count + 1)
+        end
       end
     end
 
     context 'when the page does not exist' do
-      let(:annotation) { FactoryGirl.build :annotation, page: nil }
+      let(:annotation) { FactoryGirl.attributes_for :annotation, page: nil }
       before do
         CreateAnnotation.create(
           annotation,
@@ -33,7 +51,7 @@ describe CreateAnnotation do
           comment_params
         )
       end
-    
+
       it 'should create the page' do
         expect(Annotation.count).to eq(1)
       end
@@ -48,7 +66,7 @@ describe CreateAnnotation do
     end
 
     context 'with invalid annotation data' do
-      let(:annotation) { FactoryGirl.build :annotation, text: 'blah' }
+      let(:annotation) { FactoryGirl.attributes_for :annotation, text: 'blah' }
       before do
         @res = CreateAnnotation.create(
           annotation,
@@ -57,14 +75,14 @@ describe CreateAnnotation do
         )
       end
 
-      it 'should return false' do
-        expect(@res).to be_false
+      it 'should not persist the annotation' do
+        expect(@res.persisted?).to be_false
       end
     end
 
     context 'with an invalid comment' do
       let!(:page) { FactoryGirl.create :page }
-      let(:annotation) { FactoryGirl.build :annotation, page: nil }
+      let(:annotation) { FactoryGirl.attributes_for :annotation, page: nil }
       let(:bad_params) { { content: comment_params[:content] } }
       before do
         @res = CreateAnnotation.create(
@@ -74,8 +92,8 @@ describe CreateAnnotation do
         )
       end
 
-      it 'should return false' do
-        expect(@res).to be_false
+      it 'should not persist the annotation' do
+        expect(@res.persisted?).to be_false
       end
     end
   end

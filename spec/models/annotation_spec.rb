@@ -9,10 +9,6 @@ describe Annotation do
       it 'should create the annotation' do
         expect(Annotation.count).to eq(1)
       end
-
-      it 'should sanitize the text' do
-        expect(annotation.text).to eq('A Beginner\'s Guide to Transfiguration, Switch explores the fundamentals every learner needs to know.')
-      end
     end
 
     context 'with invalid text' do
