@@ -5,8 +5,7 @@ class Annotation < ActiveRecord::Base
   before_validation :sanitize_text
 
   validates_presence_of :text, :page
-  # TODO: think about the min/max here a bit more
-  validates :text, length: { minimum: 5, maximum: 1000 }
+  validates :text, length: { minimum: 5, maximum: 400 }
 
   def simple_score
     comments.sum :rating;
