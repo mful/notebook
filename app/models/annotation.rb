@@ -8,6 +8,10 @@ class Annotation < ActiveRecord::Base
   # TODO: think about the min/max here a bit more
   validates :text, length: { minimum: 5, maximum: 1000 }
 
+  def simple_score
+    comments.sum :rating;
+  end
+
   private
 
   def sanitize_text

@@ -25,7 +25,7 @@ class Api::AnnotationsController < ApiController
 
   def by_page
     page = Page.find_by_url Page.filter_url(params[:url])
-    @annotations = page ? page.annotations : []
+    @annotations = page ? page.default_page_annotations : []
 
     if @annotations.length > 0
       GATrackWorker.perform_async 'Load Annotated Page', page.url, @annotations.length

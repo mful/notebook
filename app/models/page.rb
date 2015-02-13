@@ -22,6 +22,22 @@ class Page < ActiveRecord::Base
     url_string
   end
 
+  def default_page_annotations(count = 10, max_recents = 5, recent_time_ago = 3.days.ago)
+    return annotations if annotations.count < count
+
+    tops = top_annotations(count)
+    recents = annotations.where('created_at > ?', recent_time_ago).
+                          where('id NOT IN (?)', tops.map(&:id)).
+                          order('created_at DESC').
+                          limit(max_recents)
+
+    tops[0...(count - recents.length)].concat recents
+  end
+
+  def top_annotations(count = 10)
+    annotations.sort_by { |annotation| -1 * annotation.simple_score }[0..count]
+  end
+
   private
 
   def sanitize_url
