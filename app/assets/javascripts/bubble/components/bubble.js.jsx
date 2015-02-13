@@ -23,7 +23,7 @@ var Bubble = React.createClass({
   render: function () {
     return (
       <div className="bubble-component">
-        <CommentList comments={ this.state.comments } />
+        <CommentList comments={ this.state.comments } annotationId={ this.props.annotation.id } />
       </div>
     );
   }

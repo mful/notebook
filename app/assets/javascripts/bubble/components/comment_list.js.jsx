@@ -48,7 +48,8 @@ var CommentList = React.createClass({
   // private
 
   _onChange: function () {
-    var comments = CommentStore.getAllAsList(), match = false, newComment, i, j;
+    var comments = CommentStore.getByAnnotationAsList( this.props.annotationId ),
+        match = false, newComment, i, j;
 
     for( j = 0; j < comments.length; j++ ) {
       match = false;
