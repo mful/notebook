@@ -1,6 +1,6 @@
 //= require_self
 
-//= require_tree ../helpers
+//= require_tree ../shared/helpers
 //= require_tree ./constants
 //= require_tree ./dispatcher
 //= require_tree ./routers
