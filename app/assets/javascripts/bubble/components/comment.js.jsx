@@ -20,7 +20,8 @@ var Comment = React.createClass({
     });
   },
 
-  addAnnotation: function () {
+  addAnnotation: function ( e ) {
+    e.stopPropagation();
     AnalyticsActions.trackAddAnnotation();
     CommentActions.newComment( this.props.comment.annotation_id );
   },
@@ -33,7 +34,8 @@ var Comment = React.createClass({
     }
   },
 
-  viewReplies: function () {
+  viewReplies: function ( e ) {
+    e.stopPropagation();
     if ( this.state.replyCount === 0 ) {
       CommentActions.newReply( this.props.comment.id );
     } else {

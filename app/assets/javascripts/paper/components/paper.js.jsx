@@ -26,9 +26,14 @@ var Paper = React.createClass({
     }
   },
 
+  postMouseup: function () {
+    var event = {target: 'paper'};
+    PaperCourier.post( CourierConstants.POST_MOUSEUP, {event: event} );
+  },
+
   render: function () {
     return(
-      <div className="paper-component">
+      <div className="paper-component" onClick={ this.postMouseup }>
         <CommentForm submitHandler={ this.submitHandler } />
       </div>
     );

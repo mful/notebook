@@ -16,12 +16,14 @@ var VotingBooth = React.createClass({
     });
   },
 
-  upVote: function () {
+  upVote: function ( e ) {
+    e.stopPropagation();
     if ( this.state.userVote === 'up' ) return;
     return this.vote( true );
   },
 
-  downVote: function () {
+  downVote: function ( e ) {
+    e.stopPropagation();
     if ( this.state.userVote === 'down' ) return;
     return this.vote( false );
   },
