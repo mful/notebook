@@ -1,27 +1,12 @@
-$light-grey: #e2e2e2;
-$dark-grey: #555555;
-$charcoal: #343434;
-
-$background: #fff;
-$background2: rgb(255, 251, 252);
-
-$mint: #3c948b;
-$teal: #3CCFC8;
-$orange: #f99173;
-
-$google-red: #D50F25;
-$fb-blue: #3B5998;
-$fb-light-blue: #4C6AA9;
-
 body {
-  background: $paper;
+  background: $white;
   overflow-x: hidden;
 }
 
 .alert {
   padding: 15px;
   margin: 20px inherit;
-  background: $light-grey;
+  background: $light_grey;
   color: white;
 
   &.alert-error {

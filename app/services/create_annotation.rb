@@ -13,7 +13,7 @@ class CreateAnnotation
   def create
     associate_page
     associate_comment
-    @annotation.save
+    track_create if @annotation.save
 
     @annotation
   end
@@ -36,5 +36,9 @@ class CreateAnnotation
     end
 
     dupe ? dupe : candidate
+  end
+
+  def track_create
+    GATrackWorker.perform_async 'Create Annotation', @annotation.page.url
   end
 end

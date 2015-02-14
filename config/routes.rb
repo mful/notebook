@@ -39,9 +39,11 @@ Notebook::Application.routes.draw do
   get '/signin' => 'sessions#signin', as: 'signin'
   get '/signup' => 'sessions#signup', as: 'signup'
 
-  resources :annotations, only: [:show], constraints: { id: /\d+/ }
   post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'
 
+  ### Ledger ###
+
+  get 'annotations/:id' => 'ledger/annotations#show', as: 'annotation'
 
   ### Paper ###
 
