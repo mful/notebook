@@ -31,11 +31,11 @@ var SocialConnectButtons = React.createClass({
   render: function () {
     return(
       <div className={ 'social-connect-buttons-component ' + this.visibilityClass() }>
-        <button id="fb-login" className="fb-login button" onClick={ this.handleFbLogin }>
+        <button id="fb-login" className="fb-login button large" onClick={ this.handleFbLogin }>
           <i className="ion-social-facebook"></i> Connect With Facebook
         </button>
 
-        <button id="google-login" className="google-login button" onClick={ this.handleGoogleLogin }>
+        <button id="google-login" className="google-login button large" onClick={ this.handleGoogleLogin }>
           <i className="ion-social-google"></i> Connect With Google
         </button>
 

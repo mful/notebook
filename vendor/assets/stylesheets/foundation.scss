@@ -1710,11 +1710,8 @@ button, .button {
     button.info:hover, button.info:focus, .button.info:hover, .button.info:focus {
       color: #FFFFFF; }
   button.large, .button.large {
-    padding-top: 1.125rem;
-    padding-right: 2.25rem;
-    padding-bottom: 1.1875rem;
-    padding-left: 2.25rem;
-    font-size: 1.25rem; }
+    padding: 1rem 1.25rem 1.0625rem;
+    font-size: 1rem; }
   button.small, .button.small {
     padding-top: 0.875rem;
     padding-right: 1.75rem;

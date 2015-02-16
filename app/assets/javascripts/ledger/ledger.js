@@ -18,6 +18,7 @@ scribble.helpers = {};
 
 ledger.init = function () {
   SessionStore.initialize();
+  LedgerCourier.initialize();
 
   return this;
 }
