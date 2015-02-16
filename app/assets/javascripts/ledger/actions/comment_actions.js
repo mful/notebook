@@ -14,6 +14,13 @@ var CommentActions = {
     });
   },
 
+  notifyCreate: function ( comment ) {
+    AppDispatcher.handleStoreRequest({
+      actionType: CommentConstants.COMMENT_CREATE_SUCCESS,
+      data: {comment: comment}
+    })
+  },
+
   vote: function ( data ) {
     AppDispatcher.handleViewAction({
       actionType: CommentConstants.VOTE,

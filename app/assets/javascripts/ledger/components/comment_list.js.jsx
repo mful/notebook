@@ -27,7 +27,7 @@ var CommentList = React.createClass({
       comment = document.querySelector(
         '.comment-component[data-key="' + this.state.newComment.id + '"]'
       );
-      window.scroll( 0, comment.offsetTop );
+      if ( comment ) comment.scrollIntoViewIfNeeded();
     }
   },
 
@@ -68,7 +68,7 @@ var CommentList = React.createClass({
     }
 
     this.setState({
-      comments: comments,
+      comments: CommentStore.sortByRating( comments ),
       newComment: newComment
     });
   }
