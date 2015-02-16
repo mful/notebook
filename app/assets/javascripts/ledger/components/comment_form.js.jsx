@@ -2,15 +2,9 @@
 
 var CommentForm = React.createClass({
 
-  visibilityStates: {
-    collapsed: 'collapsed',
-    open: 'open',
-    expanded: 'expanded'
-  },
-
   getInitialState: function () {
     return {
-      visibility: this.visibilityStates.open,
+      visibility: this.props.visibilityStates.open,
       fixed: false,
       firstRender: true
     }
@@ -26,21 +20,21 @@ var CommentForm = React.createClass({
 
     if ( boundingBox.bottom > window.innerHeight ) {
       stateObj.fixed = true;
-      stateObj.visibility = this.visibilityStates.collapsed;
+      stateObj.visibility = this.props.visibilityStates.collapsed;
     };
 
     this.setState( stateObj );
   },
 
   componentDidUpdate: function () {
-    if ( this.state.visibility === this.visibilityStates.open )
+    if ( this.state.visibility === this.props.visibilityStates.open )
       this.refs.content.getDOMNode().focus();
   },
 
   // event handlers
 
   maybeSetHeight: function () {
-    if ( this.state.visibility !== this.visibilityStates.expanded ) return {};
+    if ( this.state.visibility !== this.props.visibilityStates.expanded ) return {};
     var header = this.props.header.getDOMNode(),
         inputMargin = 10,
         padding = 25,
@@ -55,8 +49,10 @@ var CommentForm = React.createClass({
   },
 
   setOpen: function () {
-    if ( this.state.visibility === this.visibilityStates.collapsed )
-      this.setState({ visibility: this.visibilityStates.open })
+    if ( this.state.visibility === this.props.visibilityStates.collapsed ) {
+      this.setState({ visibility: this.props.visibilityStates.open });
+      this.props.visibilityHandler( this.props.visibilityStates.open );
+    }
   },
 
   setCollapse: function () {
@@ -64,10 +60,11 @@ var CommentForm = React.createClass({
     var node = this.refs.content.getDOMNode();
 
     if ( this.state.fixed &&
-         this.state.visibility === this.visibilityStates.open &&
+         this.state.visibility === this.props.visibilityStates.open &&
          !node.value.trim()) {
       node.value = null;
-      this.setState({ visibility: this.visibilityStates.collapsed })
+      this.setState({ visibility: this.props.visibilityStates.collapsed })
+      this.props.visibilityHandler( this.props.visibilityStates.collapsed );
     }
   },
 
@@ -79,18 +76,18 @@ var CommentForm = React.createClass({
   toggleExpand: function ( e ) {
     e.preventDefault();
     var visState =
-      this.state.visibility === this.visibilityStates.expanded ?
-        this.visibilityStates.open :
-        this.visibilityStates.expanded;
+      this.state.visibility === this.props.visibilityStates.expanded ?
+        this.props.visibilityStates.open :
+        this.props.visibilityStates.expanded;
 
-    this.props.expandHandler( visState === this.visibilityStates.expanded );
+    this.props.visibilityHandler( visState );
     this.setState({ visibility: visState });
   },
 
   // render helpers
 
   expandBtnText: function () {
-    if ( this.state.visibility === this.visibilityStates.expanded ) {
+    if ( this.state.visibility === this.props.visibilityStates.expanded ) {
       return 'Collapse Field';
     } else {
       return 'Expand Field'
@@ -108,10 +105,10 @@ var CommentForm = React.createClass({
     if ( this.state.fixed ) classes += ' fixed';
 
     switch ( this.state.visibility ) {
-      case this.visibilityStates.collapsed:
+      case this.props.visibilityStates.collapsed:
         classes += ' collapsed';
         break;
-      case this.visibilityStates.expanded:
+      case this.props.visibilityStates.expanded:
         classes += ' expanded'
         break;
     }

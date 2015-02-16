@@ -1,0 +1,71 @@
+.comment-form-component {
+  background: $white;
+
+  .actions {
+    height: 33px;
+    text-align: right;
+    transition: height 100ms ease-out, visibility 200ms ease-out 100ms;
+
+    .button {
+      margin: 0 0 10px 10px;
+    }
+  }
+
+  .invisible {
+    textarea, .actions {
+      visibility: hidden;
+    }
+  }
+
+  textarea {
+    height: 5rem;
+    resize: none;
+    margin: 0 0 10px;
+    transition: height 100ms ease-out, visibility 200ms ease-out 100ms;
+    width: 100%;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .actions.top-actions {
+    display: none;
+    height: 33px;
+    transition: visibility 200ms ease-out 100ms;
+    visibility: hidden;
+  }
+
+  &.fixed {
+    border-top: solid 1px $light_grey;
+    bottom: 0;
+    left: 10px;
+    margin: 0;
+    padding: 10px 0;
+    position: fixed;
+    right: 10px;
+  }
+
+  &.collapsed {
+    border: none;
+
+    .actions {
+      height: 0;
+      overflow: hidden;
+    }
+
+    textarea {
+      height: 2.37rem;
+      margin: 0;
+    }
+  }
+
+  &.expanded {
+    border: none;
+
+    .top-actions {
+      display: block;
+      visibility: visible;
+    }
+  }
+}

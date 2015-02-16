@@ -1,9 +1,13 @@
 .comment-component {
-  padding: 20px 0;
+  padding: 20px 0 0;
   position: relative;
 
   &:first-child {
     padding-top: 30px;
+  }
+
+  &:last-child {
+    padding-bottom: 20px;
   }
 
   .author {

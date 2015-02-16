@@ -2,6 +2,12 @@
 
 var Ledger = React.createClass({
 
+  formVisibilityStates: {
+    collapsed: 'collapsed',
+    open: 'open',
+    expanded: 'expanded'
+  },
+
   getInitialState: function () {
     var state = this.props;
 
@@ -12,7 +18,7 @@ var Ledger = React.createClass({
       });
     }
 
-    state.expaneded = false;
+    state.formVisibility = this.formVisibilityStates.collapsed;
 
     return state;
   },
@@ -25,21 +31,21 @@ var Ledger = React.createClass({
   },
 
   commentList: function () {
-    if ( !this.state.expanded ) {
+    if ( this.state.formVisibility !== this.formVisibilityStates.expanded ) {
       return <CommentList comments={ this.state.comments }
                           annotationId={ this.props.annotation.id } />
     }
   },
 
-  expandHandler: function ( expand ) {
-    this.setState({ expanded: expand });
+  visibilityHandler: function ( state ) {
+    this.setState({ formVisibility: state });
   },
 
   submitHandler: function ( content ) {
     switch( this.state.submission_type ) {
       case 'comment':
         CommentActions.createComment({
-          annotation_id: this.props.id,
+          annotation_id: this.props.annotation.id,
           comment: {content: content}
         });
         break;
@@ -59,9 +65,22 @@ var Ledger = React.createClass({
     }
   },
 
+  formVisibilityClass: function () {
+    switch ( this.state.formVisibility ) {
+      case this.formVisibilityStates.open:
+        return ' form-open';
+      case this.formVisibilityStates.expanded:
+        return ' form-expanded';
+      case this.formVisibilityStates.collapsed:
+        return ' form-collapsed';
+      default:
+        return '';
+    }
+  },
+
   render: function () {
     return(
-      <div className="ledger-component">
+      <div className={ "ledger-component" + this.formVisibilityClass() }>
         <h1 ref="header">
           <img src={ this.props.logo } />
         </h1>
@@ -69,7 +88,9 @@ var Ledger = React.createClass({
         { this.commentList() }
         <CommentForm submitHandler={ this.submitHandler }
                      expandHandler={ this.expandHandler }
-                     header={ this.refs.header } />
+                     header={ this.refs.header }
+                     visibilityHandler={ this.visibilityHandler }
+                     visibilityStates={ this.formVisibilityStates } />
       </div>
     );
   }
