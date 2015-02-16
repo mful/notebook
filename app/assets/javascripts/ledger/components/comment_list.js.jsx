@@ -8,10 +8,6 @@ var CommentList = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function ( props ) {
-    this.setState({ comments: props.comments });
-  },
-
   componentDidMount: function () {
     CommentStore.addChangeListener( this._onChange );
   },

@@ -11,14 +11,15 @@ var CommentForm = React.createClass({
   },
 
   componentDidMount: function () {
-    var boundingBox = this.refs.component.getDOMNode().getBoundingClientRect(),
-        stateObj = {firstRender: false},
+    var stateObj = {firstRender: false},
         _this = this;
 
     document.body.onmousedown = function ( e ) { _this.mouseDownE = e };
     document.body.onmouseup = function ( e ) { _this.mouseDownE = null; }
 
-    if ( boundingBox.bottom > window.innerHeight ) {
+    CommentStore.addChangeListener( this._onChange );
+
+    if ( this._shouldSetFixed() ) {
       stateObj.fixed = true;
       stateObj.visibility = this.props.visibilityStates.collapsed;
     };
@@ -29,6 +30,27 @@ var CommentForm = React.createClass({
   componentDidUpdate: function () {
     if ( this.state.visibility === this.props.visibilityStates.open )
       this.refs.content.getDOMNode().focus();
+  },
+
+  componentWillUnmount: function () {
+    CommentStore.removeChangeListener( this._onChange );
+  },
+
+  reset: function () {
+    var textarea = this.refs.content.getDOMNode();
+    textarea.value = null;
+    textarea.blur();
+
+    if ( this.state.fixed || this._shouldSetFixed() ) {
+      this.setState({
+        fixed: true,
+        visibility: this.props.visibilityStates.collapsed
+      });
+    } else {
+      this.setState({ visibility: this.props.visibilityStates.open });
+    }
+
+    this.props.visibilityHandler( this.state.visibility );
   },
 
   // event handlers
@@ -99,7 +121,7 @@ var CommentForm = React.createClass({
   },
 
   visibilityClasses: function () {
-    if ( this.state.firstRender ) return 'collapsed invisible';
+    if ( this.state.firstRender ) return ' invisible';
     var classes = '';
 
     if ( this.state.fixed ) classes += ' fixed';
@@ -137,5 +159,18 @@ var CommentForm = React.createClass({
         </div>
       </form>
     );
+  },
+
+  // private
+
+  _onChange: function () {
+    if ( !CommentStore.getPending() ) {
+      this.reset();
+    }
+  },
+
+  _shouldSetFixed: function () {
+    var boundingBox = this.refs.component.getDOMNode().getBoundingClientRect();
+    return boundingBox.bottom > window.innerHeight;
   }
 });

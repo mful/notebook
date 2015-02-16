@@ -15,6 +15,7 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     } else if ( response.status === 200 ) {
       comment = response.data.comment;
       _comments[comment.id] = comment;
+      _pendingComment = null;
       CommentActions.notifyCreate( comment );
     } else if ( response.status === 400 ) {
       errors = "- " + response.data.errors.join("\n- ");
@@ -45,6 +46,10 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     }
 
     return this.sortByRating( comments );
+  },
+
+  getPending: function () {
+    return _pendingComment;
   },
 
   sortByDate: function ( comments ) {
@@ -125,7 +130,6 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   _flushComment: function () {
     if ( _pendingComment != null ) {
       this._createComment ( _pendingComment )
-      _pendingComment = null;
     }
   },
 
