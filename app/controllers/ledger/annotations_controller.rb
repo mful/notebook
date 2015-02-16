@@ -12,6 +12,7 @@ class Ledger::AnnotationsController < ApplicationController
       annotation: serialized_annotation,
       comments: serialized_annotation[:comments],
       server_rendered: true,
+      submission_type: 'comment',
       logo: ActionController::Base.helpers.asset_path('logo.png')
     }
   end

@@ -60,7 +60,7 @@ var Comment = React.createClass({
 
         <div className="comment-actions row">
           <div className="small-12 column">
-            <div className="button tiny" onClick={ this.viewReplies }>
+            <div className="button" onClick={ this.viewReplies }>
               { this.replyButtonText() }
             </div>
           </div>

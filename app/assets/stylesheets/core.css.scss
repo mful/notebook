@@ -42,6 +42,16 @@ body {
 }
 
 .button {
+  &.alt-button {
+    background: transparent;
+    border-color: $light_grey;
+    color: $grey;
+
+    &:hover {
+      background: $light_grey;
+    }
+  }
+
   &.red {
     background: $red;
   }

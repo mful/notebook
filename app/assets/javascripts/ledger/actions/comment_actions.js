@@ -1,15 +1,17 @@
 var CommentActions = {
 
-  newReply: function ( commentId ) {
-    // stub
+  createComment: function ( data ) {
+    AppDispatcher.handleViewAction({
+      actionType: CommentConstants.CREATE_COMMENT,
+      data: data
+    });
   },
 
-  newComment: function ( annotationId ) {
-    // stub
-  },
-
-  showReplies: function ( commentId ) {
-    // stub
+  createReply: function ( data ) {
+    AppDispatcher.handleViewAction({
+      actionType: CommentConstants.ADD_REPLY,
+      data: data
+    });
   },
 
   vote: function ( data ) {
