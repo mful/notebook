@@ -1,0 +1,13 @@
+.form-visibility-wrapper-component {
+  &.form-collapsed {
+    margin-bottom: 40px;
+  }
+
+  &.form-expanded {
+    overflow: hidden;
+  }
+
+  &.form-open {
+    margin-bottom: 120px;
+  }
+}

@@ -50,7 +50,9 @@ var VotingBooth = React.createClass({
       <div className="voting-booth-component">
         <div className="row">
           <div className="small-12 column">
-            <div className={ this.voteClassName('up') } onClick={ this.upVote }></div>
+            <div className={ this.voteClassName('up') } onClick={ this.upVote }>
+              <i className="ion-ios-play"></i>
+            </div>
           </div>
         </div>
 
@@ -64,7 +66,9 @@ var VotingBooth = React.createClass({
 
         <div className="row">
           <div className="small-12 column">
-            <div className={ this.voteClassName('down') } onClick={ this.downVote }></div>
+            <div className={ this.voteClassName('down') } onClick={ this.downVote }>
+              <i className="ion-ios-play"></i>
+            </div>
           </div>
         </div>
       </div>

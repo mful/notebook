@@ -94,7 +94,7 @@ var EmailSignupForm = React.createClass({
           <input ref="password" type="password" id="user_password" name="user[password]" placeholder="password" />
           <input ref="passwordConfirmation" className={ this.signupClass() } type="password" id="user_password_confirmation" name="user[password_confirmation]" placeholder="password one more time" />
 
-          <button type="submit" id="email-form-submit">{ this.submitCTA() }</button>
+          <button className="large button" type="submit" id="email-form-submit">{ this.submitCTA() }</button>
         </form>
 
         <p className={ 'signup-login-toggle ' + this.signupClass() }>Already have an account? <span className="clickable email-login-toggler" onClick={ this.toggleLogin }>Login</span></p>

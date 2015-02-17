@@ -12,6 +12,7 @@ class Comment < ActiveRecord::Base
   has_many :replies, through: :comment_replies
   has_many :comment_flags
 
+  before_create :parse_markdown
   after_create :add_selfie_vote
   after_save :set_rating, on: :update
   after_touch :set_rating # TODO: move to vote service
@@ -33,6 +34,20 @@ class Comment < ActiveRecord::Base
     Comment.joins(:comment_replies).
       where("comment_replies.comment_id = comments.id AND comment_replies.reply_id = ?", id).
       first
+  end
+
+  def parse_markdown
+    renderer = CommentRenderer.new(
+      filter_html: true,
+      no_images: true,
+      no_styles: true,
+      escape_html: true,
+      hard_wrap: true,
+      link_attributes: { rel: 'nofollow' }
+    )
+    parser = Redcarpet::Markdown.new(renderer, autolink: true, quote: true)
+
+    self.content = parser.render( content )
   end
 
   def set_rating

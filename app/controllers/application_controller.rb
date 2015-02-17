@@ -32,5 +32,6 @@ class ApplicationController < ActionController::Base
   def bootstrap
     gon.env = Rails.env
     gon.current_user = UserSerializer.new(current_user) if current_user
+    gon.logo = ActionController::Base.helpers.asset_path('logo.png')
   end
 end

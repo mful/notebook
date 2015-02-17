@@ -3,7 +3,6 @@
 var CommentForm = React.createClass({
   submitHandler: function ( e ) {
     e.preventDefault();
-    e.stopPropagration();
     this.props.submitHandler( this.refs.content.getDOMNode().value );
   },
 

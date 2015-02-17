@@ -1,0 +1,3 @@
+var RouterConstants = {
+  NAVIGATE: 'navigate'
+}

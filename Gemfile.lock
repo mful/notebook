@@ -211,6 +211,7 @@ GEM
     raindrops (0.13.0)
     rake (10.3.2)
     react-source (0.11.1)
+    redcarpet (3.2.2)
     redis (3.2.0)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
@@ -312,6 +313,7 @@ DEPENDENCIES
   rails (= 4.1.6)
   rails_12factor
   react-rails (~> 1.0.0.pre)!
+  redcarpet
   redis
   rspec-rails
   sass-rails (~> 4.0.2)

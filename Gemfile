@@ -44,6 +44,8 @@ gem 'sprockets-commonjs', github: 'maccman/sprockets-commonjs'
 gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'therubyracer', :platforms => :ruby
 
+gem 'redcarpet'
+
 group :production do
   gem 'rails_12factor'
 end

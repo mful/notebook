@@ -35,11 +35,10 @@ var Comment = React.createClass({
   },
 
   viewReplies: function ( e ) {
-    e.stopPropagation();
+    e.preventDefault();
     if ( this.state.replyCount === 0 ) {
       CommentActions.newReply( this.props.comment.id );
     } else {
-      AnalyticsActions.trackViewReplies( this.props.comment );
       CommentActions.showReplies( this.props.comment.id );
     }
   },

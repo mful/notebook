@@ -50,6 +50,11 @@ scribble.helpers.routes = {};
     return '/annotations/' + id;
   };
 
+  namespace.comment_path = function ( id, options ) {
+    options || ( options = {} );
+    return '/comments/' + id + queryString( options );
+  };
+
   namespace.privacy_policy_url = function () {
     return urlRoot() + '/privacy';
   };

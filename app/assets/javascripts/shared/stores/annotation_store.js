@@ -13,6 +13,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
       _pendingAnnotation = null;
       AnnotationStore.separateComments( response.data );
       AnnotationActions.notifyCreate( response.data.annotation );
+      AnnotationActions.showAnnotation( response.data.annotation.id );
     } else if ( response.status === 400 ) {
       errors = "- " + response.data.errors.join("\n- ");
       alert( "Whoops! There were some errors:\n\n" + errors );
@@ -32,7 +33,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   getById: function ( id, callback ) {
-    if ( _annotations[id] ) return _annotations[id];
+    if ( _annotations[id] ) return callback( _annotations[id] );
 
     scribble.helpers.xhr.get(
       scribble.helpers.routes.api_annotation_url( id ),
@@ -47,7 +48,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
           // stub
         }
       }
-    )
+    );
   },
 
   getPending: function () {

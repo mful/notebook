@@ -1,13 +1,16 @@
 class Api::CommentsController < ApiController
-  before_filter :find_comment, only: [:show, :update, :destroy, :flag, :add_reply, :add_vote]
-  before_filter :ensure_signed_in, only: [:flag, :add_vote, :add_reply]
+  before_filter :find_comment, only: [:show, :update, :destroy, :flag, :add_reply, :add_vote, :replies]
+  before_filter :ensure_signed_in, only: [:flag, :add_vote, :add_reply, :create]
 
   def show
     render json: @comment, status: 200, serializer: CommentSerializer, current_user: current_user
   end
 
+  def replies
+    render json: @comment.replies, status: 200, each_serializer: CommentSerializer, current_user: current_user
+  end
+
   def create
-    raise Notebook::Unauthorized.new unless signed_in?
     @comment = Comment.new(comment_params)
     @comment.annotation = Annotation.find(params[:annotation_id])
 

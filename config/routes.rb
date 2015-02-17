@@ -24,6 +24,7 @@ Notebook::Application.routes.draw do
     resources :comments, only: [:create, :update, :show, :destroy]
     post 'comments/:id/flag' => 'comments#flag', as: 'flag_comment'
     post 'comments/:id/replies' => 'comments#add_reply', as: 'comment_replies'
+    get 'comments/:id/replies' => 'comments#replies'
     post 'comments/:id/votes' => 'comments#add_vote', as: 'comment_votes'
 
     get 'annotations/by_page' => 'annotations#by_page', as: 'page_annotations'
@@ -39,13 +40,14 @@ Notebook::Application.routes.draw do
   get '/signin' => 'sessions#signin', as: 'signin'
   get '/signup' => 'sessions#signup', as: 'signup'
 
-  resources :annotations, only: [:show], constraints: { id: /\d+/ }
   post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'
 
+  ### Ledger ###
+
+  get 'annotations/:id' => 'ledger/annotations#show', constraints: { id: /\d+/ }, as: 'annotation'
+  get 'annotations/new' => 'ledger/annotations#new', as: 'new_annotation'
 
   ### Paper ###
-
-  get 'annotations/new' => 'paper/annotations#new', as: 'new_annotation'
   get 'annotations/:id/comments/new' => 'paper/comments#new', as: 'new_annotation_comment'
 
   get 'comments/:id/replies/new' => 'paper/comments#add_reply', as: 'new_reply'
