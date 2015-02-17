@@ -1,10 +1,10 @@
 var AnalyticsActions = {
 
-  trackAddAnnotation: function () {
+  trackStartAnnotation: function ( url, textLength ) {
     scribble.helpers.analytics.trackGoogleEvent(
       AnalyticsConstants.ADD_ANNOTATION,
-      'Annotation Bubble',
-      false
+      url,
+      textLength
     );
   },
 

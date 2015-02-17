@@ -2,7 +2,15 @@ class Ledger::AnnotationsController < ApplicationController
 
   layout 'ledger'
 
-  before_filter :find_annotation, only: [:show, :add_comment]
+  before_filter :find_annotation, only: [:show]
+
+  def new
+    @presenter = {
+      text: params[:text],
+      url: params[:url],
+      logo: ActionController::Base.helpers.asset_path('logo.png')
+    }
+  end
 
   def show
     serialized_annotation =

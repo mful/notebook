@@ -18,6 +18,13 @@ var AnnotationActions = {
     AppDispatcher.handleStoreRequest({
       actionType: AnnotationConstants.ANNOTATION_CREATE_SUCCESS,
       data: {annotation: annotation}
-    })
+    });
+  },
+
+  showAnnotation: function ( id ) {
+    AppDispatcher.handleStoreRequest({
+      actionType: RouterConstants.NAVIGATE,
+      data: {path: scribble.helpers.routes.annotation_path( id )}
+    });
   }
 }

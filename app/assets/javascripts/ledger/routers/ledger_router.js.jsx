@@ -23,7 +23,12 @@ var LedgerRouter = ( function ( _super ) {
     'comments/:id' : 'showComment'
   };
 
-  LedgerRouter.prototype.newAnnotation = function () {};
+  LedgerRouter.prototype.newAnnotation = function ( query ) {
+    var params = scribble.helpers.url.queryObject();
+    this.changePage(
+      <NewAnnotationPage url={ params.url } text={ params.text } />
+    );
+  };
 
   LedgerRouter.prototype.showAnnotation = function () {
     var _this = this, annotation, comments;

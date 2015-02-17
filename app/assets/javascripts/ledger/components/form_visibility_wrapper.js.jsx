@@ -19,7 +19,7 @@ var FormVisibilityWrapper= React.createClass({
 
   commentList: function () {
     if ( this.state.formVisibility !== this.formVisibilityStates.expanded ) {
-      return this.state.commentList
+      if ( this.state.commentList ) return this.state.commentList;
     }
   },
 

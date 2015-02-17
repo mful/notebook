@@ -44,11 +44,10 @@ Notebook::Application.routes.draw do
 
   ### Ledger ###
 
-  get 'annotations/:id' => 'ledger/annotations#show', as: 'annotation'
+  get 'annotations/:id' => 'ledger/annotations#show', constraints: { id: /\d+/ }, as: 'annotation'
+  get 'annotations/new' => 'ledger/annotations#new', as: 'new_annotation'
 
   ### Paper ###
-
-  get 'annotations/new' => 'paper/annotations#new', as: 'new_annotation'
   get 'annotations/:id/comments/new' => 'paper/comments#new', as: 'new_annotation_comment'
 
   get 'comments/:id/replies/new' => 'paper/comments#add_reply', as: 'new_reply'
