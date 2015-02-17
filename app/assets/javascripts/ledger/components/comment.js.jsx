@@ -22,9 +22,9 @@ var Comment = React.createClass({
 
   replyButtonText: function () {
     if ( this.state.replyCount === 0 ) {
-      return 'Reply';
+      return 'reply';
     } else {
-      return 'Expand Replies ( ' + this.state.replyCount + ' )';
+      return 'view replies ( ' + this.state.replyCount + ' )';
     }
   },
 

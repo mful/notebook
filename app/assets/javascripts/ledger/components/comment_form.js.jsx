@@ -122,7 +122,11 @@ var CommentForm = React.createClass({
   },
 
   textAreaPlaceholder: function () {
-    return 'Write annotation here...';
+    if ( this.props.type === 'reply' ) {
+      return 'Add reply here'
+    } else {
+      return 'Add annotation here';
+    }
   },
 
   visibilityClasses: function () {

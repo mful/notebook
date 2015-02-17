@@ -49,7 +49,8 @@ var FormVisibilityWrapper= React.createClass({
                      headerGetter={ this.props.headerGetter }
                      visibilityHandler={ this.visibilityHandler }
                      visibilityStates={ this.formVisibilityStates }
-                     initialState={ this.props.visibility } />
+                     initialState={ this.props.visibility }
+                     type={ this.props.type } />
       </div>
     );
   }

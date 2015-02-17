@@ -45,7 +45,8 @@ var AnnotationPage = React.createClass({
 
         <FormVisibilityWrapper commentList={ this.commentList() }
                                submitHandler={ this.submitHandler }
-                               headerGetter={ this.header } />
+                               headerGetter={ this.header }
+                               type={ 'comment' } />
       </div>
     );
   }

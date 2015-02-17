@@ -44,7 +44,8 @@ var CommentPage = React.createClass({
         <FormVisibilityWrapper commentList={ this.replyList() }
                                submitHandler={ this.submitHandler }
                                headerGetter={ this.header }
-                               visibility={ this.props.formVisibility } />
+                               visibility={ this.props.formVisibility }
+                               type={ 'reply' } />
       </div>
     );
   }

@@ -30,7 +30,8 @@ var NewAnnotationPage = React.createClass({
 
         <FormVisibilityWrapper submitHandler={ this.submitHandler }
                                headerGetter={ this.header }
-                               visibility={ 'expanded' } />
+                               visibility={ 'expanded' }
+                               type={ 'comment' } />
       </div>
     );
   }
