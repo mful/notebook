@@ -19,8 +19,9 @@
 
   textarea {
     height: 5rem;
-    resize: none;
+    line-height: 1.4;
     margin: 0 0 10px;
+    resize: none;
     transition: height 100ms ease-out, visibility 200ms ease-out 100ms;
     width: 100%;
 

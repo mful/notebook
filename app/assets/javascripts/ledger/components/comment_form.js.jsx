@@ -122,11 +122,19 @@ var CommentForm = React.createClass({
   },
 
   textAreaPlaceholder: function () {
+    var text;
+
     if ( this.props.type === 'reply' ) {
-      return 'Add reply here'
+      text = 'Add reply here'
     } else {
-      return 'Add annotation here';
+      text = 'Add annotation here';
     }
+
+    if ( this.state.visibility === this.props.visibilityStates.expanded ) {
+      text += '. You may use markdown, if that tickles your fancy.'
+    }
+
+    return text;
   },
 
   visibilityClasses: function () {

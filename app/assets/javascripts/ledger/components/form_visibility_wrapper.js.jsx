@@ -18,8 +18,12 @@ var FormVisibilityWrapper= React.createClass({
   },
 
   commentList: function () {
-    if ( this.state.formVisibility !== this.formVisibilityStates.expanded ) {
-      if ( this.state.commentList ) return this.state.commentList;
+    if ( this.state.commentList ) return this.state.commentList;
+  },
+
+  commentListVisClass: function () {
+    if ( this.state.formVisibility === this.formVisibilityStates.expanded ) {
+      return ' hidden';
     }
   },
 
@@ -44,7 +48,10 @@ var FormVisibilityWrapper= React.createClass({
     return(
       <div className={ "form-visibility-wrapper-component" + this.formVisibilityClass() }>
 
-        { this.commentList() }
+        <div className={ "comment-list-wrapper" + this.commentListVisClass() }>
+          { this.state.commentList }
+        </div>
+
         <CommentForm submitHandler={ this.props.submitHandler }
                      headerGetter={ this.props.headerGetter }
                      visibilityHandler={ this.visibilityHandler }
