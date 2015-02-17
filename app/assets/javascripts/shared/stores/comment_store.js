@@ -48,8 +48,37 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     return this.sortByRating( comments );
   },
 
+  getById: function ( id, callback ) {
+    if ( !callback ) return _comments[id];
+
+    return callback( _comments[id] );
+  },
+
   getPending: function () {
     return _pendingComment;
+  },
+
+  getReplies: function ( id, callback ) {
+    var replies = _( _comments ).where({ parent_comment_id: id });
+
+    if ( !callback ) return replies;
+    if ( replies && replies.length > 0 ) return callback( replies );
+
+    scribble.helpers.xhr.get(
+      scribble.helpers.routes.api_comment_replies_url( id ),
+      function ( err, response ) {
+        if ( err ) {
+          alert('Whoops! Something went wrong. Try again?');
+        } else if ( response.status === 200 ) {
+          replies = response.data.comments;
+          for ( var i = 0; i < replies.length; i++ ) {
+            _comments[replies[i].id] = replies[i];
+          }
+
+          callback( replies );
+        }
+      }
+    );
   },
 
   sortByDate: function ( comments ) {
@@ -96,6 +125,7 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
         break;
       case SessionConstants.LOGIN_SUCCESS:
         CommentStore._flushComment();
+        CommentStore._flushReply();
         CommentStore._flushVote();
         break;
       case CommentConstants.ADD_REPLY:
@@ -130,6 +160,12 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   _flushComment: function () {
     if ( _pendingComment != null ) {
       this._createComment ( _pendingComment )
+    }
+  },
+
+  _flushReply: function () {
+    if ( _pendingReply != null ) {
+      this._addReply( _pendingReply )
     }
   },
 

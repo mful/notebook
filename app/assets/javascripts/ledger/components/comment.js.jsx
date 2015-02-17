@@ -28,6 +28,17 @@ var Comment = React.createClass({
     }
   },
 
+  typeClass: function () {
+    switch ( this.props.type ) {
+      case 'comment-header':
+        return ' comment-header';
+      case 'reply':
+        return ' reply';
+    }
+
+    return '';
+  },
+
   viewReplies: function ( e ) {
     e.stopPropagation();
     if ( this.state.replyCount === 0 ) {
@@ -38,12 +49,22 @@ var Comment = React.createClass({
     }
   },
 
+  votingBooth: function () {
+    if ( this.props.type !== 'reply' )
+      return <VotingBooth score={ this.state.score }
+                          userVote={ this.state.userVote }
+                          commentId={ this.props.comment.id } />
+  },
+
   render: function () {
     return (
-      <div className="comment-component" data-key={ this.props.key }>
+      <div className={ "comment-component" + this.typeClass() } data-key={ this.props.key }>
         <div className="row">
           <div className="small-12 column">
-            <VotingBooth score={ this.state.score } userVote={ this.state.userVote } commentId={ this.props.comment.id } />
+            { this.votingBooth() }
+
+            <div className="avatar-wrapper"></div>
+
             <h6 className="author">
               { this.props.comment.author }
             </h6>
@@ -65,8 +86,6 @@ var Comment = React.createClass({
             </div>
           </div>
         </div>
-
-
       </div>
     );
   }

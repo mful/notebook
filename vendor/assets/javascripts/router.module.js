@@ -1,4 +1,3 @@
-var URI = require('uri').URI;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 var escapeRegExp, namedParam, splatParam;
@@ -55,9 +54,6 @@ Router.prototype.afterStart = function() {};
 
 Router.prototype.start = function() {
   this.historyCounter = 1;
-  return this._navigate(location.href, {
-    replace: true
-  });
 };
 
 Router.prototype.navigate = function(url, options) {
@@ -85,13 +81,11 @@ Router.prototype.replaceStateData = function(data) {
 };
 
 Router.prototype.uri = function() {
-  return new URI(location.href);
+  return window.location.href;
 };
 
 Router.prototype.currentRoute = function() {
-  var uri;
-  uri = this.uri();
-  return "" + (uri.path()) + (uri.search());
+  return window.location.pathname + location.search;
 };
 
 Router.prototype.currentPathname = function() {
@@ -140,7 +134,7 @@ Router.prototype._pathToRegExp = function(path) {
 };
 
 Router.prototype._initializeHistory = function() {
-  return scribbleHistory.bindPopstate(this.renderRoute);
+  return ledgerHistory.bindPopstate(this.renderRoute);
 };
 
 
@@ -171,7 +165,7 @@ Router.prototype._navigate = function(url, options) {
   } else {
     history.pushState(null, document.title, href);
     this.historyCounter += 1;
-    scribbleHistory.everPushedState = true;
+    ledgerHistory.everPushedState = true;
   }
   if (trigger) {
     return this.renderRoute();
@@ -199,18 +193,18 @@ Router.prototype._findRoute = function(path) {
 };
 
 Router.prototype._routeFromPath = function(path) {
-  var route, uri;
-  uri = new URI(path).normalize();
-  path = uri.path().replace(/^\/|\/$/g, '');
+  var route, sanitizedPath, uriParser;
+  if ( typeof path.pathname === 'undefined' ) path = this.toHref(path);
+  sanitizedPath = path.pathname.replace(/^\/|\/$/g, '');
   route = _.find(this.routes, (function(_this) {
     return function(route) {
-      return route.path.test(path);
+      return route.path.test(sanitizedPath);
     };
   })(this));
   return {
     route: route,
-    path: path,
-    uri: uri
+    path: sanitizedPath,
+    uri: path
   };
 };
 
@@ -235,32 +229,33 @@ Router.prototype._overrideQueryParameters = function(route) {
 Router.prototype.beforeParameters = function(route) {
   var parameters;
   parameters = this._parseRouteParameters(route);
-  parameters.push(route.uri.search(true));
-  parameters.unshift(route.path);
+  parameters.push(route.uri.search);
+  parameters.unshift(route.pathname);
   return parameters;
 };
 
 Router.prototype._routeParameters = function(route) {
   var parameters;
   parameters = this._parseRouteParameters(route);
-  parameters.push(route.uri.search(true));
+  parameters.push(route.uri.search);
   return parameters;
 };
 
 Router.prototype._parseRouteParameters = function(route) {
   var path;
-  path = route.uri.path().replace(/^\/|\/$/g, '');
+  path = route.uri.pathname.replace(/^\/|\/$/g, '');
   return route.regex.exec(path).slice(1);
 };
 
 Router.prototype.toHref = function(string) {
-  return new URI(string).absoluteTo(location.href).href();
+  var uriParser = document.createElement('a');
+  uriParser.href = string;
+  return uriParser;
 };
 
 module.exports = Router;
-Router.Router = Router;
 
-var scribbleHistory = new (function () {
+var ledgerHistory = new (function () {
   popstateFired = false;
   initialUrl = location.href;
 

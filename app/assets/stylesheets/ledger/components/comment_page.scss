@@ -1,0 +1,17 @@
+.comment-page-component {
+
+  nav {
+    background: $white;
+    border-bottom: solid 1px $light_grey;
+    left: 10px;
+    padding: 5px 0 10px;
+    position: fixed;
+    right: 10px;
+    top: 0;
+    z-index: 99999;
+
+    a {
+      font-family: $default_serif;
+    }
+  }
+}

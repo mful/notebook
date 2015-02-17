@@ -1,14 +1,4 @@
-.ledger-component {
-  overflow: hidden;
-  padding: 0 10px 15px;
-
-  h1 {
-    text-align: center;
-    img {
-      width: 175px;
-    }
-  }
-
+.form-visibility-wrapper-component {
   &.form-collapsed {
     margin-bottom: 40px;
   }

@@ -12,17 +12,22 @@ var CommentForm = React.createClass({
 
   componentDidMount: function () {
     var stateObj = {firstRender: false},
-        _this = this;
+        _this = this,
+        initialVis;
+
+    initialVis = this.props.initialState ?
+      this.props.initialState :
+      this.props.visibilityStates.collapsed;
 
     document.body.onmousedown = function ( e ) { _this.mouseDownE = e };
     document.body.onmouseup = function ( e ) { _this.mouseDownE = null; }
 
     CommentStore.addChangeListener( this._onChange );
 
-    if ( this._shouldSetFixed() ) {
+    stateObj.visibility = initialVis;
+
+    if ( this._shouldSetFixed() )
       stateObj.fixed = true;
-      stateObj.visibility = this.props.visibilityStates.collapsed;
-    };
 
     this.setState( stateObj );
   },
@@ -57,7 +62,7 @@ var CommentForm = React.createClass({
 
   maybeSetHeight: function () {
     if ( this.state.visibility !== this.props.visibilityStates.expanded ) return {};
-    var header = this.props.header.getDOMNode(),
+    var header = this.props.headerGetter(),
         inputMargin = 10,
         padding = 25,
         headerHeight, actionsHeight, height;
@@ -148,7 +153,7 @@ var CommentForm = React.createClass({
           <input type="submit" className="button"/>
         </div>
 
-        <textarea ref="content" ref="content" placeholder={ this.textAreaPlaceholder() }
+        <textarea ref="content" placeholder={ this.textAreaPlaceholder() }
                   onFocus={ this.setOpen }
                   style={ this.maybeSetHeight() }
                   onBlur={ this.setCollapse }></textarea>

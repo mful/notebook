@@ -1,10 +1,11 @@
 /** @jsx React.DOM */
 
-var CommentList = React.createClass({
+var ReplyList = React.createClass({
 
   getInitialState: function () {
     return {
-      comments: CommentStore.sortByRating( this.props.comments )
+      comment: this.props.comment,
+      replies: this.props.replies
     }
   },
 
@@ -27,16 +28,17 @@ var CommentList = React.createClass({
     }
   },
 
-  collectComments: function () {
-    return this.state.comments.map( function ( comment ) {
-      return <Comment comment={ comment } key={ comment.id } type={ 'comment' } />;
+  collectReplies: function () {
+    return this.state.replies.map( function ( comment ) {
+      return <Comment comment={ comment } key={ comment.id } type={ 'reply' } />;
     });
   },
 
   render: function () {
     return (
       <div className="comment-list-component">
-        { this.collectComments() }
+        <Comment comment={ this.state.comment } key={ this.state.comment.id } type={ 'comment-header' } />
+        { this.collectReplies() }
       </div>
     );
   },
@@ -44,14 +46,14 @@ var CommentList = React.createClass({
   // private
 
   _onChange: function () {
-    var comments = CommentStore.getByAnnotationAsList( this.props.annotationId ),
+    var replies = CommentStore.getReplies( this.props.comment.id ),
         match = false, newComment, i, j;
 
-    for( j = 0; j < comments.length; j++ ) {
+    for( j = 0; j < replies.length; j++ ) {
       match = false;
 
-      for( i = 0; i < this.state.comments.length; i++){
-        if ( comments[j].id === this.state.comments[i].id ) {
+      for( i = 0; i < this.state.replies.length; i++){
+        if ( replies[j].id === this.state.replies[i].id ) {
           match = true;
           break;
         }
@@ -59,12 +61,13 @@ var CommentList = React.createClass({
 
       if ( match ) continue;
 
-      newComment = comments[j];
+      newComment = replies[j];
       break;
     }
 
     this.setState({
-      comments: CommentStore.sortByRating( comments ),
+      comment: CommentStore.getById( this.props.comment.id ),
+      replies: replies,
       newComment: newComment
     });
   }

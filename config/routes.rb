@@ -24,6 +24,7 @@ Notebook::Application.routes.draw do
     resources :comments, only: [:create, :update, :show, :destroy]
     post 'comments/:id/flag' => 'comments#flag', as: 'flag_comment'
     post 'comments/:id/replies' => 'comments#add_reply', as: 'comment_replies'
+    get 'comments/:id/replies' => 'comments#replies'
     post 'comments/:id/votes' => 'comments#add_vote', as: 'comment_votes'
 
     get 'annotations/by_page' => 'annotations#by_page', as: 'page_annotations'

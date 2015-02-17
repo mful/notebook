@@ -32,7 +32,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   getById: function ( id, callback ) {
-    if ( _annotations[id] ) return _annotations[id];
+    if ( _annotations[id] ) return callback( _annotations[id] );
 
     scribble.helpers.xhr.get(
       scribble.helpers.routes.api_annotation_url( id ),
@@ -47,7 +47,7 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
           // stub
         }
       }
-    )
+    );
   },
 
   getPending: function () {
