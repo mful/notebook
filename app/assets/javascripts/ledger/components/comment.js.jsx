@@ -72,9 +72,7 @@ var Comment = React.createClass({
         </div>
 
         <div className="row">
-          <div className="small-12 column">
-            <p className="content" dangerouslySetInnerHTML={{__html: this.state.content}} >
-            </p>
+          <div className="small-12 column content" dangerouslySetInnerHTML={{__html: this.state.content}}>
           </div>
         </div>
 

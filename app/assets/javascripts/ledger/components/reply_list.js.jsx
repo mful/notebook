@@ -24,7 +24,17 @@ var ReplyList = React.createClass({
       comment = document.querySelector(
         '.comment-component[data-key="' + this.state.newComment.id + '"]'
       );
-      if ( comment ) comment.scrollIntoViewIfNeeded();
+      if ( comment ) {
+        // to account for when the form is expanded, and the list is hidden for
+        // a moment.
+        setTimeout(
+          function () {
+            comment.scrollIntoViewIfNeeded();
+          }
+        ,
+          100
+        )
+      }
     }
   },
 

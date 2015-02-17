@@ -6,55 +6,57 @@ var CommentForm = React.createClass({
     return {
       visibility: this.props.visibilityStates.open,
       fixed: false,
-      firstRender: true
+      firstRender: true,
+      submitted: false,
+      text: ''
     }
   },
 
   componentDidMount: function () {
-    var stateObj = {firstRender: false},
-        _this = this,
-        initialVis;
-
-    initialVis = this.props.initialState ?
-      this.props.initialState :
-      this.props.visibilityStates.collapsed;
+    var _this = this;
 
     document.body.onmousedown = function ( e ) { _this.mouseDownE = e };
     document.body.onmouseup = function ( e ) { _this.mouseDownE = null; }
 
     CommentStore.addChangeListener( this._onChange );
 
-    stateObj.visibility = initialVis;
-
-    if ( this._shouldSetFixed() )
-      stateObj.fixed = true;
-
-    this.setState( stateObj );
-  },
-
-  componentDidUpdate: function () {
-    if ( this.state.visibility === this.props.visibilityStates.open )
-      this.refs.content.getDOMNode().focus();
+    this.setState( this.initialMountedState() );
   },
 
   componentWillUnmount: function () {
     CommentStore.removeChangeListener( this._onChange );
   },
 
-  reset: function () {
-    var textarea = this.refs.content.getDOMNode();
-    textarea.value = null;
-    textarea.blur();
+  initialMountedState: function () {
+    var stateObj = {firstRender: false};
 
-    if ( this.state.fixed || this._shouldSetFixed() ) {
-      this.setState({
-        fixed: true,
-        visibility: this.props.visibilityStates.collapsed
-      });
+    if ( this._shouldSetFixed() ) stateObj.fixed = true;
+
+    if ( this.props.initialState ) {
+      stateObj.visibility =
+        this.props.visibilityStates[this.props.initialState];
+    } else if ( this._shouldSetFixed() ) {
+      stateObj.visibility = this.props.visibilityStates.collapsed;
     } else {
-      this.setState({ visibility: this.props.visibilityStates.open });
+      stateObj.visibility = this.props.visibilityStates.open;
     }
 
+    return stateObj;
+  },
+
+  reset: function () {
+    var stateObj = {submitted: false, text: ''};
+
+    this.refs.content.getDOMNode().blur();
+
+    if ( this.state.fixed || this._shouldSetFixed() ) {
+      stateObj.fixed = true;
+      stateObj.visibility = this.props.visibilityStates.collapsed;
+    } else {
+      stateObj.visibility = this.props.visibilityStates.open;
+    }
+
+    this.setState( stateObj );
     this.props.visibilityHandler( this.state.visibility );
   },
 
@@ -95,9 +97,16 @@ var CommentForm = React.createClass({
     }
   },
 
+  setStateText: function () {
+    this.setState({
+      text: this.refs.content.getDOMNode().value
+    });
+  },
+
   submitHandler: function ( e ) {
     e.preventDefault();
-    this.props.submitHandler( this.refs.content.getDOMNode().value );
+    this.setState({ submitted: true });
+    this.props.submitHandler( this.state.text.trim() );
   },
 
   toggleExpand: function ( e ) {
@@ -107,6 +116,7 @@ var CommentForm = React.createClass({
         this.props.visibilityStates.open :
         this.props.visibilityStates.expanded;
 
+    this.refs.content.getDOMNode().focus();
     this.props.visibilityHandler( visState );
     this.setState({ visibility: visState });
   },
@@ -131,7 +141,7 @@ var CommentForm = React.createClass({
     }
 
     if ( this.state.visibility === this.props.visibilityStates.expanded ) {
-      text += '. You may use markdown, if that tickles your fancy.'
+      text += '. You can use markdown, if you like.'
     }
 
     return text;
@@ -168,7 +178,10 @@ var CommentForm = React.createClass({
         <textarea ref="content" placeholder={ this.textAreaPlaceholder() }
                   onFocus={ this.setOpen }
                   style={ this.maybeSetHeight() }
-                  onBlur={ this.setCollapse }></textarea>
+                  onBlur={ this.setCollapse }
+                  onChange={ this.setStateText }
+                  value={ this.state.text }>
+        </textarea>
 
         <div ref="lowerActions" className="actions">
           <button className="button alt-button" onClick={ this.toggleExpand }>{ this.expandBtnText() }</button>
@@ -181,7 +194,7 @@ var CommentForm = React.createClass({
   // private
 
   _onChange: function () {
-    if ( !CommentStore.getPending() ) {
+    if ( !CommentStore.getPending() && this.state.submitted ) {
       this.reset();
     }
   },
