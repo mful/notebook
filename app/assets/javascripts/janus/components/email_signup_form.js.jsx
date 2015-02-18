@@ -11,6 +11,12 @@ var EmailSignupForm = React.createClass({
   },
 
   componentWillReceiveProps: function ( props ) {
+    if ( props.visible === false ) {
+      this.refs.email.getDOMNode().value = '';
+      this.refs.password.getDOMNode().value = '';
+      this.refs.passwordConfirmation.getDOMNode().value = '';
+    }
+
     this.setState({
       login: props.login,
       visible: props.visible,
@@ -35,6 +41,7 @@ var EmailSignupForm = React.createClass({
   },
 
   toggleLogin: function () {
+    this.props.toggleLoginHandler();
     this.setState( { login: !this.state.login, error: false } );
   },
 
@@ -87,7 +94,6 @@ var EmailSignupForm = React.createClass({
   render: function () {
     return(
       <div className={ 'email-signup-form-component ' + this.visiblityClass() }>
-        <FlashComponent visible={ this.state.error } type="error" messages={ this.errorMessage() } />
 
         <form id="email-signup-form" onSubmit={ this.handleEmailSubmit }>
           <input ref="email" type="email" id="user_email" name="user[email]" placeholder="email" />

@@ -180,6 +180,8 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
     } else if ( response.status === 400 ) {
       _userErrors = response.data.errors;
       SessionStore.emitChange();
+      errors = "- " + response.data.errors.join("\n- ");
+      alert( "Whoops! There were some errors:\n\n" + errors );
     }
   },
 
@@ -202,6 +204,8 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
           } else {
             _userErrors = response.errors;
             SessionStore.emitChange();
+            errors = "- " + response.data.errors.join("\n- ");
+            alert( "Whoops! There were some errors:\n\n" + errors );
           }
         }
       }

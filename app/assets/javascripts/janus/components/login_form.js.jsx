@@ -9,6 +9,7 @@ var LoginForm = React.createClass({
       emailSignup: false,
       error: false,
       header: this.props.header,
+      login: false,
       subHeader: this.props.subHeader,
       username: false
     };
@@ -18,6 +19,12 @@ var LoginForm = React.createClass({
     this.setState({
       emailSignup: !this.state.emailSignup,
       error: false
+    });
+  },
+
+  toggleLogin: function () {
+    this.setState({
+      login: !this.state.login
     });
   },
 
@@ -48,7 +55,11 @@ var LoginForm = React.createClass({
 
         <UsernameInput visible={ this.state.username } error={ this.state.error } />
         <SocialConnectButtons visible={ !this.state.emailSignup && !this.state.username } toggleHandler={ this.toggleEmailForm } />
-        <EmailSignupForm visible={ this.state.emailSignup && !this.state.username } toggleHandler={ this.toggleEmailForm } error={ this.state.error } login={ false } />
+        <EmailSignupForm visible={ this.state.emailSignup && !this.state.username }
+                         toggleHandler={ this.toggleEmailForm }
+                         toggleLoginHandler={ this.toggleLogin }
+                         error={ this.state.error }
+                         login={ this.state.login }  />
 
         <p className="privacy-policy">
           we hate spam too - check out our rock solid&nbsp;

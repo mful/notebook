@@ -5,8 +5,10 @@ class Api::SessionsController < ApiController
   def create
     user = User.find_by(email: params[:session][:email].downcase)
 
-    redirect_or_err(user, :api_user_path, 400) do
-      user && user.authenticate(params[:session][:password]) && sign_in(user)
+    if user && user.authenticate(params[:session][:password]) && sign_in(user)
+      redirect_to api_user_path(user.id)
+    else
+      render json: { errors: ['Email and/or password are not correct'] }, status: 400
     end
   end
 
