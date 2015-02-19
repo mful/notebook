@@ -56,6 +56,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
     switch(action.actionType) {
       case AnnotationConstants.CREATE_WITH_COMMENT:
       case AnnotationConstants.ADD_COMMENT:
+      case CommentConstants.ADD_REPLY:
         SessionStore._ensureCurrentUser();
         break;
       case SessionConstants.FB_LOGIN:
