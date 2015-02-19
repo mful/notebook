@@ -13,7 +13,8 @@ class CreateAnnotation
   def create
     associate_page
     associate_comment
-    track_create if @annotation.save
+    track_create if !@annotation.persisted? && @annotation.save
+    @annotation.save
 
     @annotation
   end

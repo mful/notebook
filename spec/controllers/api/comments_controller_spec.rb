@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sidekiq/testing'
 
 describe Api::CommentsController do
   include SessionsHelper
@@ -12,7 +13,10 @@ describe Api::CommentsController do
 
       context 'with valid data' do
         let(:annotation) { FactoryGirl.create :annotation }
-        before { post :create, comment: comment, annotation_id: annotation.id }
+        before do
+          GATrackWorker.drain
+          post :create, comment: comment, annotation_id: annotation.id
+        end
 
         it 'should create the comment' do
           expect(Comment.count).to eq(1)
@@ -21,11 +25,18 @@ describe Api::CommentsController do
         it 'should redirect/return the comment' do
           expect(response).to redirect_to(api_comment_path(Comment.first.id))
         end
+
+        it 'should queue a GA track worker' do
+          expect(GATrackWorker.jobs.size).to eq(1)
+        end
       end
 
       context 'without an associated annotation' do
         let(:comment) { FactoryGirl.attributes_for :comment, content: '  ' }
-        before { post :create, comment: comment }
+        before do
+          GATrackWorker.drain
+          post :create, comment: comment
+        end
 
         it 'should return 404' do
           expect(response.status).to eq(404)
@@ -34,12 +45,19 @@ describe Api::CommentsController do
         it 'should not create a comment' do
           expect(Comment.count).to eq(0)
         end
+
+        it 'should NOT queue a GA track worker' do
+          expect(GATrackWorker.jobs.size).to eq(0)
+        end
       end
 
       context 'with invalid comment data' do
-        let(:annotation) { FactoryGirl.create :annotation }
+        let!(:annotation) { FactoryGirl.create :annotation }
         let(:comment) { FactoryGirl.attributes_for :comment, content: '  ' }
-        before { post :create, comment: comment, annotation_id: annotation.id }
+        before do
+          GATrackWorker.drain
+          post :create, comment: comment, annotation_id: annotation.id
+        end
 
         it 'should return 400' do
           expect(response.status).to eq(400)
@@ -47,6 +65,10 @@ describe Api::CommentsController do
 
         it 'should not create a comment' do
           expect(Comment.count).to eq(0)
+        end
+
+        it 'should NOT queue a GA track worker' do
+          expect(GATrackWorker.jobs.size).to eq(0)
         end
       end
     end
@@ -130,6 +152,7 @@ describe Api::CommentsController do
       let(:user) { FactoryGirl.create :user, username: 'u2', email: 'h@hogwarts.com' }
       before do
         sign_in user
+        GATrackWorker.drain
         post :add_reply, id: parent_comment.id, reply: reply
       end
 
@@ -143,13 +166,22 @@ describe Api::CommentsController do
         it 'should redirect to the api comment path, for the reply' do
           expect(response).to redirect_to(api_comment_path Comment.last.id)
         end
+
+        it 'should queue a GA track worker' do
+          expect(GATrackWorker.jobs.size).to eq(1)
+        end
       end
 
       context 'when the reply is invalid' do
         let(:reply) { FactoryGirl.attributes_for(:comment).merge(content: 'too$hort') }
+        before { GATrackWorker.drain }
 
         it 'should return 400' do
           expect(response.status).to eq(400)
+        end
+
+        it 'should NOT queue a GA track worker' do
+          expect(GATrackWorker.jobs.size).to eq(0)
         end
       end
     end
@@ -177,6 +209,7 @@ describe Api::CommentsController do
         before do
           sign_in user_2
           @original_count = comment.votes.count
+          GATrackWorker.drain
           post :add_vote, id: comment.id, vote: vote
         end
 
@@ -188,6 +221,10 @@ describe Api::CommentsController do
         it 'should redirect to the api comment path' do
           expect(response).to redirect_to(api_comment_path(comment.id))
         end
+
+        it 'should queue a GA track worker' do
+          expect(GATrackWorker.jobs.size).to eq(1)
+        end
       end
 
       context 'and that user has already voted' do
@@ -198,6 +235,7 @@ describe Api::CommentsController do
 
         context 'with the same up/down value' do
           before do
+            GATrackWorker.drain
             post :add_vote, id: comment.id, vote: vote
           end
 
@@ -209,12 +247,17 @@ describe Api::CommentsController do
           it 'should redirect to the api comment path' do
             expect(response).to redirect_to(api_comment_path(comment.id))
           end
+
+          it 'should NOT queue a GA track worker' do
+            expect(GATrackWorker.jobs.size).to eq(0)
+          end
         end
 
-        context 'with a differnt up/down value' do
+        context 'with a different up/down value' do
           before do
             @original_pos = vote[:positive]
             vote[:positive] = !vote[:positive]
+            GATrackWorker.drain
             post :add_vote, id: comment.id, vote: vote
           end
 
@@ -225,6 +268,10 @@ describe Api::CommentsController do
 
           it 'should redirect to the api comment path' do
             expect(response).to redirect_to(api_comment_path(comment.id))
+          end
+
+          it 'should queue a GA track worker' do
+            expect(GATrackWorker.jobs.size).to eq(1)
           end
         end
       end

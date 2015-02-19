@@ -14,7 +14,10 @@ class Api::CommentsController < ApiController
     @comment = Comment.new(comment_params)
     @comment.annotation = Annotation.find(params[:annotation_id])
 
-    redirect_or_err(@comment, :api_comment_path, 400) { @comment.save }
+    redirect_or_err(@comment, :api_comment_path, 400) do
+      @comment.save &&
+      GATrackWorker.perform_async('Create Comment', @comment.annotation.page.url, false)
+    end
   end
 
   def update
@@ -28,10 +31,12 @@ class Api::CommentsController < ApiController
     @reply = Comment.new(reply_params)
 
     redirect_or_err @reply, :api_comment_path, 400 do
-      @reply.save && @comment.replies << @reply
+      @reply.save && @comment.replies << @reply &&
+      GATrackWorker.perform_async('Create Reply', @reply.parent_comment.id)
     end
   end
 
+  # TODO: move to vote service
   def add_vote
     @vote = @comment.votes.find_by_user_id(current_user.id)
 
@@ -41,7 +46,12 @@ class Api::CommentsController < ApiController
       @vote = Vote.new(vote_params)
     end
 
-    redirect_or_err(@vote, :api_comment_path, 400, @comment.id) { @vote.save }
+    redirect_or_err(@vote, :api_comment_path, 400, @comment.id) do
+      trackVal = @vote.positive ? 'Up' : 'Down'
+      updated = !@vote.persisted? || @vote.changed?
+      @vote.save &&
+      (updated ? GATrackWorker.perform_async('Vote', trackVal, @comment.id) : true)
+    end
   end
 
   def destroy
