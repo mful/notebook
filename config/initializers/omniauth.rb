@@ -4,8 +4,8 @@ if Rails.env == 'production'
     google_secret: ENV['GOOGLE_SECRET'],
     github_id: ENV['GITHUB_ID'],
     github_secret: ENV['GITHUB_SECRET'],
-    fb_key: ENV['FACEBOOK_KEY'],
-    fb_secret: ENV['FACEBOOK_SECRET'],
+    fb_key: ENV['FB_APP_ID'],
+    fb_secret: ENV['FB_APP_SECRET'],
     twitter_key: ENV['TWITTER_KEY'],
     twitter_secret: ENV['TWITTER_SECRET']
   }
