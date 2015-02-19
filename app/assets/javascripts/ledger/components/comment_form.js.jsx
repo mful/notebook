@@ -175,7 +175,7 @@ var CommentForm = React.createClass({
           <input type="submit" className="button"/>
         </div>
 
-        <textarea ref="content" placeholder={ this.textAreaPlaceholder() }
+        <textarea ref="content" placeholder={ this.textAreaPlaceholder() } id="comment_content"
                   onFocus={ this.setOpen }
                   style={ this.maybeSetHeight() }
                   onBlur={ this.setCollapse }
