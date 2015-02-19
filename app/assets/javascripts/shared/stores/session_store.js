@@ -68,6 +68,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
         break;
       case CommentConstants.CREATE_COMMENT:
       case AnnotationConstants.ADD_COMMENT:
+      case CommentConstants.ADD_REPLY:
         SessionStore._ensureCurrentUser( 'comment' );
         break;
       case CommentConstants.VOTE:
