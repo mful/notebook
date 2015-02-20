@@ -19,6 +19,7 @@ Capybara.javascript_driver = :chrome
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("features/support/**/*.rb")].each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -100,6 +101,14 @@ OmniAuth.config.add_mock(
   }
 )
 
+# Setup test only routes for fully integrated acceptance testing
+test_routes = Proc.new do
+  get 'tests/sama' => 'test/tests#sama', as: 'test_sama'
+  get 'tests/assets/crayon.js' => 'test/assets#crayonjs', as: 'test_assets_crayonjs'
+  get 'tests/assets/crayon.css' => 'test/assets#crayoncss', as: 'test_assets_crayoncss'
+end
+Rails.application.routes.eval_block(test_routes)
+
 RSpec.configure do |config|
   # ## Mock Framework
   #
@@ -129,6 +138,23 @@ RSpec.configure do |config|
 
   config.after(:suite) do
     DatabaseCleaner.clean_with(:truncation)
+  end
+
+  # copy over crayon assets from build
+  config.before :suite do
+    %x(
+      mkdir app/views/test/assets
+      mkdir app/views/test/assets/javascripts
+      mkdir app/views/test/assets/styles
+      cp #{Rails.application.config.crayon[:script_path]} #{Rails.root + 'app/views/test/assets/javascripts/crayon.js'}
+      cp #{Rails.application.config.crayon[:styles_path]} #{Rails.root + 'app/views/test/assets/styles/crayon.css'}
+    )
+  end
+
+  config.after :suite do
+    %x(
+      rm -rf #{Rails.root + 'app/views/test/assets'}
+    )
   end
 
   # If true, the base class of anonymous controllers will be inferred

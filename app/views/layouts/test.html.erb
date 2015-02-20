@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta property="og:type" content="article" />
+    <link rel="stylesheet" href="<%= test_assets_crayoncss_path %>" type="text/css">
+  </head>
+
+  <body>
+
+    <%= yield %>
+
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+    <script>
+      window.crayon = {};
+      crayon.env = 'test';
+    </script>
+    <script src="<%= test_assets_crayonjs_path %>" >
+    </script>
+  </body>
+</html>
