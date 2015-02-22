@@ -8,10 +8,15 @@ describe 'creating an annotation', type: :feature, js: true do
 
   before do
     visit test_sama_path
-
     highlight_text('p', 10, 50)
+  end
 
+  it 'bring up the sidebar, with a form to fill out, which should prompt for auth on submission, before working' do
     page.find('.crayon-add-annotation-view').click
+
+    # ensure full sentence gets highlighted
+    expect(page.find '.crayon-annotation-text-view').to have_content("In human history, there have been three great technological revolutions
+and many smaller ones.")
 
     within_frame 'crayon-sidebar' do
       fill_in 'comment_content', with: comment_attrs[:content]
@@ -25,18 +30,17 @@ describe 'creating an annotation', type: :feature, js: true do
       fill_in 'user_password', with: 'foobar'
       click_button 'Login'
     end
-  end
 
-  it 'bring up the sidebar, with a form to fill out, which should prompt for auth on submission, before working' do
     within_frame 'crayon-sidebar' do
       expect(page.find('.author')).to have_content(user.username)
       expect(page.find('.content')).to have_content(comment_attrs[:content])
-      expect(Annotation.count).to eq(1)
-      expect(Page.count).to eq(1)
-      expect(Entity.count).to eq(1)
-      expect(Comment.count).to eq(1)
-      expect(Annotation.first.text).to eq("In human history, there have been three great technological revolutions
-and many smaller ones.")
     end
+
+    expect(Annotation.count).to eq(1)
+    expect(Page.count).to eq(1)
+    expect(Entity.count).to eq(1)
+    expect(Comment.count).to eq(1)
+    expect(Annotation.first.text).to eq("In human history, there have been three great technological revolutions
+and many smaller ones.")
   end
 end
