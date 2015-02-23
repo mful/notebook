@@ -37,19 +37,14 @@ Notebook::Application.routes.draw do
   get '/auth/:provider/callback' => 'api/sessions#create_with_omniauth', as: 'api_omniauth_login'
   get '/auth/failure' => 'api/sessions#auth_failure'
 
-  get '/signin' => 'sessions#signin', as: 'signin'
-  get '/signup' => 'sessions#signup', as: 'signup'
-
   post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'
+
+  ### Janus ###
+
+  get '/signup' => 'janus/sessions#signup', as: 'signup'
 
   ### Ledger ###
 
   get 'annotations/:id' => 'ledger/annotations#show', constraints: { id: /\d+/ }, as: 'annotation'
   get 'annotations/new' => 'ledger/annotations#new', as: 'new_annotation'
-
-  ### Paper ###
-  get 'annotations/:id/comments/new' => 'paper/comments#new', as: 'new_annotation_comment'
-
-  get 'comments/:id/replies/new' => 'paper/comments#add_reply', as: 'new_reply'
-  get 'comments/:id/replies' => 'retort/comments#replies', as: 'replies'
 end

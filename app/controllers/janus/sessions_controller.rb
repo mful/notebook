@@ -1,9 +1,6 @@
-class SessionsController < ApplicationController
+class Janus::SessionsController < ApplicationController
 
   layout 'janus'
-
-  def signin
-  end
 
   def signup
     @presenter = {
