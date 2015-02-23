@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 
 var Comment = React.createClass({
+  mixins: [React.addons.PureRenderMixin],
 
   getInitialState: function () {
     return {
@@ -11,13 +12,12 @@ var Comment = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function ( props ) {
-    this.setState({
-      content: props.comment.content,
-      replyCount: props.comment.reply_count,
-      score: props.comment.score,
-      userVote: props.comment.current_user_vote
-    });
+  componentDidMount: function () {
+    CommentStore.addChangeListener( this._onChange );
+  },
+
+  componentWillUnmount: function () {
+    CommentStore.removeChangeListener( this._onChange );
   },
 
   replyButtonText: function () {
@@ -85,5 +85,16 @@ var Comment = React.createClass({
         </div>
       </div>
     );
+  },
+
+  _onChange: function () {
+    var comment = CommentStore.getById( this.props.comment.id );
+
+    this.setState({
+      content: comment.content,
+      replyCount: comment.reply_count,
+      score: comment.score,
+      userVote: comment.current_user_vote
+    });
   }
 });
