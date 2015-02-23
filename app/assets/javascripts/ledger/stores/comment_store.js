@@ -16,7 +16,6 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
       comment = response.data.comment;
       _comments[comment.id] = comment;
       _pendingComment = null;
-      CommentActions.notifyCreate( comment );
     } else if ( response.status === 400 ) {
       errors = "- " + response.data.errors.join("\n- ");
       alert( "Whoops! There were some errors:\n\n" + errors );
