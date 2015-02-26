@@ -16,7 +16,6 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
       comment = response.data.comment;
       _comments[comment.id] = comment;
       _pendingComment = null;
-      CommentActions.notifyCreate( comment );
     } else if ( response.status === 400 ) {
       errors = "- " + response.data.errors.join("\n- ");
       alert( "Whoops! There were some errors:\n\n" + errors );
@@ -81,10 +80,6 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     );
   },
 
-  sortByDate: function ( comments ) {
-    return _( comments ).sortBy( function ( comment ) { return -1 * comment.created_at; } );
-  },
-
   sortByRating: function ( comments ) {
     return _( comments ).sortBy( function ( comment ) { return -1 * comment.rating; } );
   },
@@ -110,6 +105,7 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     var text;
 
     switch ( action.actionType ) {
+      // keep
       case AnnotationConstants.NOTIFY_COMMENTS:
         CommentStore._setComments( action.data );
         break;
@@ -154,6 +150,14 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
       scribble.helpers.routes.api_comment_votes_url( data.id ),
       {vote: data},
       CommentStore._handleVoteResponse
+    );
+  },
+
+  _createComment: function ( data ) {
+    scribble.helpers.xhr.post(
+      scribble.helpers.routes.api_comments_url(),
+      data,
+      CommentStore.handleCreateResponse
     );
   },
 
@@ -241,13 +245,5 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     }
 
     CommentStore.emitChange();
-  },
-
-  _createComment: function ( data ) {
-    scribble.helpers.xhr.post(
-      scribble.helpers.routes.api_comments_url(),
-      data,
-      CommentStore.handleCreateResponse
-    );
   }
 }});

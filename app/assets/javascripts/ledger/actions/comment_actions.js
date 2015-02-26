@@ -25,13 +25,6 @@ var CommentActions = {
     })
   },
 
-  notifyCreate: function ( comment ) {
-    AppDispatcher.handleStoreRequest({
-      actionType: CommentConstants.COMMENT_CREATE_SUCCESS,
-      data: {comment: comment}
-    })
-  },
-
   showReplies: function ( id ) {
     AppDispatcher.handleViewAction({
       actionType: RouterConstants.NAVIGATE,

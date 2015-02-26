@@ -24,14 +24,6 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
     return _annotations;
   },
 
-  getFirst: function () {
-    if ( Object.keys( _annotations ).length === 0 ) return this.getPending();
-
-    for ( var key in _annotations ) {
-      return _annotations[key];
-    }
-  },
-
   getById: function ( id, callback ) {
     if ( _annotations[id] ) return callback( _annotations[id] );
 
@@ -92,16 +84,20 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
       case SessionConstants.LOGIN_SUCCESS:
         AnnotationStore._flushPendingAnnotation();
         break;
-      case AnnotationConstants.NEW_ANNOTATION:
-        _pendingAnnotation = action.data;
-        AnnotationStore.emitChange();
-        break;
     }
 
     return true;
   }),
 
   // private
+
+  _createWithComment: function ( data ) {
+    scribble.helpers.xhr.post(
+      scribble.helpers.routes.api_annotations_url(),
+      data,
+      AnnotationStore.handleCreateResponse
+    );
+  },
 
   _flushPendingAnnotation: function () {
     if ( _pendingAnnotation != null ) {
@@ -127,12 +123,4 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
     return _annotations;
   },
-
-  _createWithComment: function ( data ) {
-    scribble.helpers.xhr.post(
-      scribble.helpers.routes.api_annotations_url(),
-      data,
-      AnnotationStore.handleCreateResponse
-    );
-  }
 }});

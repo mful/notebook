@@ -45,12 +45,6 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
     this.emitChange();
   },
 
-  logoutSuccess: function () {
-    _currentUser = null;
-    SessionActions.notifyLogout();
-    this.emitChange();
-  },
-
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -63,17 +57,6 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
     var action = payload.action;
 
     switch(action.actionType) {
-      case AnnotationConstants.CREATE_WITH_COMMENT:
-        SessionStore._ensureCurrentUser( 'add an annotation' );
-        break;
-      case CommentConstants.CREATE_COMMENT:
-      case AnnotationConstants.ADD_COMMENT:
-      case CommentConstants.ADD_REPLY:
-        SessionStore._ensureCurrentUser( 'comment' );
-        break;
-      case CommentConstants.VOTE:
-        SessionStore._ensureCurrentUser( 'vote' );
-        break;
       case CourierConstants.POST_LOGIN:
         SessionStore._setCurrentUser( action.data.currentUser );
         break;
@@ -94,29 +77,10 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
       case SessionConstants.UPDATE_CURRENT_USER:
         SessionStore._updateCurrentUser( action.data );
         break;
-      case SessionConstants.LOGOUT:
-        SessionStore._deleteSession();
-        break;
     }
 
     return true;
   }),
-
-  _ensureCurrentUser: function ( referringAction ) {
-    if ( !SessionStore.isCurrentUserComplete() ) {
-      Courier.post( SessionConstants.AUTH_NEEDED, {referringAction: referringAction} );
-    }
-  },
-
-  _deleteSession: function () {
-    scribble.helpers.xhr.request(
-      'DELETE',
-      scribble.helpers.routes.api_signout_url(),
-      function ( err, response ) {
-        if ( !err ) SessionStore.logoutSuccess();
-      }
-    )
-  },
 
   _loginWithFb: function () {
     FB.login ( function ( response ) {
