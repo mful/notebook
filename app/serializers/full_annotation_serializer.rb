@@ -11,7 +11,9 @@ class FullAnnotationSerializer < ActiveModel::Serializer
   end
 
   def comments
-    object.comments.order('rating DESC').map do |comment|
+    # pulled from DB with comments -- use sort_by to prevent additional DB read
+    # triggered by #order
+    object.comments.sort_by { |comment| -1 * comment.rating }.map do |comment|
       CommentSerializer.new(comment).serializable_hash(current_user: serialization_options[:current_user])
     end
   end

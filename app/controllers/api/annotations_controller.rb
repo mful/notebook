@@ -31,8 +31,7 @@ class Api::AnnotationsController < ApiController
       GATrackWorker.perform_async 'Load Annotated Page', page.url, @annotations.length
     end
 
-    # TODO: move to less robust serializer
-    render json: @annotations, status: 200, each_serializer: FullAnnotationSerializer, current_user: current_user
+    render json: @annotations, status: 200, each_serializer: AnnotationHighlightSerializer
   end
 
   private
@@ -42,10 +41,7 @@ class Api::AnnotationsController < ApiController
   end
 
   def find_annotation
-    begin @annotation = Annotation.find(params[:id])
-    rescue
-      raise Notebook::NotFoundError.new
-    end
+    @annotation = Annotation.includes(:comments).find(params[:id])
   end
 
   def annotation_params

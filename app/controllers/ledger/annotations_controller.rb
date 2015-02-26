@@ -28,6 +28,6 @@ class Ledger::AnnotationsController < ApplicationController
   private
 
   def find_annotation
-    @annotation = Annotation.find(params[:id])
+    @annotation = Annotation.includes(:comments).find(params[:id])
   end
 end
