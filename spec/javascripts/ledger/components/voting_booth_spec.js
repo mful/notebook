@@ -21,7 +21,7 @@ describe( 'VotingBooth', function () {
   afterEach( function() {
     if ( instance && instance.isMounted() ) {
       // Only components with a parent will be unmounted
-      React.unmountComponentAtNode( instance.getDOMNode().parent );
+      React.unmountComponentAtNode( instance.getDOMNode().parentElement );
       instance = null;
     }
     document.body.removeChild( container );
