@@ -48,15 +48,15 @@ var VotingBooth = React.createClass({
   render: function () {
     return(
       <div className="voting-booth-component">
-        <div className={ this.voteClassName('up') } onClick={ this.upVote }>
+        <div ref="upVote" className={ this.voteClassName('up') } onClick={ this.upVote }>
           <i className="ion-ios-play"></i>
         </div>
 
-        <p className="vote-count">
+        <p ref="voteCount" className="vote-count">
           { this.state.score }
         </p>
 
-        <div className={ this.voteClassName('down') } onClick={ this.downVote }>
+        <div ref="downVote" className={ this.voteClassName('down') } onClick={ this.downVote }>
           <i className="ion-ios-play"></i>
         </div>
       </div>

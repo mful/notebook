@@ -39,6 +39,7 @@ Notebook::Application.configure do
     'X-Frame-Options' => 'ALLOWALL'
   }
 
+  config.react.variant = :development
   config.react.addons = true
 
   Rails.application.routes.default_url_options[:host] = 'scribble.test:31234'
