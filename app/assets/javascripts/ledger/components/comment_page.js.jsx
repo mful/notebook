@@ -5,7 +5,7 @@ var CommentPage = React.createClass({
   getInitialState: function () {
     if ( this.props.server_rendered ) {
       AppActions.initializeData({
-        comments: this.props.replies.concat( [this.props.comments] )
+        comments: this.props.replies.concat( [this.props.comment] )
       });
     }
 
