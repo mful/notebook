@@ -25,19 +25,18 @@ var AnnotationStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   getById: function ( id, callback ) {
+    if( !callback ) return ( _annotations[id] || null );
     if ( _annotations[id] ) return callback( _annotations[id] );
 
     scribble.helpers.xhr.get(
       scribble.helpers.routes.api_annotation_url( id ),
       function ( err, response ) {
-        if ( err ) {
+        if ( err || response.status === 404 ) {
           alert('Whoops! Something went wrong. Try again?');
         } else if ( response.status === 200 ) {
           AnnotationStore.separateComments( response.data );
           _annotations[id] = response.data.annotation;
           callback( _annotations[id] );
-        } else if ( response.status === 404 ) {
-          // stub
         }
       }
     );
