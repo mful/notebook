@@ -366,6 +366,7 @@ describe( 'AnnotationStore', function () {
 
       beforeEach( function () {
         spyOn( AnnotationStore, '_createWithComment' );
+        AnnotationStore._flushPendingAnnotation();
       });
 
       it( 'should not try to create an annotation', function () {

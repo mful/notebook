@@ -47,10 +47,11 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
     return this.sortByRating( comments );
   },
 
+  // TODO: add fetching for comments that aren't present
   getById: function ( id, callback ) {
-    if ( !callback ) return _comments[id];
+    if ( !callback ) return ( _comments[id] || null );
 
-    return callback( _comments[id] );
+    return callback( (_comments[id] || null) );
   },
 
   getPending: function () {
@@ -85,6 +86,9 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   reset: function () {
+    _pendingComment = null;
+    _pendingReply = null;
+    _pendingVote = null;
     return _comments = {};
   },
 
@@ -181,7 +185,7 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   _handleAddVote: function ( data ) {
-    if ( !_comments[data.id] ) return;
+    if ( !_comments[data.id] ) return null;
 
     var userVote = _comments[data.id].current_user_vote,
         voteVal = data.positive ? 'up' : 'down';
@@ -211,12 +215,11 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   _handleVoteResponse: function ( err, response ) {
-    if ( err ) return;
-
-    if ( response.status === 200 ) {
+    if ( err ) {
+      alert( 'Whoops! Something went wrong. Try again?' );
+      return;
+    } else if ( response.status === 200 ) {
       _comments[response.data.comment.id] = response.data.comment;
-    } else if ( response.status === 403 ) {
-      // SessionStore.ensureCurrentUser();
     }
 
     CommentStore.emitChange();
@@ -238,10 +241,11 @@ var CommentStore = React.addons.update(EventEmitter.prototype, {$merge: {
   },
 
   _setComments: function ( comments ) {
-    CommentStore.reset();
-    for ( var i in comments ) {
-      var comment = comments[i]
-      _comments[comment.id] = comment
+    var comment, i;
+
+    for ( i = 0; i < comments.length; i++ ) {
+      comment = comments[i];
+      _comments[comment.id] = comment;
     }
 
     CommentStore.emitChange();
