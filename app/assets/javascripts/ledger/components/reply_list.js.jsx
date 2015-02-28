@@ -27,6 +27,7 @@ var ReplyList = React.createClass({
 
     newComment = this.getNewComment( this.state.replies, replies );
 
+    // only update on new comment, to avoid re-sorting the list on actions like voting
     if ( newComment ) {
       this.setState({
         comment: CommentStore.getById( this.props.comment.id ),

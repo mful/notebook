@@ -8,15 +8,16 @@
 //= require ledger/stores/comment_store
 //= require ledger/mixins/comment_list_mixin
 //= require ledger/components/comment
-//= require ledger/components/comment_list
+//= require ledger/components/reply_list
 
-describe( 'CommentList', function () {
+describe( 'ReplyList', function () {
 
   var instance,
       container,
       props = {
-        comments: [{id: 1, content: 'A comment to read', userVote: 'up', reply_count: 1, annotation_id: 3, rating: 1}],
-        type: 'comment'
+        comment: {id: 1, content: 'A comment to read', userVote: 'up', reply_count: 1, annotation_id: 3, rating: 1},
+        replies: [{id: 2, content: 'A reply to read', userVote: null, reply_count: 0, annotation_id: null, rating: 1, parent_comment_id: 1}],
+        type: 'reply'
       };
 
   beforeEach( function () {
@@ -34,39 +35,20 @@ describe( 'CommentList', function () {
     container = null;
   });
 
-  describe( 'initial state', function () {
-
-    beforeEach( function () {
-      sortProps = {
-        comments: [
-          {id: 1, content: 'A comment to read', userVote: 'up', reply_count: 1, annotation_id: 3, rating: 1},
-          {id: 2, content: 'Another comment to read', userVote: 'down', reply_count: 0, annotation_id: 3, rating: 2}
-        ],
-        type: 'comment'
-      };
-
-      instance = React.renderComponent( CommentList(sortProps), container );
-    });
-
-    it( 'should set the comments state, to the given comments, sorted by rating', function () {
-      expect( instance.state.comments[0] ).toEqual( sortProps.comments[1] );
-      expect( instance.state.comments[1] ).toEqual( sortProps.comments[0] );
-    });
-  });
-
   describe( '#_onChange', function () {
 
     beforeEach( function () {
-      instance = React.renderComponent( CommentList(props), container );
+      instance = React.renderComponent( ReplyList(props), container );
       spyOn( instance, 'setState' ).and.callThrough();
+      spyOn( CommentStore, 'getById' ).and.returnValue( props.comment );
     });
 
     describe( 'when there is a new comment', function () {
-      var newComment = {id: 2, content: 'A second comment', userVote: null, reply_count: 0, annotation_id: 3};
+      var newComment = {id: 3, content: 'A second comment', userVote: null, reply_count: 0, annotation_id: 3};
 
       beforeEach( function () {
-        spyOn( CommentStore, 'getByAnnotationAsList' ).and.returnValue([
-          instance.props.comments[0],
+        spyOn( CommentStore, 'getReplies' ).and.returnValue([
+          instance.props.replies[0],
           newComment
         ])
 
@@ -80,8 +62,8 @@ describe( 'CommentList', function () {
 
     describe( 'when there is not a new comment', function () {
       beforeEach( function () {
-        spyOn( CommentStore, 'getByAnnotationAsList' ).and.returnValue([
-          instance.props.comments[0]
+        spyOn( CommentStore, 'getReplies' ).and.returnValue([
+          instance.props.replies[0]
         ])
 
         instance._onChange();
