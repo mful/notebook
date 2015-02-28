@@ -2,22 +2,17 @@
 //= require react
 //= require react_ujs
 //= require underscore
+//= require event_emitter.module
+//= require flux/Flux.module
+//= require shared/dispatchers/app_dispatcher
 //= require shared/helpers/routes
 //= require shared/constants/router_constants
+//= require ledger/stores/comment_store
 //= require ledger/actions/comment_actions
 //= require ledger/components/voting_booth
 //= require ledger/components/comment
 
-window.scribble = {}
-
-var AppDispatcher = {
-  handleViewAction: function () {}
-}
-
-var CommentStore = {
-  addChangeListener: function () {},
-  removeChangeListener: function () {}
-}
+window.scribble || ( window.scribble = {} );
 
 describe( 'Comment', function () {
 
