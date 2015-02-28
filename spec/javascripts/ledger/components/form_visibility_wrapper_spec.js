@@ -4,6 +4,7 @@
 //= require event_emitter.module
 //= require flux/Flux.module
 //= require shared/dispatchers/app_dispatcher
+
 //= require ledger/stores/comment_store
 //= require ledger/mixins/comment_list_mixin
 //= require ledger/components/comment_list
