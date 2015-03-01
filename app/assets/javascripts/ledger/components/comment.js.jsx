@@ -28,8 +28,8 @@ var Comment = React.createClass({
     }
   },
 
-  typeClass: function () {
-    switch ( this.props.type ) {
+  typeClass: function ( type ) {
+    switch ( type ) {
       case 'comment-header':
         return ' comment-header';
       case 'reply':
@@ -44,7 +44,6 @@ var Comment = React.createClass({
     if ( this.state.replyCount === 0 ) {
       CommentActions.newReply( this.props.comment.id );
     } else {
-      AnalyticsActions.trackViewReplies( this.props.comment );
       CommentActions.showReplies( this.props.comment.id );
     }
   },
@@ -58,7 +57,7 @@ var Comment = React.createClass({
 
   render: function () {
     return (
-      <div className={ "comment-component" + this.typeClass() } data-key={ this.props.key }>
+      <div className={ "comment-component" + this.typeClass( this.props.type ) } data-key={ this.props.key }>
         <div className="row">
           <div className="small-12 column">
             { this.votingBooth() }
@@ -78,7 +77,7 @@ var Comment = React.createClass({
 
         <div className="comment-actions row">
           <div className="small-12 column">
-            <div className="button" onClick={ this.viewReplies }>
+            <div ref="viewReplies" className="button" onClick={ this.viewReplies }>
               { this.replyButtonText() }
             </div>
           </div>

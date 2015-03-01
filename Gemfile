@@ -64,3 +64,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
 end
+
+group :test, :development do
+  gem 'jasmine-rails'
+end

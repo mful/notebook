@@ -25,6 +25,7 @@ var CommentList = React.createClass({
 
     newComment = this.getNewComment( this.state.comments, comments );
 
+    // only update on new comment, to avoid re-sorting the list on actions like voting
     if ( newComment ) {
       this.setState({
         comments: CommentStore.sortByRating( comments ),

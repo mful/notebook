@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var FormVisibilityWrapper= React.createClass({
+var FormVisibilityWrapper = React.createClass({
 
   formVisibilityStates: {
     collapsed: 'collapsed',

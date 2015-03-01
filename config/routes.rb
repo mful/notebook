@@ -1,4 +1,5 @@
 Notebook::Application.routes.draw do
+  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount Peek::Railtie => '/peek'
   root to: 'statics#index'
 

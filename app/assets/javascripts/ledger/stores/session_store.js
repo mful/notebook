@@ -26,7 +26,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
   // TODO: move to User store
   isCurrentUserComplete: function () {
-    return _currentUser && _currentUser.username !== null && _currentUser.username.trim() !== ""
+    return !!_currentUser && _currentUser.username !== null && _currentUser.username.trim() !== ""
   },
 
   userErrors: function () {
@@ -43,6 +43,10 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
+  },
+
+  reset: function () {
+    _currentUser = null;
   },
 
   dispatchToken: AppDispatcher.register( function ( payload ) {
@@ -70,7 +74,7 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
 
   _ensureCurrentUser: function ( referringAction ) {
     if ( !SessionStore.isCurrentUserComplete() ) {
-      Courier.post( SessionConstants.AUTH_NEEDED, {referringAction: referringAction} );
+      LedgerCourier.post( SessionConstants.AUTH_NEEDED, {referringAction: referringAction} );
     }
   },
 

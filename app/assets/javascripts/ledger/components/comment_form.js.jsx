@@ -86,13 +86,14 @@ var CommentForm = React.createClass({
 
   setCollapse: function () {
     if ( this.mouseDownE && this.mouseDownE.target.className.match(/button/) ) return;
-    var node = this.refs.content.getDOMNode();
 
     if ( this.state.fixed &&
          this.state.visibility === this.props.visibilityStates.open &&
-         !node.value.trim()) {
-      node.value = null;
-      this.setState({ visibility: this.props.visibilityStates.collapsed })
+         !this.refs.content.getDOMNode().value.trim()) {
+      this.setState({
+        visibility: this.props.visibilityStates.collapsed,
+        text: ''
+      });
       this.props.visibilityHandler( this.props.visibilityStates.collapsed );
     }
   },
