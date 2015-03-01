@@ -71,7 +71,7 @@ describe Api::AnnotationsController do
       context 'and the page has annotations' do
         let(:annotation) { FactoryGirl.create :annotation }
         let(:expected_res) do
-          [FullAnnotationSerializer.new(annotation).serializable_hash.stringify_keys]
+          [AnnotationHighlightSerializer.new(annotation).serializable_hash.stringify_keys]
         end
         before do
           GATrackWorker.drain
