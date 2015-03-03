@@ -72,6 +72,30 @@ describe( 'AnnotationPage', function () {
         expect( scribble.helpers.analytics.trackGoogleEvent.calls.count() ).toEqual( 1 );
         expect( scribble.helpers.analytics.trackGoogleEvent ).toHaveBeenCalledWith( 'View Replies', 1, 1 );
       });
+
+      describe( 'when there is a reply id given', function () {
+
+        var replyComponent = document.createElement( 'div' );
+
+        beforeEach( function () {
+          notifyProps = {
+            replies: replies,
+            comment: comment,
+            server_rendered: true,
+            reply_id: 2
+          };
+
+          spyOn( document, 'querySelector' ).and.returnValue( replyComponent );
+          spyOn( replyComponent, 'scrollIntoViewIfNeeded' );
+
+          React.unmountComponentAtNode( instance.getDOMNode().parentElement );
+          instance = React.renderComponent( CommentPage(notifyProps), container );
+        });
+
+        it( 'should attempt to scroll to the requested reply', function () {
+          expect( replyComponent.scrollIntoViewIfNeeded ).toHaveBeenCalled();
+        });
+      });
     });
 
     describe( 'when not server rendered', function () {

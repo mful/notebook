@@ -5,18 +5,18 @@ describe Page do
   describe '#save' do
     context 'with valid data' do
       let(:page) do FactoryGirl.build(
-        :page, 
-        url: 'http://hogwarts.com/library/?author=emeric%20switch#animagus'
+        :page,
+        url: 'http://hogwarts.com/library?author=emeric%20switch#animagus'
       )
       end
-      let(:stripped_url) { 'hogwarts.com/library/?author=emeric%20switch' }
+      let(:stripped_url) { 'hogwarts.com/library' }
       before { page.save }
 
       it 'should create a page' do
         expect(Page.count).to eq(1)
       end
 
-      it 'should strip the fragment from the URL' do
+      it 'should strip the protocol, fragment, and query string from the URL' do
         expect(Page.first.url).to eq(stripped_url)
       end
     end

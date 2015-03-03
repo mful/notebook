@@ -14,6 +14,8 @@ var CommentPage = React.createClass({
 
   componentDidMount: function () {
     AnalyticsActions.trackViewReplies( this.props.comment );
+
+    if ( !!this.props.reply_id ) this.scrollToReply( this.props.reply_id );
   },
 
   replyList: function () {
@@ -23,6 +25,14 @@ var CommentPage = React.createClass({
 
   header: function () {
     return this.refs.header.getDOMNode();
+  },
+
+  scrollToReply: function ( id ) {
+    var replyComponent = document.querySelector(
+      '.comment-component[data-key="' + id + '"]'
+    );
+
+    replyComponent.scrollIntoViewIfNeeded();
   },
 
   submitHandler: function ( content ) {

@@ -15,8 +15,8 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
 OmniAuth.config.test_mode = true
-OmniAuth.config.add_mock( 
-  :google_oauth2, 
+OmniAuth.config.add_mock(
+  :google_oauth2,
   {
     :provider => "google_oauth2",
     :uid => "123456789",
@@ -50,7 +50,7 @@ OmniAuth.config.add_mock(
       }
     }
   }
-) 
+)
 
 RSpec.configure do |config|
   # ## Mock Framework

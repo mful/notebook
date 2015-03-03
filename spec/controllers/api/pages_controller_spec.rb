@@ -58,7 +58,7 @@ describe Api::PagesController  do
 
         it 'should update the page' do
           page.reload
-          expect(page.url).to eq('hogwarts.com/potions/recipes?polyjuice')
+          expect(page.url).to eq('hogwarts.com/potions/recipes')
         end
       end
 

@@ -48,4 +48,6 @@ Notebook::Application.routes.draw do
 
   get 'annotations/:id' => 'ledger/annotations#show', constraints: { id: /\d+/ }, as: 'annotation'
   get 'annotations/new' => 'ledger/annotations#new', as: 'new_annotation'
+
+  get 'comments/:id' => 'ledger/comments#show', constraints: { id: /\d+/ }, as: 'comment'
 end

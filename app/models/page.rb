@@ -17,7 +17,6 @@ class Page < ActiveRecord::Base
   def self.filter_url(url)
     uri = URI.parse(url)
     url_string = "%s%s" % [uri.host, uri.path]
-    url_string.concat("?#{uri.query}") if uri.query
 
     url_string
   end
@@ -35,7 +34,7 @@ class Page < ActiveRecord::Base
   end
 
   def top_annotations(count = 10)
-    annotations.sort_by { |annotation| -1 * annotation.simple_score }[0..count]
+    annotations.sort_by { |annotation| -1 * annotation.simple_score }[0...count]
   end
 
   private
