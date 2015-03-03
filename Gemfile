@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-ruby '2.2.0'
+ruby '2.1.5'
 gem 'rails', '4.1.6'
 
-gem 'unicorn'
+gem 'puma'
 
 gem 'pg'
 gem 'redis'
@@ -17,7 +17,7 @@ gem 'nokogiri'
 gem 'turbolinks'
 
 gem 'gon'
-gem 'active_model_serializers', git: 'https://github.com/rails-api/active_model_serializers.git', branch: '0-9-stable'
+gem 'active_model_serializers', git: 'git://github.com/rails-api/active_model_serializers.git', branch: '0-9-stable'
 
 gem 'sass-rails', '~> 4.0.2'
 gem 'uglifier', '>= 1.3.0'
