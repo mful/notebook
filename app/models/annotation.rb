@@ -8,4 +8,30 @@ class Annotation < ActiveRecord::Base
   def simple_score
     comments.sum :rating;
   end
+
+  def determine_likeness(src, dest)
+    score = 0
+    src_sections = partition(src)
+    dest_sections = partition(dest)
+
+    for i in 0..src_sections.size
+      score += 10 if src_sections[i] == dest_sections[i]
+    end
+
+    return score
+  end
+
+  # partitions a set of text into sections of ten
+  def partition
+    # should validate length to be reasonable on the client
+    length = text.size
+    offset = 0
+    sections = []
+
+    # split into tenths
+    (0..length).step(length / 10) do |i|
+      sections << Digest::MD5.hexdigest(text[offset..i])
+      offset = i + 1
+    end
+  end
 end
