@@ -12,4 +12,5 @@
 /config/secret_token.secret.yml
 *\/\.
 *\.DS*
+.elasticbeanstalk
 chalkboard.rb
