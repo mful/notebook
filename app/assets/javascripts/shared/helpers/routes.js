@@ -13,6 +13,11 @@ scribble.helpers.routes = {};
     return urlRoot() + '/api/annotations';
   };
 
+  namespace.api_users_by_mention_url = function ( params ) {
+    params || ( params = {} );
+    return urlRoot() + '/api/users/by_mention' + queryString( params );
+  };
+
   namespace.api_comments_url = function () {
     return urlRoot() + '/api/comments';
   };

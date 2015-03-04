@@ -11,10 +11,12 @@ Notebook::Application.routes.draw do
   get 'sidebar' => 'statics#sidebar'
 
   namespace :api do
-    resources :users, only: [:new, :create, :show]
-    post '/users/:id' => 'users#update'
+    resources :users, only: [:new, :create]
+    get 'users/:id' => 'users#show', constraints: { id: /\d+/ }
+    post 'users/:id' => 'users#update'
     get 'signup' => 'users#new'
     get 'reset_password' => 'users#reset_password'
+    get 'users/by_mention' => 'users#by_mention'
 
     resources :sessions, only: [:create]
     delete 'signout' => 'sessions#destroy', as: 'signout'

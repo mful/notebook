@@ -10,6 +10,10 @@ class User < ActiveRecord::Base
   has_many :votes
   has_and_belongs_to_many :roles
 
+  def self.by_username( text, count = 5 )
+    where("username ILIKE ?", text + '%').limit(count)
+  end
+
   # TODO: move this remember token logic
   def new_remember_token
     SecureRandom.urlsafe_base64

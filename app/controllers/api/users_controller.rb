@@ -25,6 +25,11 @@ class Api::UsersController < ApiController
     render json: @user, status: 200, serializer: UserSerializer
   end
 
+  def by_mention
+    users = User.by_username(params[:text])
+    render json: users, status: 200, each_serializer: AtMentionSerializer
+  end
+
   def reset_password
     begin
       ResetPassword.reset! params[:email]
