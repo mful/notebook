@@ -1,0 +1,39 @@
+.at-mention-dropdown-component {
+  background: $white;
+  border: solid 1px $light_grey;
+  box-shadow: 0 0 5px $light_grey;
+  left: 10%;
+  max-height: 170px;
+  overflow: scroll;
+  position: fixed;
+  transition: top 100ms ease-out;
+  visibility: hidden;
+  width: 80%;
+  z-index: 2;
+
+  ul {
+    list-style: none;
+    margin: 0;
+
+    li {
+      border-top: solid 1px $light_grey;
+      cursor: pointer;
+      padding: 5px 10px;
+
+      &:first-child {
+        border: none;
+      }
+
+      &:hover {
+        background: $purple_trans;
+      }
+
+      &.empty {
+        cursor: default;
+        &:hover {
+          background: none;
+        }
+      }
+    }
+  }
+}

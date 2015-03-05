@@ -62,6 +62,23 @@ var CommentForm = React.createClass({
 
   // event handlers
 
+  atMentionSelect: function ( atMention ) {
+    var node = this.refs.content.getDOMNode(),
+        text = node.value,
+        wordStart = this.getCurrentWordStartPos( node ),
+        lead = text.substring( 0, wordStart ),
+        tail = text.substring( wordStart );
+
+    tail = tail.replace( /^([^\s$]*)/, atMention + ' ' );
+
+    this.setState({
+      text: lead + tail,
+      atMention: null
+    });
+
+    node.focus();
+  },
+
   maybeSetHeight: function () {
     if ( this.state.visibility !== this.props.visibilityStates.expanded ) return {};
     var header = this.props.headerGetter(),
@@ -98,16 +115,22 @@ var CommentForm = React.createClass({
     }
   },
 
-  getWordAtCursor: function () {
-    var node = this.refs.content.getDOMNode(),
-        wordStart = node.selectionStart,
-        text = this.refs.content.getDOMNode().value,
-        match;
-    if ( wordStart < 2 ) return;
+  getCurrentWordStartPos: function ( node ) {
+    var wordStart = node.selectionStart,
+        text = node.value;
 
     while ( wordStart > 0 && !text[wordStart - 1].match(/\s/) ) {
       wordStart--;
     }
+
+    return wordStart;
+  },
+
+  getWordAtCursor: function () {
+    var node = this.refs.content.getDOMNode(),
+        text = node.value,
+        wordStart = this.getCurrentWordStartPos( node ),
+        match;
 
     text = text.substring( wordStart );
     match = text.match( /^([^\s$]*)/ );
@@ -146,7 +169,9 @@ var CommentForm = React.createClass({
 
   atMentionDropdown: function () {
     if ( !!this.state.atMention && this.state.atMention.length > 1 ) {
-      return <AtMentionDropdown text={ this.state.atMention } contentNode={ this.refs.content.getDOMNode() } />;
+      return <AtMentionDropdown text={ this.state.atMention }
+                                contentNode={ this.refs.content.getDOMNode() }
+                                atMentionHandler={ this.atMentionSelect } />;
     }
   },
 

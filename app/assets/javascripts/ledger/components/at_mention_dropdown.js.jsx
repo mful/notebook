@@ -36,6 +36,12 @@ var AtMentionDropdown = React.createClass({
     this.setState({ text: text });
   },
 
+  // event handlers
+
+  completeMention: function ( e ) {
+    this.props.atMentionHandler( e.target.innerText );
+  },
+
   // render helpers
 
   getCursorPosition: function ( node, position ) {
@@ -146,10 +152,12 @@ var AtMentionDropdown = React.createClass({
   },
 
   userListItems: function () {
+    var _this = this;
+
     if ( this.state.users && this.state.users.length > 0 ) {
       return this.state.users.map( function ( user ) {
         // TODO: Move to own component? click handling
-        return <li key={ user.id }>{ '@' + user.username }</li>;
+        return <li key={ user.id } onClick={ _this.completeMention }>{ '@' + user.username }</li>;
       });
     } else if ( !this.state.text ) {
       return null;
