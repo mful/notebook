@@ -98,19 +98,30 @@ var CommentForm = React.createClass({
     }
   },
 
-  setStateText: function () {
-    var text = this.refs.content.getDOMNode().value,
-        words = text.split(/\s+/),
-        lastWord = words[words.length - 1],
-        stateObj = { text: text };
+  getWordAtCursor: function () {
+    var node = this.refs.content.getDOMNode(),
+        wordStart = node.selectionStart,
+        text = this.refs.content.getDOMNode().value,
+        match;
+    if ( wordStart < 2 ) return;
 
-    if ( lastWord.match(/^@/) ) {
-      this.state.atMention = lastWord;
-    } else {
-      this.state.atMention = null;
+    while ( wordStart > 0 && !text[wordStart - 1].match(/\s/) ) {
+      wordStart--;
     }
 
-    this.setState( stateObj );
+    text = text.substring( wordStart );
+    match = text.match( /^([^\s$]*)/ );
+
+    return match ? match[0] : null
+  },
+
+  setStateText: function () {
+    var lastWord = this.getWordAtCursor();
+
+    this.setState({
+      text: this.refs.content.getDOMNode().value,
+      atMention: lastWord && lastWord.match(/^@/) ? lastWord : null
+    });
   },
 
   submitHandler: function ( e ) {
@@ -134,8 +145,8 @@ var CommentForm = React.createClass({
   // render helpers
 
   atMentionDropdown: function () {
-    if ( !!this.state.atMention ) {
-      return <AtMentionDropdown text={ this.state.atMention } />;
+    if ( !!this.state.atMention && this.state.atMention.length > 1 ) {
+      return <AtMentionDropdown text={ this.state.atMention } contentNode={ this.refs.content.getDOMNode() } />;
     }
   },
 

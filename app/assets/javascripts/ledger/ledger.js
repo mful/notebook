@@ -3,6 +3,7 @@
 //= require ../shared/helpers/analytics
 //= require ../shared/helpers/routes
 //= require ../shared/helpers/url
+//= require ../shared/helpers/utility
 //= require ../shared/helpers/xhr
 //= require_tree ../shared/constants
 //= require_tree ../shared/dispatchers

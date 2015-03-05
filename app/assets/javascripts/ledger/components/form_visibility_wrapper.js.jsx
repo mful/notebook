@@ -24,6 +24,8 @@ var FormVisibilityWrapper = React.createClass({
   commentListVisClass: function () {
     if ( this.state.formVisibility === this.formVisibilityStates.expanded ) {
       return ' hidden';
+    } else {
+      return '';
     }
   },
 
