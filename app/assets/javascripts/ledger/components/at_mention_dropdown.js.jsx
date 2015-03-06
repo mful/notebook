@@ -13,7 +13,7 @@ var AtMentionDropdown = React.createClass({
     UserStore.addChangeListener( this._onChange );
     this.debouncedFetchUser = scribble.helpers.utility.debounce( this._fetchUser, 300 )
 
-    this.debouncedFetchUser( this.state.text );
+    this._fetchUser( this.state.text );
 
     this.setPosition();
     this.refs.component.getDOMNode().style.visibility = 'visible';
@@ -28,7 +28,7 @@ var AtMentionDropdown = React.createClass({
   },
 
   componentWillReceiveProps: function ( props ) {
-    var text = this.props.text.substring( 1 );
+    var text = props.text.substring( 1 );
     if ( text === this.state.text ) return;
 
     this.debouncedFetchUser( text );
@@ -121,8 +121,7 @@ var AtMentionDropdown = React.createClass({
     // + ( newLineCount * parseInt(computed['lineHeight']) )
 
     // For when text overflows, and the textarea scrolls
-    maxOffset = node.clientHeight // - parseInt(computed['lineHeight']);
-    offsetTop = span.offsetTop < maxOffset ? span.offsetTop : maxOffset;
+    offsetTop = span.offsetTop < node.clientHeight ? span.offsetTop : maxOffset;
 
     coordinates = {
       top: offsetTop + parseInt( computed['borderTopWidth'] ) + rect.top,
@@ -187,8 +186,8 @@ var AtMentionDropdown = React.createClass({
   _fetchUser: function ( text ) {
     var _this = this;
 
-    if ( text.trim() ) {
-      UserActions.fetchNameMatches( text, function ( users ) {
+    if ( text && text.trim() ) {
+      UserActions.fetchNameMatches( text.trim(), function ( users ) {
         _this.setState({ users: users });
       });
     }

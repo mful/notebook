@@ -60,7 +60,7 @@ describe( 'NewAnnotationPage', function () {
       expect( AnnotationStore._handleCreateWithComment ).toHaveBeenCalledWith({
         annotation: {text: props.text},
         url: props.url,
-        comment: {content: 'some content here'}
+        comment: {raw_content: 'some content here'}
       });
     });
   });
