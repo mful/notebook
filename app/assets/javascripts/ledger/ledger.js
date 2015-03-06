@@ -10,6 +10,7 @@
 //= require ../shared/mediators/courier
 //= require_tree ./stores
 //= require_tree ./mixins
+//= require_tree ./services
 //= require_tree ./components
 //= require_tree ./actions
 //= require_tree ./mediators

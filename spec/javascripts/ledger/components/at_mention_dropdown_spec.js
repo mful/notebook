@@ -8,6 +8,7 @@
 //= require shared/helpers/utility
 //= require shared/helpers/xhr
 
+//= require ledger/services/textarea_caret_position_service
 //= require ledger/actions/user_actions
 //= require ledger/stores/user_store
 //= require ledger/components/at_mention_dropdown
@@ -140,6 +141,59 @@ describe( 'AtMentionDropdown', function () {
 
     it( 'should delegate to the given handler, passing the username', function () {
       expect( instance.props.atMentionHandler ).toHaveBeenCalledWith( '@mattmattmatt' );
+    });
+  });
+
+  describe( '#setPosition', function () {
+
+    var positionService = {get: function () {}};
+
+    beforeEach( function () {
+      spyOn( UserActions, 'fetchNameMatches' ).and.callFake( function ( text, func ) {
+        func( users );
+      });
+
+      instance = React.renderComponent( AtMentionDropdown(props), container );
+      spyOn( window, 'TextareaCaretPositionService' ).and.returnValue( positionService );
+    });
+
+    describe( 'when the dropdown would fall off the screen', function () {
+
+      beforeEach( function () {
+        spyOn( positionService, 'get' ).and.returnValue({ top: 10000 });
+
+        this.node = instance.refs.component.getDOMNode();
+
+        var clientHeight = this.node.clientHeight,
+            lineHeight = getComputedStyle( contentNode )['lineHeight'] || 0;
+
+        this.expectedResult = 10000 - clientHeight - parseInt( lineHeight ) + 'px';
+
+        instance.setPosition();
+      });
+
+      it( 'should set the top position of the component to be just above the cursor', function () {
+        expect( this.node.style.top ).toEqual( this.expectedResult );
+      });
+    });
+
+    describe( 'when the dropdown will not fall off the league', function () {
+
+      beforeEach( function () {
+        spyOn( positionService, 'get' ).and.returnValue({ top: 1 });
+
+        this.node = instance.refs.component.getDOMNode();
+
+        var lineHeight = getComputedStyle( contentNode )['lineHeight'] || 0;
+
+        this.expectedResult = 1 + parseInt( lineHeight ) + 'px';
+
+        instance.setPosition();
+      });
+
+      it( 'should set the top position of the component to be just above the cursor', function () {
+        expect( this.node.style.top ).toEqual( this.expectedResult );
+      });
     });
   });
 
