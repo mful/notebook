@@ -17,7 +17,7 @@ var NewAnnotationPage = React.createClass({
     AnnotationActions.createWithComment({
       annotation: {text: this.props.text},
       url: this.props.url,
-      comment: {content: content}
+      comment: {raw_content: content}
     });
   },
 

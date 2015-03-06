@@ -6,7 +6,7 @@ describe 'commenting on an annotation', type: :feature, js: true do
   let(:annotation) { FactoryGirl.create :sama_annotation }
   let(:user) { FactoryGirl.create :user }
   let(:admin) { FactoryGirl.create :admin }
-  let(:comment_content) { "This is a test comment!" }
+  let(:comment_content) { "This is a test comment! @#{admin.username}" }
 
   before do
     ApplicationController.any_instance.stub(:current_user).and_return user
@@ -42,8 +42,11 @@ describe 'commenting on an annotation', type: :feature, js: true do
 
       wait_for { page.all('.author').length > 1 }
 
+      content = page.all('.content').detect { |c| c.text == comment_content }
+
       expect(page.all('.author').detect { |a| a.text == user.username }.present?).to be_true
-      expect(page.all('.content').detect { |c| c.text == comment_content }.present?).to be_true
+      expect(content.present?).to be_true
+      expect(content.find('strong')).to have_content("@#{admin.username}")
     end
 
     # shouldn't make a new annotation

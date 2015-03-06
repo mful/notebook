@@ -45,7 +45,7 @@ var CommentForm = React.createClass({
   },
 
   reset: function () {
-    var stateObj = {submitted: false, text: ''};
+    var stateObj = {submitted: false, text: '', atMention: null};
 
     this.refs.content.getDOMNode().blur();
 
@@ -149,7 +149,7 @@ var CommentForm = React.createClass({
 
   submitHandler: function ( e ) {
     e.preventDefault();
-    this.setState({ submitted: true });
+    this.setState({ submitted: true, atMention: null });
     this.props.submitHandler( this.state.text.trim() );
   },
 

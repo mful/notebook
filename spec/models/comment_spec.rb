@@ -39,7 +39,7 @@ describe Comment do
     end
 
     context 'with invalid content' do
-      let(:comment) { FactoryGirl.build :comment, content: '   ' }
+      let(:comment) { FactoryGirl.build :comment, raw_content: '   ' }
       before { comment.save }
 
       it 'should not persist' do

@@ -32,7 +32,7 @@ var AnnotationPage = React.createClass({
   submitHandler: function ( content ) {
     CommentActions.createComment({
       annotation_id: this.props.annotation.id,
-      comment: {content: content}
+      comment: {raw_content: content}
     });
   },
 

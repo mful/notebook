@@ -72,11 +72,11 @@ class Api::CommentsController < ApiController
   end
 
   def comment_params
-    params.require(:comment).permit(:content).merge(user: current_user)
+    params.require(:comment).permit(:raw_content).merge(user: current_user)
   end
 
   def reply_params
-    params.require(:reply).permit(:content).merge(user: current_user)
+    params.require(:reply).permit(:raw_content).merge(user: current_user)
   end
 
   def vote_params

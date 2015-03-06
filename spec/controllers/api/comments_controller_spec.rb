@@ -32,7 +32,7 @@ describe Api::CommentsController do
       end
 
       context 'without an associated annotation' do
-        let(:comment) { FactoryGirl.attributes_for :comment, content: '  ' }
+        let(:comment) { FactoryGirl.attributes_for :comment, raw_content: '  ' }
         before do
           GATrackWorker.drain
           post :create, comment: comment
@@ -53,7 +53,7 @@ describe Api::CommentsController do
 
       context 'with invalid comment data' do
         let!(:annotation) { FactoryGirl.create :annotation }
-        let(:comment) { FactoryGirl.attributes_for :comment, content: '  ' }
+        let(:comment) { FactoryGirl.attributes_for :comment, raw_content: '  ' }
         before do
           GATrackWorker.drain
           post :create, comment: comment, annotation_id: annotation.id
@@ -85,7 +85,7 @@ describe Api::CommentsController do
   describe '#update' do
     let(:user) { FactoryGirl.create :user }
     let!(:comment) { FactoryGirl.create :comment, user: user }
-    let(:comment_update) { { content: 'EDIT: Malfoy is <em>not</em> very nice' } }
+    let(:comment_update) { { raw_content: 'EDIT: Malfoy is *not* very nice' } }
 
     context 'when the proper user is logged in' do
       before { sign_in user }
@@ -94,7 +94,7 @@ describe Api::CommentsController do
         before { put :update, id: comment.id, comment: comment_update }
 
         it 'should update the comment' do
-          expect(Comment.first.content).to eq(comment_update[:content])
+          expect(Comment.first.content).to eq("<p>EDIT: Malfoy is <em>not</em> very nice</p>\n")
         end
 
         it 'should return the comment' do
@@ -103,7 +103,7 @@ describe Api::CommentsController do
       end
 
       context 'with invalid data' do
-        let(:comment_update) { { content: '  ' } }
+        let(:comment_update) { { raw_content: '  ' } }
         before { put :update, id: comment.id, comment: comment_update }
 
         it 'should return 400' do
@@ -132,7 +132,7 @@ describe Api::CommentsController do
       end
 
       it 'should update the comment' do
-        expect(Comment.first.content).to eq(comment_update[:content])
+        expect(Comment.first.content).to eq("<p>EDIT: Malfoy is <em>not</em> very nice</p>\n")
       end
     end
 
@@ -173,7 +173,7 @@ describe Api::CommentsController do
       end
 
       context 'when the reply is invalid' do
-        let(:reply) { FactoryGirl.attributes_for(:comment).merge(content: 'too$hort') }
+        let(:reply) { FactoryGirl.attributes_for(:comment).merge(raw_content: 'too$hort') }
         before { GATrackWorker.drain }
 
         it 'should return 400' do

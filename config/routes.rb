@@ -12,7 +12,7 @@ Notebook::Application.routes.draw do
 
   namespace :api do
     resources :users, only: [:new, :create]
-    get 'users/:id' => 'users#show', constraints: { id: /\d+/ }
+    get 'users/:id' => 'users#show', constraints: { id: /\d+/ }, as: 'user'
     post 'users/:id' => 'users#update'
     get 'signup' => 'users#new'
     get 'reset_password' => 'users#reset_password'
