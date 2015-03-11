@@ -14,6 +14,47 @@ class User < ActiveRecord::Base
     where("username ILIKE ?", text + '%').limit(count)
   end
 
+  def current_notifications
+    [
+      {
+        id: 1,
+        message: '<strong>@mattmattmatt</strong> replied to your annotation on <strong>13-year Old Drinking Prodigy...</strong> on theonion.com',
+        url: 'http://theonion.com',
+        notification_type: 'reply',
+        reply_id: 3,
+        annotation_id: 1,
+        comment_id: 2
+      },
+      {
+        id: 2,
+        message: '<strong>@mattmattmatt</strong> replied to your annotation on <strong>13-year Old Drinking Prodigy Accepted into OSU</strong> on theonion.com',
+        url: 'http://theonion.com',
+        notification_type: 'reply',
+        reply_id: 3,
+        annotation_id: 1,
+        comment_id: 2
+      },
+      {
+        id: 3,
+        message: '<strong>@mattmattmatt</strong> replied to your annotation on <strong>13-year Old Drinking Prodigy Accepted into OSU</strong> on theonion.com',
+        url: 'http://theonion.com',
+        notification_type: 'reply',
+        reply_id: 3,
+        annotation_id: 1,
+        comment_id: 2
+      },
+      {
+        id: 4,
+        message: '<strong>@mattmattmatt</strong> replied to your annotation on <strong>13-year Old Drinking Prodigy Accepted into OSU</strong> on theonion.com',
+        url: 'http://theonion.com',
+        notification_type: 'reply',
+        reply_id: 3,
+        annotation_id: 1,
+        comment_id: 2
+      },
+    ]
+  end
+
   # TODO: move this remember token logic
   def new_remember_token
     SecureRandom.urlsafe_base64

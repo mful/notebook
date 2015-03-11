@@ -52,4 +52,9 @@ Notebook::Application.routes.draw do
   get 'annotations/new' => 'ledger/annotations#new', as: 'new_annotation'
 
   get 'comments/:id' => 'ledger/comments#show', constraints: { id: /\d+/ }, as: 'comment'
+
+  ### Corkboard ###
+
+  get 'notifications' => 'corkboard/notifications#index', as: 'notifications'
+  get 'cork/login' => 'corkboard/statics#intro', as: 'corkboard_intro'
 end
