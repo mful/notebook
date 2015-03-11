@@ -1,0 +1,30 @@
+.intro-component {
+  padding: 15px;
+
+  h4 {
+    text-align: center;
+  }
+
+  button {
+    margin: 30px 20px 40px;
+    opacity: 1;
+    transition: opacity 300ms ease-out 300ms, margin-top 200ms ease-out 300ms;
+    width: 230px;
+
+    &.hide-me {
+      margin-top: 20px;
+      opacity: 0;
+    }
+  }
+
+  p {
+    margin-top: 0;
+    opacity: 1;
+    transition: opacity 300ms ease-out, margin-top 200ms ease-out 300ms;
+
+    &.hide-me {
+      margin-top: 10px;
+      opacity: 0;
+    }
+  }
+}

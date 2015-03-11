@@ -8,6 +8,7 @@
 //= require_tree ../shared/dispatchers
 //= require ../shared/mediators/courier
 //= require_tree ./stores
+//= require_tree ./mediators
 //= require_tree ./components
 //= require_tree ./actions
 
@@ -16,7 +17,7 @@ window.scribble = {};
 scribble.helpers = {};
 
 corkboard.init = function () {
-  // SessionStore.initialize();
+  SessionStore.initialize();
 
   return this;
 }
