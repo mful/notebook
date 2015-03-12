@@ -81,6 +81,42 @@ ActiveRecord::Schema.define(version: 20150305211614) do
 
   add_index "entities", ["base_domain"], name: "index_entities_on_base_domain", unique: true, using: :btree
 
+  create_table "event_types", force: true do |t|
+    t.string   "event_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_types", ["event_type"], name: "index_event_types_on_event_type", using: :btree
+
+  create_table "events", force: true do |t|
+    t.integer  "event_type_id"
+    t.string   "notifiable_type"
+    t.integer  "notifiable_id"
+    t.string   "target_type"
+    t.integer  "target_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "notification_templates", force: true do |t|
+    t.string   "message"
+    t.integer  "event_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "notifications", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "event_id"
+    t.boolean  "read"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
+
   create_table "pages", force: true do |t|
     t.string   "url"
     t.integer  "entity_id"
@@ -103,6 +139,17 @@ ActiveRecord::Schema.define(version: 20150305211614) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "subscriptions", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "notifiable_id"
+    t.string   "notifiable_type"
+    t.integer  "event_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "subscriptions", ["notifiable_type", "notifiable_id", "event_type_id", "user_id"], name: "index_subscriptions_on_notifiable_and_event_type_and_user", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "password_digest"
