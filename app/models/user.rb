@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :connections
   has_many :votes
   has_and_belongs_to_many :roles
+  has_many :subscriptions
 
   def self.by_username( text, count = 5 )
     where("username ILIKE ?", text + '%').limit(count)

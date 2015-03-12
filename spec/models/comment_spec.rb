@@ -2,19 +2,6 @@ require 'spec_helper'
 
 describe Comment do
 
-  describe '#create' do
-    let(:user) { FactoryGirl.create :user }
-
-    context 'with valid data' do
-      before { @comment = FactoryGirl.create :comment, user: user }
-
-      it 'should add a vote by the author' do
-        expect(@comment.votes.length).to eq(1)
-        expect(@comment.votes.first.user).to eq(user)
-      end
-    end
-  end
-
   describe '#save' do
 
     context 'with valid data' do
@@ -113,6 +100,7 @@ describe Comment do
     let(:user_3) { FactoryGirl.create :moderator }
     let(:comment) { FactoryGirl.create :comment, user: user }
     before do
+      FactoryGirl.create :vote, comment: comment, user: user
       FactoryGirl.create :vote, comment: comment, user: user_2
       FactoryGirl.create :vote, positive: false, comment: comment, user: user_3
     end

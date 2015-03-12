@@ -198,9 +198,9 @@ describe Api::CommentsController do
   end
 
   describe '#add_vote' do
-    let(:comment) { FactoryGirl.create :comment }
+    let(:user) { FactoryGirl.create :user }
+    let(:comment) { CreateComment.create Comment.new(FactoryGirl.attributes_for(:comment).merge({user: user})) }
     let(:vote) { FactoryGirl.attributes_for :vote }
-    let(:user) { comment.user }
     let(:user_2) { FactoryGirl.create :user, username: 'testr', email: 'test@rr.com' }
 
     context 'when there is a logged in user' do
