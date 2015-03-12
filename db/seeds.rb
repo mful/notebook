@@ -7,3 +7,11 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 Role.create([{ name: 'admin' }, { name: 'moderator' }])
 CommentStatus.create([{ name: 'deleted' }, { name: 'removed' }])
+EventType.create([
+  {event_type: 'reply'},
+  {event_type: 'annotation'},
+  {event_type: 'general'}
+])
+NotificationTemplate.create(
+  YAML::load(ERB.new(IO.read(Rails.root + "db/seed_data/notification_templates.yml.erb")).result)
+)

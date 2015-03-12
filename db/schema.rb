@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150305211614) do
+ActiveRecord::Schema.define(version: 20150312152735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,7 +109,8 @@ ActiveRecord::Schema.define(version: 20150305211614) do
   create_table "notifications", force: true do |t|
     t.integer  "user_id"
     t.integer  "event_id"
-    t.boolean  "read"
+    t.boolean  "read",       default: false
+    t.string   "message"
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -149,7 +150,7 @@ ActiveRecord::Schema.define(version: 20150305211614) do
     t.datetime "updated_at"
   end
 
-  add_index "subscriptions", ["notifiable_type", "notifiable_id", "event_type_id", "user_id"], name: "index_subscriptions_on_notifiable_and_event_type_and_user", unique: true, using: :btree
+  add_index "subscriptions", ["notifiable_type", "notifiable_id", "event_type_id"], name: "index_subscriptions_on_notifiable_and_event_type", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "password_digest"

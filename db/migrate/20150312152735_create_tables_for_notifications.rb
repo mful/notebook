@@ -27,14 +27,14 @@ class CreateTablesForNotifications < ActiveRecord::Migration
     end
 
     add_index :subscriptions,
-              [:notifiable_type, :notifiable_id, :event_type_id, :user_id],
-              unique: true,
-              name: 'index_subscriptions_on_notifiable_and_event_type_and_user'
+              [:notifiable_type, :notifiable_id, :event_type_id],
+              name: 'index_subscriptions_on_notifiable_and_event_type'
 
     create_table :notifications do |t|
       t.integer :user_id
       t.integer :event_id
-      t.boolean :read
+      t.boolean :read, default: false
+      t.string :message
       t.text :data
 
       t.timestamps

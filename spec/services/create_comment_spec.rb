@@ -1,9 +1,13 @@
 require 'spec_helper'
+require 'sidekiq/testing'
 
 describe CreateComment do
   let(:user) { FactoryGirl.create :user }
+  let!(:reply_type) { FactoryGirl.create :event_type, event_type: EventType::TYPES[:reply] }
+  let!(:annotation_type) { FactoryGirl.create :event_type, event_type: EventType::TYPES[:annotation] }
+
   before do
-    FactoryGirl.create :event_type, event_type: EventType::TYPES[:reply]
+    NotificationWorker.jobs.clear
   end
 
   describe '#create' do
@@ -27,6 +31,15 @@ describe CreateComment do
     it 'should add a vote from the creator' do
       expect(comment.votes.length).to eq(1)
       expect(comment.votes.first.user).to eq(user)
+    end
+
+    it 'should create a reply Event' do
+      expect(Event.count).to eq(1)
+      expect(Event.first.event_type_id).to eq(2)
+    end
+
+    it 'should queue a worker' do
+      expect(NotificationWorker.jobs.size).to eq(1)
     end
   end
 end

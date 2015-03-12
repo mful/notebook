@@ -6,12 +6,14 @@ class CreateComment
 
   def initialize(comment, options = {})
     @comment = comment
+    @parent_comment = options[:parent_comment]
   end
 
   def create
     process_presave @comment
 
     return false unless @comment.save
+    @parent_comment.replies << @comment if @parent_comment
 
     process_postsave @comment
 
@@ -27,7 +29,7 @@ class CreateComment
   def process_postsave(comment)
     add_selfie_vote comment
     subscribe_owner comment
-    # post_events comment
+    post_events comment
   end
 
   def add_selfie_vote(comment)
@@ -40,5 +42,22 @@ class CreateComment
     Subscription.create user_id: comment.user_id,
                         notifiable: comment,
                         event_type: ::EventType.find_by_event_type(::EventType::TYPES[:reply])
+  end
+
+  def post_events(comment)
+    if comment.parent_comment
+      ev_type = EventType::TYPES[:reply]
+      notifiable = comment.parent_comment
+    else
+      ev_type = EventType::TYPES[:annotation]
+      notifiable = Page.joins(:annotations).where('annotations.id = ?', comment.annotation_id).first
+    end
+
+    # create event immediately, for an accurate timestamp
+    event = Event.create event_type: EventType.find_by_event_type(ev_type),
+                         notifiable: notifiable,
+                         target: comment
+
+    NotificationWorker.perform_async event.id
   end
 end

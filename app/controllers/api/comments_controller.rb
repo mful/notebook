@@ -31,7 +31,7 @@ class Api::CommentsController < ApiController
     @reply = Comment.new(reply_params)
 
     redirect_or_err @reply, :api_comment_path, 400 do
-      CreateComment.create(@reply) && @comment.replies << @reply &&
+      CreateComment.create(@reply, parent_comment: @comment) &&
       GATrackWorker.perform_async('Create Reply', @reply.parent_comment.id)
     end
   end
