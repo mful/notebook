@@ -38,7 +38,7 @@ var CommentPage = React.createClass({
   submitHandler: function ( content ) {
     CommentActions.createReply({
       comment_id: this.props.comment.id,
-      reply: {content: content}
+      reply: {raw_content: content}
     });
   },
 

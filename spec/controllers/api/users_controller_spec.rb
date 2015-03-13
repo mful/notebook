@@ -79,6 +79,22 @@ describe Api::UsersController do
     end
   end
 
+  describe '#by_mention' do
+    let(:params) { { text: 'ha' } }
+
+    before do
+      @user1 = FactoryGirl.create :user, username: 'hagrid'
+      @user2 = FactoryGirl.create :user, username: 'harry', email: 'harry@potter.com'
+      FactoryGirl.create :user, username: 'hermoine', email: 'hermoine@granger.com'
+
+      get :by_mention, params
+    end
+
+    it 'should return only the matching names' do
+      expect(JSON.parse(response.body)['users'].map { |u| u['id'] }).to eq([@user1.id, @user2.id])
+    end
+  end
+
   describe '#update' do
     let!(:user) { FactoryGirl.create :user }
     let(:user_update) { { email: 'hagrid@eowls.com' } }

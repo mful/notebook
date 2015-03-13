@@ -12,13 +12,13 @@ class Comment < ActiveRecord::Base
   has_many :replies, through: :comment_replies
   has_many :comment_flags
 
-  before_create :parse_markdown
+  before_save :update_html_content
   after_create :add_selfie_vote
   after_save :set_rating, on: :update
   after_touch :set_rating # TODO: move to vote service
 
-  validates_presence_of :content, :user
-  validates :content, length: { minimum: 15 }
+  validates_presence_of :raw_content, :user
+  validates :raw_content, length: { minimum: 15 }
 
   scope :by_rating, -> { order('rating DESC') }
 
@@ -36,7 +36,9 @@ class Comment < ActiveRecord::Base
       first
   end
 
-  def parse_markdown
+  def update_html_content
+    return unless new_record? || raw_content_changed?
+
     renderer = CommentRenderer.new(
       filter_html: true,
       no_images: true,
@@ -47,7 +49,7 @@ class Comment < ActiveRecord::Base
     )
     parser = Redcarpet::Markdown.new(renderer, autolink: true, quote: true)
 
-    self.content = parser.render( content )
+    self.content = parser.render raw_content
   end
 
   def set_rating

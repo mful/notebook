@@ -153,7 +153,8 @@ describe( 'CommentForm', function () {
           fixed: true,
           firstRender: false,
           submitted: false,
-          text: ''
+          text: '',
+          atMention: null
         })
       });
     });
@@ -164,7 +165,7 @@ describe( 'CommentForm', function () {
         instance.setState({
           text: 'this is some text',
           fixed: false,
-          visibility: 'open'
+          visibility: 'open',
         });
 
         spyOn( instance, '_shouldSetFixed' ).and.returnValue( true );
@@ -178,7 +179,8 @@ describe( 'CommentForm', function () {
           fixed: true,
           firstRender: false,
           submitted: false,
-          text: ''
+          text: '',
+          atMention: null
         })
       });
     });
@@ -203,7 +205,8 @@ describe( 'CommentForm', function () {
           fixed: false,
           firstRender: false,
           submitted: false,
-          text: ''
+          text: '',
+          atMention: null
         })
       });
     });

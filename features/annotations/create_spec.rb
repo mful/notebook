@@ -19,7 +19,7 @@ describe 'creating an annotation', type: :feature, js: true do
 and many smaller ones.")
 
     within_frame 'crayon-sidebar' do
-      fill_in 'comment_content', with: comment_attrs[:content]
+      fill_in 'comment_content', with: comment_attrs[:raw_content]
       page.find('.top-actions input.button').click
     end
 
@@ -33,7 +33,7 @@ and many smaller ones.")
 
     within_frame 'crayon-sidebar' do
       expect(page.find('.author')).to have_content(user.username)
-      expect(page.find('.content')).to have_content(comment_attrs[:content])
+      expect(page.find('.content')).to have_content(comment_attrs[:raw_content])
     end
 
     expect(Annotation.count).to eq(1)

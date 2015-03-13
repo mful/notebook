@@ -122,8 +122,8 @@ describe( 'FormVisibilityWrapper', function () {
         instance.setState({ formVisibility: 'open' });
       });
 
-      it( 'should return undefined', function () {
-        expect( instance.commentListVisClass() ).toEqual( undefined );
+      it( 'should return an empty string', function () {
+        expect( instance.commentListVisClass() ).toEqual( '' );
       });
     });
 
@@ -134,7 +134,7 @@ describe( 'FormVisibilityWrapper', function () {
       });
 
       it( 'should return undefined', function () {
-        expect( instance.commentListVisClass() ).toEqual( undefined );
+        expect( instance.commentListVisClass() ).toEqual( '' );
       });
     });
   });

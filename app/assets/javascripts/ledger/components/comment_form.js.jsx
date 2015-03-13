@@ -45,7 +45,7 @@ var CommentForm = React.createClass({
   },
 
   reset: function () {
-    var stateObj = {submitted: false, text: ''};
+    var stateObj = {submitted: false, text: '', atMention: null};
 
     this.refs.content.getDOMNode().blur();
 
@@ -61,6 +61,23 @@ var CommentForm = React.createClass({
   },
 
   // event handlers
+
+  atMentionSelect: function ( atMention ) {
+    var node = this.refs.content.getDOMNode(),
+        text = node.value,
+        wordStart = this.getCurrentWordStartPos( node ),
+        lead = text.substring( 0, wordStart ),
+        tail = text.substring( wordStart );
+
+    tail = tail.replace( /^([^\s$]*)/, atMention + ' ' );
+
+    this.setState({
+      text: lead + tail,
+      atMention: null
+    });
+
+    node.focus();
+  },
 
   maybeSetHeight: function () {
     if ( this.state.visibility !== this.props.visibilityStates.expanded ) return {};
@@ -98,15 +115,41 @@ var CommentForm = React.createClass({
     }
   },
 
+  getCurrentWordStartPos: function ( node ) {
+    var wordStart = node.selectionStart,
+        text = node.value;
+
+    while ( wordStart > 0 && !text[wordStart - 1].match(/\s/) ) {
+      wordStart--;
+    }
+
+    return wordStart;
+  },
+
+  getWordAtCursor: function () {
+    var node = this.refs.content.getDOMNode(),
+        text = node.value,
+        wordStart = this.getCurrentWordStartPos( node ),
+        match;
+
+    text = text.substring( wordStart );
+    match = text.match( /^([^\s$]*)/ );
+
+    return match ? match[0] : null
+  },
+
   setStateText: function () {
+    var lastWord = this.getWordAtCursor();
+
     this.setState({
-      text: this.refs.content.getDOMNode().value
+      text: this.refs.content.getDOMNode().value,
+      atMention: lastWord && lastWord.match(/^@/) ? lastWord : null
     });
   },
 
   submitHandler: function ( e ) {
     e.preventDefault();
-    this.setState({ submitted: true });
+    this.setState({ submitted: true, atMention: null });
     this.props.submitHandler( this.state.text.trim() );
   },
 
@@ -123,6 +166,14 @@ var CommentForm = React.createClass({
   },
 
   // render helpers
+
+  atMentionDropdown: function () {
+    if ( !!this.state.atMention && this.state.atMention.length > 1 ) {
+      return <AtMentionDropdown text={ this.state.atMention }
+                                contentNode={ this.refs.content.getDOMNode() }
+                                atMentionHandler={ this.atMentionSelect } />;
+    }
+  },
 
   expandBtnText: function () {
     if ( this.state.visibility === this.props.visibilityStates.expanded ) {
@@ -183,6 +234,8 @@ var CommentForm = React.createClass({
                   onChange={ this.setStateText }
                   value={ this.state.text }>
         </textarea>
+
+        { this.atMentionDropdown() }
 
         <div ref="lowerActions" className="actions">
           <button className="button alt-button" onClick={ this.toggleExpand }>{ this.expandBtnText() }</button>

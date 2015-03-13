@@ -45,6 +45,7 @@ gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'therubyracer', :platforms => :ruby
 
 gem 'redcarpet'
+gem 'reverse_markdown'
 
 group :production do
   gem 'rails_12factor'

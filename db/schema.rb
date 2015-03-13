@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150116233318) do
+ActiveRecord::Schema.define(version: 20150305211614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20150116233318) do
     t.float    "rating",            default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "raw_content"
   end
 
   add_index "comments", ["annotation_id"], name: "index_comments_on_annotation_id", using: :btree
