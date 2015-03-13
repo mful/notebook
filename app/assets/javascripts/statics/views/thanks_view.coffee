@@ -15,7 +15,7 @@ class scribble.statics.views.ThanksView
     _trackShare('FB')
     FB.ui
       method: 'send'
-      link: 'https://scribblely.herokuapp.com'
+      link: 'https://melvilleapp.com'
 
   twitterShare: (e) =>
     _trackShare('Twitter')
