@@ -30,6 +30,9 @@ Notebook::Application.routes.draw do
     get 'comments/:id/replies' => 'comments#replies'
     post 'comments/:id/votes' => 'comments#add_vote', as: 'comment_votes'
 
+    get 'notifications/:id' => 'notifications#show', as: 'notification'
+    post 'notifications/:id' => 'notifications#update'
+
     get 'annotations/by_page' => 'annotations#by_page', as: 'page_annotations'
     resources :annotations, only: [:create, :show, :new]
     post 'annotations/:id/comments' => 'annotations#add_comment', as: 'annotation_comments'

@@ -16,6 +16,8 @@ var NotificationStore = React.addons.update( EventEmitter.prototype, {$merge: {
   toggleRead: function ( id ) {
     if ( !_notifications[id] ) return null;
 
+    this._updateNotification( id, {read: !_notifications[id].read} );
+
     _notifications[id].read = !_notifications[id].read;
     this.emitChange();
   },
@@ -47,5 +49,20 @@ var NotificationStore = React.addons.update( EventEmitter.prototype, {$merge: {
     }
 
     return true;
-  })
+  }),
+
+  _updateNotification: function ( id, data ) {
+    var _this = this;
+
+    scribble.helpers.xhr.post(
+      scribble.helpers.routes.notification_url( id ),
+      {notification: data},
+      function ( err, response ) {
+        if ( err ) return;
+
+        _notifications[id] = response.notification;
+        _this.emitChange();
+      }
+    );
+  }
 }});

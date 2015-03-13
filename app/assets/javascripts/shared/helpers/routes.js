@@ -60,6 +60,10 @@ scribble.helpers.routes = {};
     return '/comments/' + id + queryString( options );
   };
 
+  namespace.notification_url = function ( id ) {
+    return urlRoot() + '/api/notifications/' + id;
+  };
+
   namespace.privacy_policy_url = function () {
     return urlRoot() + '/privacy';
   };

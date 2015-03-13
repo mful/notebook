@@ -15,6 +15,12 @@ var Notification = React.createClass({
     this.setState({ read: !this.state.read });
   },
 
+  readAndNavigate: function ( e ) {
+    e.preventDefault();
+    if ( !this.state.read ) this.toggleRead();
+    window.open( e.currentTarget.href, '_blank' );
+  },
+
   readClass: function () {
     return this.state.read ? ' read' : '';
   },
@@ -26,7 +32,7 @@ var Notification = React.createClass({
   render: function () {
     return(
       <li className={ "notification-component" + this.readClass() } data-key={ this.props.notification.id }>
-        <a href={ this.state.url } target="_blank">
+        <a href={ this.state.url } target="_blank" onClick={ this.readAndNavigate }>
           <p dangerouslySetInnerHTML={{__html: this.state.message}}>
           </p>
 
