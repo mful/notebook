@@ -3,6 +3,7 @@ require 'sidekiq/testing'
 
 describe CreateAnnotation do
   let(:user) { FactoryGirl.create :user }
+  before { Rails.application.load_seed }
 
   describe '#create' do
     let(:comment_params) { FactoryGirl.attributes_for(:comment).merge(user: user) }
@@ -13,7 +14,7 @@ describe CreateAnnotation do
 
       context 'and there is not an annotation on that page with the same text' do
         before do
-          GATrackWorker.drain
+          GATrackWorker.jobs.clear
           CreateAnnotation.create annotation, page.url, comment_params
         end
 
@@ -38,7 +39,7 @@ describe CreateAnnotation do
         let!(:existing_annotation) { FactoryGirl.create :annotation, page: page }
         let!(:initial_comment_count) { existing_annotation.comments.size }
         before do
-          GATrackWorker.drain
+          GATrackWorker.jobs.clear
           CreateAnnotation.create annotation, page.url, comment_params
         end
 
@@ -60,7 +61,7 @@ describe CreateAnnotation do
     context 'when the page does not exist' do
       let(:annotation) { FactoryGirl.attributes_for :annotation, page: nil }
       before do
-        GATrackWorker.drain
+        GATrackWorker.jobs.clear
         CreateAnnotation.create(
           annotation,
           'http://hogwarts.com/transfiguration',
@@ -88,7 +89,7 @@ describe CreateAnnotation do
     context 'with invalid annotation data' do
       let(:annotation) { FactoryGirl.attributes_for :annotation, text: 'blah' }
       before do
-        GATrackWorker.drain
+        GATrackWorker.jobs.clear
         @res = CreateAnnotation.create(
           annotation,
           'http://hogwarts.com/transfiguration',
@@ -110,7 +111,7 @@ describe CreateAnnotation do
       let(:annotation) { FactoryGirl.attributes_for :annotation, page: nil }
       let(:bad_params) { { content: comment_params[:content] } }
       before do
-        GATrackWorker.drain
+        GATrackWorker.jobs.clear
         @res = CreateAnnotation.create(
           annotation,
           'http://hogwarts.com/transfiguration',

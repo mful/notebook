@@ -1,0 +1,11 @@
+-
+  event_type_id: <%= EventType.find_by_event_type('reply').id %>
+  message: "<strong>%s</strong> replied to your note on <strong>%s</strong>"
+-
+  event_type_id: <%= EventType.find_by_event_type('annotation').id %>
+  message: "<strong>%s</strong> also annotated <strong>%s</strong>"
+-
+  event_type_id: <%= EventType.find_by_event_type('general').id %>
+-
+  event_type_id: <%= EventType.find_by_event_type('at_mention').id %>
+  message: "<strong>%s</strong> mentioned you on <strong>%s</strong>"

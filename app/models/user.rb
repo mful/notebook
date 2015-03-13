@@ -9,9 +9,15 @@ class User < ActiveRecord::Base
   has_many :connections
   has_many :votes
   has_and_belongs_to_many :roles
+  has_many :subscriptions
+  has_many :notifications
 
   def self.by_username( text, count = 5 )
     where("username ILIKE ?", text + '%').limit(count)
+  end
+
+  def current_notifications
+    notifications.order('created_at DESC').limit(20)
   end
 
   # TODO: move this remember token logic

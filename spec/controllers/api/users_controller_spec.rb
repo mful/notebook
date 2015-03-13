@@ -8,7 +8,7 @@ describe Api::UsersController do
     context 'on succesful save' do
       let(:user) { FactoryGirl.attributes_for :user }
       before do
-        GATrackWorker.drain
+        GATrackWorker.jobs.clear
         @res = post :create, user: user
       end
 
@@ -57,7 +57,7 @@ describe Api::UsersController do
 
   describe '#show' do
     let(:user) { FactoryGirl.create :user }
-    let(:user_res) { { user: { id: user.id, email: user.email, username: user.username } }.to_json }
+    let(:user_res) { { user: { id: user.id, email: user.email, username: user.username, notification_count: 0 } }.to_json }
 
     context 'when the user is signed in' do
       before do

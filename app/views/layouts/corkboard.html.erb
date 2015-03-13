@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Annotate the Web - Scribble</title>
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600,300italic|Lora:400,700,400italic' rel='stylesheet' type='text/css'>
+  <%= stylesheet_link_tag "corkboard", media: "all", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+  <%= render 'shared/google_analytics' %>
+  <script src="https://apis.google.com/js/client:platform.js" async defer>
+  </script>
+</head>
+<body>
+  <div id="content">
+    <%= yield %>
+  </div>
+
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <%= include_gon namespace: 'scribble_bootstrap' %>
+
+  <%= javascript_include_tag "corkboard", "data-turbolinks-track" => true %>
+
+  <script>
+    (function () {
+      document.addEventListener('DOMContentLoaded', function () {
+        window.corkboard.init();
+      })
+    })();
+  </script>
+</body>
+</html>

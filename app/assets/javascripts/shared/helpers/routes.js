@@ -60,6 +60,10 @@ scribble.helpers.routes = {};
     return '/comments/' + id + queryString( options );
   };
 
+  namespace.notification_url = function ( id ) {
+    return urlRoot() + '/api/notifications/' + id;
+  };
+
   namespace.privacy_policy_url = function () {
     return urlRoot() + '/privacy';
   };
@@ -71,7 +75,7 @@ scribble.helpers.routes = {};
   var urlRoot = function () {
     if ( _urlRoot == null ) {
       if ( scribble_bootstrap.env === 'production' ) {
-        _urlRoot = 'https://scribblely.herokuapp.com';
+        _urlRoot = 'https://melvilleapp.com';
       } else if ( scribble_bootstrap.env === 'development' ) {
         _urlRoot = 'http://scribble.dev:3000';
       } else {

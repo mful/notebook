@@ -3,10 +3,12 @@ require 'sidekiq/testing'
 
 describe Api::CommentsController do
   include SessionsHelper
+  before { Rails.application.load_seed }
 
   describe '#create' do
-    let(:comment) { FactoryGirl.attributes_for :comment }
+    let(:comment) { FactoryGirl.attributes_for :comment, raw_content: "this is a comment with a @#{user2.username} mention" }
     let!(:user) { FactoryGirl.create :user }
+    let(:user2) { FactoryGirl.create :admin }
 
     context 'when the user is signed in' do
       before { sign_in user }
@@ -14,27 +16,39 @@ describe Api::CommentsController do
       context 'with valid data' do
         let(:annotation) { FactoryGirl.create :annotation }
         before do
-          GATrackWorker.drain
+          annotation.comments << FactoryGirl.create(:comment, user: user2)
+          GATrackWorker.jobs.clear
           post :create, comment: comment, annotation_id: annotation.id
+
+          NotificationWorker.drain
+          @ev_types = user2.notifications.map do |notification|
+            notification.event.event_type.event_type
+          end
         end
 
         it 'should create the comment' do
-          expect(Comment.count).to eq(1)
+          expect(Comment.count).to eq(2)
         end
 
         it 'should redirect/return the comment' do
-          expect(response).to redirect_to(api_comment_path(Comment.first.id))
+          expect(response).to redirect_to(api_comment_path(Comment.last.id))
         end
 
         it 'should queue a GA track worker' do
           expect(GATrackWorker.jobs.size).to eq(1)
+        end
+
+        it 'should create the expected notifications' do
+          expect(user2.notifications.count).to eq(2)
+          expect(@ev_types.include? 'at_mention').to be_true
+          expect(@ev_types.include? 'annotation').to be_true
         end
       end
 
       context 'without an associated annotation' do
         let(:comment) { FactoryGirl.attributes_for :comment, raw_content: '  ' }
         before do
-          GATrackWorker.drain
+          GATrackWorker.jobs.clear
           post :create, comment: comment
         end
 
@@ -55,7 +69,7 @@ describe Api::CommentsController do
         let!(:annotation) { FactoryGirl.create :annotation }
         let(:comment) { FactoryGirl.attributes_for :comment, raw_content: '  ' }
         before do
-          GATrackWorker.drain
+          GATrackWorker.jobs.clear
           post :create, comment: comment, annotation_id: annotation.id
         end
 
@@ -146,18 +160,24 @@ describe Api::CommentsController do
   end
 
   describe '#add_reply' do
-    let(:parent_comment) { FactoryGirl.create :comment }
+    let(:parent_comment) { FactoryGirl.create :comment, annotation: FactoryGirl.create(:annotation) }
 
     context 'when there is a logged in user' do
       let(:user) { FactoryGirl.create :user, username: 'u2', email: 'h@hogwarts.com' }
       before do
         sign_in user
-        GATrackWorker.drain
+        GATrackWorker.jobs.clear
         post :add_reply, id: parent_comment.id, reply: reply
+
+        NotificationWorker.drain
+        parent_comment.reload
+        @ev_types = parent_comment.user.notifications.map do |notification|
+          notification.event.event_type.event_type
+        end
       end
 
       context 'when the reply is valid' do
-        let(:reply) { FactoryGirl.attributes_for :comment }
+        let(:reply) { FactoryGirl.attributes_for :comment, raw_content: "this is a comment with a @#{parent_comment.user.username} mention" }
 
         it 'should associate a reply with the comment' do
           expect(parent_comment.replies.count).to eq(1)
@@ -170,11 +190,17 @@ describe Api::CommentsController do
         it 'should queue a GA track worker' do
           expect(GATrackWorker.jobs.size).to eq(1)
         end
+
+        it 'should notify the the parent comment owner, of both the reply and the @-mention' do
+          expect(parent_comment.user.notifications.count).to eq(2)
+          expect(@ev_types.include? 'at_mention').to be_true
+          expect(@ev_types.include? 'reply').to be_true
+        end
       end
 
       context 'when the reply is invalid' do
         let(:reply) { FactoryGirl.attributes_for(:comment).merge(raw_content: 'too$hort') }
-        before { GATrackWorker.drain }
+        before { GATrackWorker.jobs.clear }
 
         it 'should return 400' do
           expect(response.status).to eq(400)
@@ -198,9 +224,9 @@ describe Api::CommentsController do
   end
 
   describe '#add_vote' do
-    let(:comment) { FactoryGirl.create :comment }
+    let(:user) { FactoryGirl.create :user }
+    let(:comment) { FactoryGirl.create :comment, user: user }
     let(:vote) { FactoryGirl.attributes_for :vote }
-    let(:user) { comment.user }
     let(:user_2) { FactoryGirl.create :user, username: 'testr', email: 'test@rr.com' }
 
     context 'when there is a logged in user' do
@@ -209,7 +235,7 @@ describe Api::CommentsController do
         before do
           sign_in user_2
           @original_count = comment.votes.count
-          GATrackWorker.drain
+          GATrackWorker.jobs.clear
           post :add_vote, id: comment.id, vote: vote
         end
 
@@ -235,7 +261,7 @@ describe Api::CommentsController do
 
         context 'with the same up/down value' do
           before do
-            GATrackWorker.drain
+            GATrackWorker.jobs.clear
             post :add_vote, id: comment.id, vote: vote
           end
 
@@ -257,7 +283,7 @@ describe Api::CommentsController do
           before do
             @original_pos = vote[:positive]
             vote[:positive] = !vote[:positive]
-            GATrackWorker.drain
+            GATrackWorker.jobs.clear
             post :add_vote, id: comment.id, vote: vote
           end
 

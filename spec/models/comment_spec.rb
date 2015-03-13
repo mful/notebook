@@ -1,27 +1,30 @@
 require 'spec_helper'
+require 'sidekiq/testing'
 
 describe Comment do
-
-  describe '#create' do
-    let(:user) { FactoryGirl.create :user }
-
-    context 'with valid data' do
-      before { @comment = FactoryGirl.create :comment, user: user }
-
-      it 'should add a vote by the author' do
-        expect(@comment.votes.length).to eq(1)
-        expect(@comment.votes.first.user).to eq(user)
-      end
-    end
+  let(:user) { FactoryGirl.create :user }
+  before do
+    NotificationWorker.jobs.clear
+    Rails.application.load_seed
   end
 
   describe '#save' do
+    let(:expected_content) { "<p>Malfoy fucking sucks. srsly.</p>\n" }
 
     context 'with valid data' do
-      let!(:comment) { FactoryGirl.create :comment }
+      let!(:comment) { FactoryGirl.create :comment, user: user }
 
-      it 'should create the comment' do
-        expect(Comment.count).to eq(1)
+      it 'should persist the comment' do
+        expect(comment.persisted?).to be_true
+      end
+
+      it 'should set the content field to the expected html' do
+        expect(comment.content).to eq(expected_content)
+      end
+
+      it 'should add a vote from the creator' do
+        expect(comment.votes.length).to eq(1)
+        expect(comment.votes.first.user).to eq(user)
       end
     end
 
@@ -92,7 +95,7 @@ describe Comment do
     let(:comment) { FactoryGirl.create :comment }
 
     context 'when the comment is a reply' do
-      let(:parent) { FactoryGirl.create :comment, user: comment.user }
+      let(:parent) { FactoryGirl.create :comment, user: comment.user, annotation: FactoryGirl.create(:annotation) }
       before { parent.replies << comment }
 
       it 'should return the parent comment' do
