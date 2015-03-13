@@ -17,6 +17,10 @@ class CreateTablesForNotifications < ActiveRecord::Migration
       t.timestamps
     end
 
+    add_index :events, [:notifiable_type, :notifiable_id]
+    add_index :events, [:target_type, :target_id]
+    add_index :events, :event_type_id
+
     create_table :subscriptions do |t|
       t.integer :user_id
       t.integer :notifiable_id

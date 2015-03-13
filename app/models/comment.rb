@@ -11,12 +11,14 @@ class Comment < ActiveRecord::Base
   has_many :comment_replies
   has_many :replies, through: :comment_replies
   has_many :comment_flags
-
-  after_create :setup_notifications
+  has_many :events, as: :notifiable
+  has_many :subscriptions, as: :notifiable
 
   before_create :add_selfie_vote
   before_save :update_html_content
+  after_save :setup_notifications
   after_save :set_rating, on: :update
+
   after_touch :set_rating # TODO: move to vote service
 
   validates_presence_of :raw_content, :user
@@ -73,6 +75,11 @@ class Comment < ActiveRecord::Base
   end
 
   def setup_notifications
-    CommentPubSub.new.after_create self
+    if (new_record? && (annotation_id || parent_comment)) ||
+      annotation_id_changed?
+      Notifications::CommentPubSub.new.after_save self
+    elsif (annotation_id || parent_comment) && raw_content_changed?
+      Notifications::CommentPubSub.new.post_at_mentions self
+    end
   end
 end

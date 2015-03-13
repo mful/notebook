@@ -24,6 +24,8 @@ class Api::AnnotationsController < ApiController
   end
 
   def by_page
+    params.merge! CGI.parse(URI.parse(params[:url]).query)
+
     page = Page.find_by_url Page.filter_url(params[:url])
     @annotations = FetchPageAnnotations.fetch( page, params )
 

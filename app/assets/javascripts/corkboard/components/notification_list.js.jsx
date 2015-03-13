@@ -7,10 +7,14 @@ var NotificationList = React.createClass({
   },
 
   collectNotifications: function () {
-    return this.state.notifications.map( function ( notification ) {
-      return <Notification notification={ notification }
-                           key={ "notification_" + notification.id } />;
-    });
+    if ( this.state.notifications.length > 0 ) {
+      return this.state.notifications.map( function ( notification ) {
+        return <Notification notification={ notification }
+                             key={ "notification_" + notification.id } />;
+      });
+    } else {
+      return <h5 style={ {margin: '10px'} }>Huh. No notifications right now.</h5>
+    }
   },
 
   render: function () {

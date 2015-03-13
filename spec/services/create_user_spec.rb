@@ -6,7 +6,7 @@ describe CreateUser do
     context 'with a valid user' do
       let(:user) { FactoryGirl.build :user }
       before do
-        GATrackWorker.drain
+        GATrackWorker.jobs.clear
         CreateUser.create user
         @email = MandrillMailer::deliveries.detect { |mail|
           mail.template_name == 'Welcome' &&

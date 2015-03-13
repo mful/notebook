@@ -99,6 +99,10 @@ ActiveRecord::Schema.define(version: 20150312152735) do
     t.datetime "updated_at"
   end
 
+  add_index "events", ["event_type_id"], name: "index_events_on_event_type_id", using: :btree
+  add_index "events", ["notifiable_type", "notifiable_id"], name: "index_events_on_notifiable_type_and_notifiable_id", using: :btree
+  add_index "events", ["target_type", "target_id"], name: "index_events_on_target_type_and_target_id", using: :btree
+
   create_table "notification_templates", force: true do |t|
     t.string   "message"
     t.integer  "event_type_id"

@@ -5,11 +5,10 @@ describe Comment do
   let(:user) { FactoryGirl.create :user }
   before do
     NotificationWorker.jobs.clear
+    Rails.application.load_seed
   end
 
   describe '#save' do
-    let!(:reply_type) { FactoryGirl.create :event_type, event_type: EventType::TYPES[:reply] }
-    let!(:annotation_type) { FactoryGirl.create :event_type, event_type: EventType::TYPES[:annotation] }
     let(:expected_content) { "<p>Malfoy fucking sucks. srsly.</p>\n" }
 
     context 'with valid data' do
@@ -23,23 +22,9 @@ describe Comment do
         expect(comment.content).to eq(expected_content)
       end
 
-      it 'should subscribe the creator to replies' do
-        sub = user.subscriptions.where(notifiable: comment).first
-        expect(sub.event_type_id).to eq(1)
-      end
-
       it 'should add a vote from the creator' do
         expect(comment.votes.length).to eq(1)
         expect(comment.votes.first.user).to eq(user)
-      end
-
-      it 'should create a Comment Event' do
-        expect(Event.count).to eq(1)
-        expect(Event.first.event_type_id).to eq(2)
-      end
-
-      it 'should queue a worker' do
-        expect(NotificationWorker.jobs.size).to eq(1)
       end
     end
 
@@ -110,7 +95,7 @@ describe Comment do
     let(:comment) { FactoryGirl.create :comment }
 
     context 'when the comment is a reply' do
-      let(:parent) { FactoryGirl.create :comment, user: comment.user }
+      let(:parent) { FactoryGirl.create :comment, user: comment.user, annotation: FactoryGirl.create(:annotation) }
       before { parent.replies << comment }
 
       it 'should return the parent comment' do

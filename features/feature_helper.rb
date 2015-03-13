@@ -6,6 +6,9 @@ require 'rspec/autorun'
 require 'factory_girl_rails'
 require 'mandrill_mailer/offline'
 require 'capybara/rspec'
+require 'sidekiq/testing'
+
+Sidekiq::Testing.inline!
 
 Capybara.app_host = 'http://scribble.test:31234'
 Capybara.server_port = 31234
@@ -134,6 +137,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.clean
+    Rails.application.load_seed
   end
 
   config.after(:suite) do

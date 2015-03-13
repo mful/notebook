@@ -8,7 +8,7 @@ describe SessionsHelper do
 
   describe '#sign_in' do
     before do
-      GATrackWorker.drain
+      GATrackWorker.jobs.clear
       sign_in user
     end
 

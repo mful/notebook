@@ -4,23 +4,44 @@ require 'sidekiq/testing'
 describe Api::AnnotationsController do
   include SessionsHelper
 
+  before { Rails.application.load_seed }
+
   describe '#create' do
-    let(:comment) { FactoryGirl.attributes_for :comment }
+    let(:user) { FactoryGirl.create :user }
+    let(:user2) { FactoryGirl.create :admin }
+    let(:comment) { FactoryGirl.attributes_for :comment, raw_content: "this is a comment with a @#{user2.username} mention" }
     let(:annotation) { FactoryGirl.attributes_for :annotation }
+    let(:page) { FactoryGirl.create :page }
 
     context 'when signed in' do
-      let(:user) { FactoryGirl.create :user }
-      before { sign_in user }
+      before do
+        existing_annotation = FactoryGirl.create :annotation, page: page, text: 'some different text'
+        existing_annotation.comments << FactoryGirl.create(:comment, user: user2)
+        sign_in user
+      end
 
       context 'with valid data' do
-        before { post :create, annotation: annotation, comment: comment, url: 'http://hogwarts.com' }
+        before do
+          post :create, annotation: annotation, comment: comment, url: page.url
+
+          NotificationWorker.drain
+          @ev_types = user2.notifications.map do |notification|
+            notification.event.event_type.event_type
+          end
+        end
 
         it 'should create the annotation' do
-          expect(Annotation.count).to eq(1)
+          expect(Annotation.count).to eq(2)
         end
 
         it 'should redirect to/return the annotation' do
-          expect(response).to redirect_to(api_annotation_path(Annotation.first.id))
+          expect(response).to redirect_to(api_annotation_path(Annotation.last.id))
+        end
+
+        it 'should notify previous annotators of that page, and those who are @mentioned' do
+          expect(user2.notifications.count).to eq(2)
+          expect(@ev_types.include? 'at_mention').to be_true
+          expect(@ev_types.include? 'annotation').to be_true
         end
       end
 
@@ -32,8 +53,8 @@ describe Api::AnnotationsController do
           expect(response.status).to eq(400)
         end
 
-        it 'should not create an annotation' do
-          expect(Annotation.count).to eq(0)
+        it 'should not create a new annotation' do
+          expect(Annotation.count).to eq(1)
         end
       end
     end
@@ -74,7 +95,7 @@ describe Api::AnnotationsController do
           [AnnotationHighlightSerializer.new(annotation).serializable_hash.stringify_keys]
         end
         before do
-          GATrackWorker.drain
+          GATrackWorker.jobs.clear
           get :by_page, url: annotation.page.url
         end
 

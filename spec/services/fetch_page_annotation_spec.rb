@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe FetchPageAnnotations do
+  before { Rails.application.load_seed }
 
   describe '#fetch' do
     let(:page) { FactoryGirl.create :page }
