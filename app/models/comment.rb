@@ -12,9 +12,10 @@ class Comment < ActiveRecord::Base
   has_many :replies, through: :comment_replies
   has_many :comment_flags
 
-  before_save :update_html_content,
-              on: :update,
-              :if => Proc.new { |comment| comment.raw_content_changed? }
+  after_create :setup_notifications
+
+  before_create :add_selfie_vote
+  before_save :update_html_content
   after_save :set_rating, on: :update
   after_touch :set_rating # TODO: move to vote service
 
@@ -38,6 +39,8 @@ class Comment < ActiveRecord::Base
   end
 
   def update_html_content
+    return unless new_record? || raw_content_changed?
+
     renderer = CommentRenderer.new(
       filter_html: true,
       no_images: true,
@@ -67,5 +70,9 @@ class Comment < ActiveRecord::Base
 
   def add_selfie_vote
     self.votes << Vote.new(user: user, positive: true)
+  end
+
+  def setup_notifications
+    CommentPubSub.new.after_create self
   end
 end

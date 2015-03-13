@@ -199,7 +199,7 @@ describe Api::CommentsController do
 
   describe '#add_vote' do
     let(:user) { FactoryGirl.create :user }
-    let(:comment) { CreateComment.create Comment.new(FactoryGirl.attributes_for(:comment).merge({user: user})) }
+    let(:comment) { FactoryGirl.create :comment, user: user }
     let(:vote) { FactoryGirl.attributes_for :vote }
     let(:user_2) { FactoryGirl.create :user, username: 'testr', email: 'test@rr.com' }
 

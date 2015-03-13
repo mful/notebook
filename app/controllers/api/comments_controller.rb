@@ -15,7 +15,7 @@ class Api::CommentsController < ApiController
     @comment.annotation = Annotation.find(params[:annotation_id])
 
     redirect_or_err(@comment, :api_comment_path, 400) do
-      CreateComment.create(@comment) &&
+      @comment.save &&
       GATrackWorker.perform_async('Create Comment', @comment.annotation.page.url, false)
     end
   end
@@ -31,7 +31,7 @@ class Api::CommentsController < ApiController
     @reply = Comment.new(reply_params)
 
     redirect_or_err @reply, :api_comment_path, 400 do
-      CreateComment.create(@reply, parent_comment: @comment) &&
+      @reply.save && @comment.replies << @reply &&
       GATrackWorker.perform_async('Create Reply', @reply.parent_comment.id)
     end
   end

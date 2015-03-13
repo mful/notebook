@@ -7,6 +7,12 @@ var NotificationStore = React.addons.update( EventEmitter.prototype, {$merge: {
 
   // data manipulation
 
+  initializeNotifications: function ( notifications ) {
+    for ( var i = 0; i < notifications.length; i++ ) {
+      _notifications[notifications[i].id] = notifications[i]
+    }
+  },
+
   toggleRead: function ( id ) {
     if ( !_notifications[id] ) return null;
 
@@ -32,6 +38,9 @@ var NotificationStore = React.addons.update( EventEmitter.prototype, {$merge: {
     var action = payload.action;
 
     switch ( action.actionType ) {
+      case AppConstants.INITIALIZE_DATA:
+        NotificationStore.initializeNotifications( action.data.notifications )
+        break;
       case NotificationConstants.TOGGLE_READ:
         NotificationStore.toggleRead( action.data.id );
         break;

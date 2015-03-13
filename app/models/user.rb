@@ -10,50 +10,14 @@ class User < ActiveRecord::Base
   has_many :votes
   has_and_belongs_to_many :roles
   has_many :subscriptions
+  has_many :notifications
 
   def self.by_username( text, count = 5 )
     where("username ILIKE ?", text + '%').limit(count)
   end
 
   def current_notifications
-    [
-      {
-        id: 1,
-        message: '<strong>@mattmattmatt</strong> replied to your annotation on <strong>13-year Old Drinking Prodigy...</strong> on theonion.com',
-        url: 'http://theonion.com',
-        notification_type: 'reply',
-        reply_id: 3,
-        annotation_id: 1,
-        comment_id: 2
-      },
-      {
-        id: 2,
-        message: '<strong>@mattmattmatt</strong> replied to your annotation on <strong>13-year Old Drinking Prodigy Accepted into OSU</strong> on theonion.com',
-        url: 'http://theonion.com',
-        notification_type: 'reply',
-        reply_id: 3,
-        annotation_id: 1,
-        comment_id: 2
-      },
-      {
-        id: 3,
-        message: '<strong>@mattmattmatt</strong> replied to your annotation on <strong>13-year Old Drinking Prodigy Accepted into OSU</strong> on theonion.com',
-        url: 'http://theonion.com',
-        notification_type: 'reply',
-        reply_id: 3,
-        annotation_id: 1,
-        comment_id: 2
-      },
-      {
-        id: 4,
-        message: '<strong>@mattmattmatt</strong> replied to your annotation on <strong>13-year Old Drinking Prodigy Accepted into OSU</strong> on theonion.com',
-        url: 'http://theonion.com',
-        notification_type: 'reply',
-        reply_id: 3,
-        annotation_id: 1,
-        comment_id: 2
-      },
-    ]
+    notifications.order('created_at DESC').limit(20)
   end
 
   # TODO: move this remember token logic

@@ -3,6 +3,12 @@
 var Corkboard = React.createClass({
 
   getInitialState: function () {
+    if ( this.props.server_rendered ) {
+      AppActions.initializeData({
+        notifications: this.props.notifications
+      });
+    }
+
     return {
       notifications: this.props.notifications
     };

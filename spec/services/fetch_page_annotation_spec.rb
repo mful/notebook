@@ -47,7 +47,7 @@ describe FetchPageAnnotations do
         user = FactoryGirl.create :user
         @annotations.each do |annotation|
           next if annotation == @notified_annotation
-          annotation.comments << FactoryGirl.create(:comment, user: user)
+          res = annotation.comments << FactoryGirl.build(:comment, user: user)
         end
 
       end

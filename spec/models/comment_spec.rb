@@ -1,14 +1,45 @@
 require 'spec_helper'
+require 'sidekiq/testing'
 
 describe Comment do
+  let(:user) { FactoryGirl.create :user }
+  before do
+    NotificationWorker.jobs.clear
+  end
 
   describe '#save' do
+    let!(:reply_type) { FactoryGirl.create :event_type, event_type: EventType::TYPES[:reply] }
+    let!(:annotation_type) { FactoryGirl.create :event_type, event_type: EventType::TYPES[:annotation] }
+    let(:expected_content) { "<p>Malfoy fucking sucks. srsly.</p>\n" }
 
     context 'with valid data' do
-      let!(:comment) { FactoryGirl.create :comment }
+      let!(:comment) { FactoryGirl.create :comment, user: user }
 
-      it 'should create the comment' do
-        expect(Comment.count).to eq(1)
+      it 'should persist the comment' do
+        expect(comment.persisted?).to be_true
+      end
+
+      it 'should set the content field to the expected html' do
+        expect(comment.content).to eq(expected_content)
+      end
+
+      it 'should subscribe the creator to replies' do
+        sub = user.subscriptions.where(notifiable: comment).first
+        expect(sub.event_type_id).to eq(1)
+      end
+
+      it 'should add a vote from the creator' do
+        expect(comment.votes.length).to eq(1)
+        expect(comment.votes.first.user).to eq(user)
+      end
+
+      it 'should create a Comment Event' do
+        expect(Event.count).to eq(1)
+        expect(Event.first.event_type_id).to eq(2)
+      end
+
+      it 'should queue a worker' do
+        expect(NotificationWorker.jobs.size).to eq(1)
       end
     end
 
@@ -100,7 +131,6 @@ describe Comment do
     let(:user_3) { FactoryGirl.create :moderator }
     let(:comment) { FactoryGirl.create :comment, user: user }
     before do
-      FactoryGirl.create :vote, comment: comment, user: user
       FactoryGirl.create :vote, comment: comment, user: user_2
       FactoryGirl.create :vote, positive: false, comment: comment, user: user_3
     end

@@ -10,7 +10,6 @@ describe 'voting on a comment', type: :feature, js: true do
     ApplicationController.any_instance.stub(:current_user).and_return(user_2)
     ApplicationController.any_instance.stub(:signed_in?).and_return(true)
     annotation.comments << comment
-    comment.votes << FactoryGirl.create(:vote, user: user, comment: comment)
     visit annotation_path(annotation.id)
   end
 

@@ -1,45 +1,17 @@
-class CreateComment
+class CommentPubSub
 
-  def self.create(comment, options = {})
-    new(comment, options).create
+  def initialize
   end
 
-  def initialize(comment, options = {})
-    @comment = comment
-    @parent_comment = options[:parent_comment]
-  end
-
-  def create
-    process_presave @comment
-
-    return false unless @comment.save
-    @parent_comment.replies << @comment if @parent_comment
-
-    process_postsave @comment
-
-    @comment
-  end
-
-  private
-
-  def process_presave(comment)
-    comment.update_html_content
-  end
-
-  def process_postsave(comment)
-    add_selfie_vote comment
+  def after_create(comment)
     subscribe_owner comment
     post_events comment
-  end
-
-  def add_selfie_vote(comment)
-    comment.votes << Vote.new(user: comment.user, positive: true)
   end
 
   def subscribe_owner(comment)
     # subscribe to replies regardless of whether it's a root level comment or
     # not, in anticipation of increased threading.
-    Subscription.create user_id: comment.user_id,
+    sub = Subscription.create user_id: comment.user_id,
                         notifiable: comment,
                         event_type: ::EventType.find_by_event_type(::EventType::TYPES[:reply])
   end
