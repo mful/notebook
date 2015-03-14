@@ -12,6 +12,7 @@ describe 'creating an annotation', type: :feature, js: true do
   end
 
   it 'bring up the sidebar, with a form to fill out, which should prompt for auth on submission, before working' do
+    sleep 1
     page.find('.crayon-add-annotation-view').click
 
     # ensure full sentence gets highlighted
