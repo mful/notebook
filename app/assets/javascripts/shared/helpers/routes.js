@@ -75,7 +75,7 @@ scribble.helpers.routes = {};
   var urlRoot = function () {
     if ( _urlRoot == null ) {
       if ( scribble_bootstrap.env === 'production' ) {
-        _urlRoot = 'https://melvilleapp.com';
+        _urlRoot = 'https://scribblely.herokuapp.com';
       } else if ( scribble_bootstrap.env === 'development' ) {
         _urlRoot = 'http://scribble.dev:3000';
       } else {
