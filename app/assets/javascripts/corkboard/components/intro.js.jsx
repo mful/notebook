@@ -29,7 +29,7 @@ var Intro = React.createClass({
   render: function () {
     return (
       <div className="intro-component">
-        <h4>Welcome to Melville</h4>
+        <h4>Welcome to Scribble</h4>
 
         <button ref="signup" className={ "large button" + this.visClass() } onClick={ this.triggerLogin }>
           Sign In
