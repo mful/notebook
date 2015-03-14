@@ -1,6 +1,7 @@
 var SessionConstants = {
   AUTH_NEEDED: 'auth_needed',
   LOGIN_SUCCESS: 'login',
+  LOGOUT: 'logout',
   FB_LOGIN: 'fb_login',
   GOOGLE_LOGIN: 'google_login',
   EMAIL_LOGIN: 'email_login',

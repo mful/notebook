@@ -52,6 +52,9 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
       case SessionConstants.AUTH_NEEDED:
         SessionStore._ensureCurrentUser( 'popup' );
         break;
+      case SessionConstants.LOGOUT:
+        SessionStore._logout();
+        break;
     }
 
     return true;
@@ -61,5 +64,16 @@ var SessionStore = React.addons.update(EventEmitter.prototype, {$merge: {
     if ( !SessionStore.isCurrentUserComplete() ) {
       CorkboardCourier.post( SessionConstants.AUTH_NEEDED, {referringAction: referringAction} );
     }
+  },
+
+  _logout: function () {
+    var _this = this;
+
+    scribble.helpers.xhr.destroy(
+      scribble.helpers.routes.api_signout_url(),
+      function () {
+        window.top.close();
+      }
+    );
   }
 }});

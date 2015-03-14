@@ -5,12 +5,25 @@ var _notifications = {};
 
 var NotificationStore = React.addons.update( EventEmitter.prototype, {$merge: {
 
+  // data retrieval
+
+  unreadNotifications: function () {
+    return _( _notifications ).where({ read: false });
+  },
+
   // data manipulation
 
   initializeNotifications: function ( notifications ) {
     for ( var i = 0; i < notifications.length; i++ ) {
       _notifications[notifications[i].id] = notifications[i]
     }
+
+    this.emitChange();
+  },
+
+  reset: function () {
+    _notifications = {};
+    this.emitChange();
   },
 
   toggleRead: function ( id ) {
@@ -26,6 +39,10 @@ var NotificationStore = React.addons.update( EventEmitter.prototype, {$merge: {
 
   emitChange: function () {
     this.emit( CHANGE_EVENT );
+    CorkboardCourier.post(
+      NotificationConstants.NOTIFICATIONS_CHANGE,
+      {count: this.unreadNotifications().length}
+    );
   },
 
   addChangeListener: function ( callback ) {
@@ -46,6 +63,9 @@ var NotificationStore = React.addons.update( EventEmitter.prototype, {$merge: {
       case NotificationConstants.TOGGLE_READ:
         NotificationStore.toggleRead( action.data.id );
         break;
+      case SessionConstants.LOGOUT:
+        NotificationStore.reset();
+        break;
     }
 
     return true;
@@ -60,7 +80,7 @@ var NotificationStore = React.addons.update( EventEmitter.prototype, {$merge: {
       function ( err, response ) {
         if ( err ) return;
 
-        _notifications[id] = response.notification;
+        _notifications[id] = response.data.notification;
         _this.emitChange();
       }
     );

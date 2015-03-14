@@ -14,9 +14,14 @@ var Corkboard = React.createClass({
     };
   },
 
+  logout: function () {
+    SessionActions.logout();
+  },
+
   render: function () {
     return (
       <div className="corkboard-component">
+        <div className="logout-button" onClick={ this.logout }>sign out</div>
         <NotificationList notifications={ this.state.notifications } />
       </div>
     );

@@ -72,5 +72,6 @@ scribble.helpers.xhr = {};
 
   namespace.get = namespace.request.bind(this, 'GET');
   namespace.post = namespace.request.bind(this, 'POST');
+  namespace.destroy = namespace.request.bind(this, 'DELETE');
 
 })(scribble.helpers.xhr);

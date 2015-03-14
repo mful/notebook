@@ -1,3 +1,21 @@
 .corkboard-component {
   background: $off_white;
+
+  .logout-button {
+    background-color: $purple_dark;
+    color: $light_grey;
+    cursor: pointer;
+    font-size: .75rem;
+    padding: 1px 10px 3px;
+    position: fixed;
+    right: 5px;
+    top: 5px;
+    transition: background-color 300ms ease-out, color 300ms ease-out;
+    z-index: 3;
+
+    &:hover {
+      background-color: $purple;
+      color: $white;
+    }
+  }
 }
