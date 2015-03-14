@@ -33,6 +33,7 @@ and many smaller ones.")
     end
 
     within_frame 'crayon-sidebar' do
+      sleep 1
       expect(page.find('.author')).to have_content(user.username)
       expect(page.find('.content')).to have_content(comment_attrs[:raw_content])
     end

@@ -45,6 +45,7 @@ describe 'the login process', type: :feature, js: true do
         click_button 'Okay'
       end
 
+      sleep 1
       fill_in 'user_username', with: 'hagrid'
       click_button 'Finish'
 
