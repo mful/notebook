@@ -17,6 +17,8 @@ class NotificationSerializer < ActiveModel::Serializer
       query_params[:cryn_type] = 'at_mention'
     when 'annotation'
       query_params[:cryn_type] = 'annotation'
+    when 'general'
+      "http://#{base_url}"
     end
 
     assemble_url base_url, query_params

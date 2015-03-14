@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
   has_many :notifications
   has_many :comments
 
+  after_create :seed_notifications
+
   after_touch :set_score
 
   def self.by_username( text, count = 5 )
@@ -53,6 +55,19 @@ class User < ActiveRecord::Base
 
   def create_remember_token
     self.remember_token = digest(new_remember_token)
+  end
+
+  def seed_notifications
+    annotation = Annotation.last
+    return unless annotation
+    Notification.create(
+      user: self,
+      event: Event.new(event_type: EventType.find_by_event_type(EventType::TYPES[:general])),
+      message: "Welcome! To start, check out recent annotations on <strong>#{annotation.page.entity.base_domain}</strong>",
+      data: {
+        url: annotation.page.url
+      }.to_json
+    )
   end
 
   def set_score

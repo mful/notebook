@@ -39,9 +39,10 @@ describe Api::CommentsController do
         end
 
         it 'should create the expected notifications' do
-          expect(user2.notifications.count).to eq(2)
+          expect(user2.notifications.count).to eq(3)
           expect(@ev_types.include? 'at_mention').to be_true
           expect(@ev_types.include? 'annotation').to be_true
+          expect(@ev_types.include? 'general').to be_true
         end
       end
 
@@ -192,9 +193,10 @@ describe Api::CommentsController do
         end
 
         it 'should notify the the parent comment owner, of both the reply and the @-mention' do
-          expect(parent_comment.user.notifications.count).to eq(2)
+          expect(parent_comment.user.notifications.count).to eq(3)
           expect(@ev_types.include? 'at_mention').to be_true
           expect(@ev_types.include? 'reply').to be_true
+          expect(@ev_types.include? 'general').to be_true
         end
       end
 
