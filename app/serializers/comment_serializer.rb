@@ -5,7 +5,13 @@ class CommentSerializer < ActiveModel::Serializer
              :parent_comment_id
 
   def author
-    object.user.username
+    score = object.user.simple_score
+    score = score < 1 ? 1 : score
+
+    {
+      username: object.user.username,
+      simple_score: score
+    }
   end
 
   def annotation_id

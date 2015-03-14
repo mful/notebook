@@ -65,8 +65,14 @@ var Comment = React.createClass({
             <div className="avatar-wrapper"></div>
 
             <h6 className="author">
-              { this.props.comment.author }
+              { this.props.comment.author.username }
+              &nbsp;&nbsp;&nbsp;
+              <div className="user-rating">
+                <i className="ion-bookmark"></i>
+                &nbsp;{ this.props.comment.author.simple_score }
+              </div>
             </h6>
+
           </div>
         </div>
 

@@ -40,9 +40,21 @@
     font-style: italic;
     font-weight: 700;
     float: left;
-    line-height: 53px;
+    line-height: 20px;
+    margin-top: 12px;
     margin-left: 15px;
     vertical-align: middle;
+
+    .user-rating {
+      color: $grey_med;
+      font-size: 1rem;
+      font-style: normal;
+      font-weight: 400;
+
+      i {
+        vertical-align: text-top;
+      }
+    }
   }
 
   .avatar-wrapper {

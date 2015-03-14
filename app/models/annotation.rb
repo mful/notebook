@@ -6,7 +6,7 @@ class Annotation < ActiveRecord::Base
   validates :text, length: { minimum: 5, maximum: 400 }
 
   def simple_score
-    comments.sum :rating;
+    comments.sum :rating
   end
 
   def determine_likeness(src, dest)

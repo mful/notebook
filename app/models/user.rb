@@ -11,6 +11,9 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
   has_many :subscriptions
   has_many :notifications
+  has_many :comments
+
+  after_touch :set_score
 
   def self.by_username( text, count = 5 )
     where("username ILIKE ?", text + '%').limit(count)
@@ -50,5 +53,11 @@ class User < ActiveRecord::Base
 
   def create_remember_token
     self.remember_token = digest(new_remember_token)
+  end
+
+  def set_score
+    pos = Vote.where(positive: true).joins(:comment).where('comments.user_id = ?', id).size
+    neg = Vote.where(positive: false).joins(:comment).where('comments.user_id = ?', id).size
+    update_column :simple_score, pos - neg
   end
 end
