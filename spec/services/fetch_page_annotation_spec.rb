@@ -11,7 +11,7 @@ describe FetchPageAnnotations do
 
       describe 'and there is a notification, requiring a specific annotation' do
         it 'should return an empty array' do
-          expect(fetcher.fetch({ cryn_aid: 1 })).to eq([])
+          expect(fetcher.fetch({ cryn_aid: [1] })).to eq([])
         end
       end
 
@@ -50,7 +50,6 @@ describe FetchPageAnnotations do
           next if annotation == @notified_annotation
           res = annotation.comments << FactoryGirl.build(:comment, user: user)
         end
-
       end
 
       describe 'and a specific annotation is NOT needed' do
@@ -61,7 +60,7 @@ describe FetchPageAnnotations do
 
       describe 'and a specific annotation is needed for a notification' do
         it 'should return a list of annotations, included the desired annotation' do
-          expect(fetcher.fetch({ cryn_aid: @notified_annotation.id }).include?(@notified_annotation)).to be_true
+          expect(fetcher.fetch({ cryn_aid: [@notified_annotation.id] }).include?(@notified_annotation)).to be_true
         end
       end
     end

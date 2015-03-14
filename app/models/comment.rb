@@ -4,7 +4,7 @@ class Comment < ActiveRecord::Base
   DEFAULT_RATING = 0.05
 
   belongs_to :user, touch: true
-  belongs_to :annotation
+  belongs_to :annotation, touch: true
   belongs_to :comment_status
   # has_many :pages
   has_many :votes

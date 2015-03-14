@@ -44,7 +44,7 @@ describe 'commenting on an annotation', type: :feature, js: true do
 
       content = page.all('.content').detect { |c| c.text == comment_content }
 
-      expect(page.all('.author').detect { |a| a.text == user.username }.present?).to be_true
+      expect(page.all('.author').detect { |a| a.text.match user.username }.present?).to be_true
       expect(content.present?).to be_true
       expect(content.find('strong')).to have_content("@#{admin.username}")
     end

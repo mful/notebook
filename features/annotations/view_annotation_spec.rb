@@ -17,18 +17,18 @@ describe 'viewing an annotation', type: :feature, js: true do
   end
 
   it 'should show the comments on the annotation' do
-    wait_for { page.all('.crayon-annotation-text-view').length > 1 }
+    wait_for { page.all('.crayon-annotation-text-view').length > 2 }
 
-    page.all("span[data-crayon-key=\"annotation_#{annotation.id}\"]")[0].click
-    expect(page.all("span[data-crayon-key=\"annotation_#{annotation.id}\"]").length).to eq(3)
+    page.all("span[data-annotation-id=\"#{annotation.id}\"]")[0].click
+    expect(page.all("span[data-annotation-id=\"#{annotation.id}\"]").length).to eq(3)
 
     # ensure clicked annotation is activated
-    page.all("span[data-crayon-key=\"annotation_#{annotation.id}\"]").each do |span|
+    page.all("span[data-annotation-id=\"#{annotation.id}\"]").each do |span|
       expect(span[:class]).to match(/crayon-active/)
     end
 
     # ensure other annotations are not active
-    page.all("span[data-crayon-key=\"annotation_#{annotation_2.id}\"]").each do |span|
+    page.all("span[data-annotation-id=\"#{annotation_2.id}\"]").each do |span|
       expect(span[:class]).not_to match(/crayon-active/)
     end
 

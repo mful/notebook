@@ -5,9 +5,8 @@ class Annotation < ActiveRecord::Base
   validates_presence_of :text, :page
   validates :text, length: { minimum: 5, maximum: 400 }
 
-  def simple_score
-    comments.sum :rating
-  end
+  after_touch :set_score
+  after_create :set_score
 
   def determine_likeness(src, dest)
     score = 0
@@ -33,5 +32,9 @@ class Annotation < ActiveRecord::Base
       sections << Digest::MD5.hexdigest(text[offset..i])
       offset = i + 1
     end
+  end
+
+  def set_score
+    update_column :simple_score, comments.sum(:rating)
   end
 end

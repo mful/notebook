@@ -34,7 +34,7 @@ class Page < ActiveRecord::Base
   end
 
   def top_annotations(count = 10)
-    annotations.sort_by { |annotation| -1 * annotation.simple_score }[0...count]
+    annotations.order('simple_score DESC').limit(10)
   end
 
   private
