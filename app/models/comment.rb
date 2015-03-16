@@ -49,7 +49,7 @@ class Comment < ActiveRecord::Base
       no_styles: true,
       escape_html: true,
       hard_wrap: true,
-      link_attributes: { rel: 'nofollow' }
+      link_attributes: { rel: 'nofollow', target: '_blank' }
     )
     parser = Redcarpet::Markdown.new(renderer, autolink: true, quote: true)
 

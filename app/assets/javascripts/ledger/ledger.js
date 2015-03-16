@@ -31,7 +31,7 @@ ledger.init = function () {
 
 ledger.bindRoutingEvents = function () {
   var navHandler = function ( e ) {
-    if ( e.target.tagName === 'A' ) {
+    if ( e.target.tagName === 'A' && e.target.target != '_blank' ) {
       e.preventDefault();
       ledger.router.navigate(
         e.target.getAttribute( 'href' ),
