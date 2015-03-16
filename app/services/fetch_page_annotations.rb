@@ -12,6 +12,9 @@ class FetchPageAnnotations
     return [] unless @page
 
     Rails.logger.info options[:cryn_aid]
+    Rails.logger.info options[:cryn_aid].present?
+    Rails.logger.info @page.url
+    Rails.logger.info @page.annotations.count
 
     @annotations = @page.default_page_annotations.to_a
     @annotations = include_specific_annotation(options[:cryn_aid][0]) if options[:cryn_aid].present?
