@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
   end
 
   def seed_notifications
-    annotation = Annotation.last
+    annotation = Annotation.joins(:comments).where('comments.user_id != ?', id).last
     return unless annotation
     Notification.create(
       user: self,

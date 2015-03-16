@@ -55,13 +55,13 @@ describe 'commenting on an annotation', type: :feature, js: true do
     expect(Comment.count).to eq(2)
 
     # should create the relevant events and subscriptions
-    expect(Event.count).to eq(5) # including the default new user events
+    expect(Event.count).to eq(3) # including the default new user events
     expect(Event.joins(:event_type).where('event_types.event_type = ?', 'at_mention').count).to eq(1)
     expect(Event.joins(:event_type).where('event_types.event_type = ?', 'annotation').count).to eq(2)
     expect(Subscription.count).to eq(5)
     expect(Subscription.joins(:event_type).where('event_types.event_type = ?', 'reply').count).to eq(2)
     expect(Subscription.joins(:event_type).where('event_types.event_type = ?', 'at_mention').count).to eq(1)
     expect(Subscription.joins(:event_type).where('event_types.event_type = ?', 'annotation').count).to eq(2)
-    expect(Notification.count).to eq(4) # including the default new user notifications
+    expect(Notification.count).to eq(2) # including the default new user notifications
   end
 end

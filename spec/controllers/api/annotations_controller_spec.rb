@@ -39,10 +39,9 @@ describe Api::AnnotationsController do
         end
 
         it 'should notify previous annotators of that page, and those who are @mentioned' do
-          expect(user2.notifications.count).to eq(3)
+          expect(user2.notifications.count).to eq(2)
           expect(@ev_types.include? 'at_mention').to be_true
           expect(@ev_types.include? 'annotation').to be_true
-          expect(@ev_types.include? 'general').to be_true
         end
       end
 
