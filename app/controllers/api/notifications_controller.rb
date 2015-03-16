@@ -14,7 +14,11 @@ class Api::NotificationsController < ApiController
   end
 
   def current_count
-    count = current_user ? current_user.notifications.where(read: false).count : 0
+    count = if current_user
+              Notification.where(read: false, user_id: current_user.id).count
+            else
+              0
+            end
     render json: { notification_count: count }, status: 200
   end
 
