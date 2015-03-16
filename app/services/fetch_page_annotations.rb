@@ -12,7 +12,7 @@ class FetchPageAnnotations
     return [] unless @page
 
     @annotations = @page.default_page_annotations.to_a
-    @annotations = include_specific_annotation(options[:cryn_aid][0]) if options[:cryn_aid]
+    @annotations = include_specific_annotation(options[:cryn_aid][0]) if options[:cryn_aid].present?
 
     return @annotations
   end
