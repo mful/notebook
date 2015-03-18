@@ -43,8 +43,9 @@ module Notifications
       if comment.annotation_id
         ev_type = EventType::TYPES[:annotation]
         notifiable = Page.joins(:annotations).where('annotations.id = ?', comment.annotation_id).first
+        event = create_event(ev_type, notifiable, comment)
 
-        NotificationWorker.perform_async create_event(ev_type, notifiable, comment).id
+        NotificationWorker.perform_async event.id if event
       end
     end
 
@@ -52,9 +53,9 @@ module Notifications
       if comment.parent_comment
         ev_type = EventType::TYPES[:reply]
         notifiable = comment.parent_comment
+        event = create_event(ev_type, notifiable, comment)
 
-
-        NotificationWorker.perform_async create_event(ev_type, notifiable, comment).id
+        NotificationWorker.perform_async event.id if event
       end
     end
 
