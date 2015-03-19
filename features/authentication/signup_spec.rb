@@ -11,7 +11,7 @@ describe 'email signup', type: :feature, js: true do
     fill_in 'user_email', with: user_attrs[:email]
     fill_in 'user_password', with: 'foobar'
     fill_in 'user_password_confirmation', with: 'foobar'
-    click_button 'Signup'
+    click_button 'Sign Up'
     wait_for { page.all('#user_username').length > 1 }
     fill_in 'user_username', with: user_attrs[:username]
     click_button 'Finish'

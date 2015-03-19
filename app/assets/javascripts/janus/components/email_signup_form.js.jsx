@@ -73,7 +73,7 @@ var EmailSignupForm = React.createClass({
     if ( this.state.login ) {
       return 'Login';
     } else {
-      return 'Signup';
+      return 'Sign Up';
     }
   },
 
